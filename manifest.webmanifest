@@ -1,0 +1,18 @@
+{
+  "name": "Krishan Astrologer – कृष्ण ज्योतिषी",
+  "short_name": "Krishan Astro",
+  "description": "Vedic Kundli, Dasha and astrology guidance for life's problems, in Hindi and English.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f0b24",
+  "theme_color": "#0f0b24",
+  "lang": "en",
+  "categories": ["lifestyle", "entertainment"],
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

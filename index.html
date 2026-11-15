@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Krishan Astrologer</title>
+<meta name="description" content="Krishan Astrologer – Vedic Kundli, Dasha and astrology guidance in Hindi and English.">
+<meta name="theme-color" content="#0f0b24">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0b24;--card:#1a1438;--card2:#231b4a;--gold:#e8b94a;--gold2:#f6d98b;--txt:#ece8fb;--mut:#a59fc7;--line:#3a3070;--good:#7fd8a6;--bad:#f2908b}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,"Noto Sans Devanagari",system-ui,sans-serif;background:radial-gradient(1200px 600px at 50% -200px,#2c1f6b 0%,var(--bg) 60%);color:var(--txt);min-height:100vh}
+body.hi{font-family:"Noto Sans Devanagari",Inter,system-ui,sans-serif}
+header{text-align:center;padding:22px 16px 8px;position:relative}
+.lang{display:inline-flex;border:1px solid var(--gold);border-radius:999px;overflow:hidden;margin-bottom:14px}
+.lang button{background:transparent;color:var(--gold2);border:0;border-radius:0;padding:7px 16px;font-size:14px;font-weight:600}
+.lang button.on{background:var(--gold);color:#1b1230}
+.logo{font-family:Cinzel,"Noto Sans Devanagari",serif;font-size:30px;letter-spacing:2px;color:var(--gold)}
+body.hi .logo{letter-spacing:0}
+.logo span{color:var(--txt)}
+.tag{color:var(--mut);font-size:14px;margin-top:4px}
+main{max-width:980px;margin:0 auto;padding:12px 16px 60px}
+.card{background:linear-gradient(180deg,var(--card),#150f30);border:1px solid var(--line);border-radius:16px;padding:20px;margin:16px 0}
+h2{font-family:Cinzel,"Noto Sans Devanagari",serif;color:var(--gold2);font-size:19px;margin:0 0 14px;letter-spacing:.5px}
+h3{color:var(--gold2);font-size:15px;margin:16px 0 6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+label{display:block;font-size:12px;color:var(--mut);margin-bottom:5px;text-transform:uppercase;letter-spacing:.6px}
+input,select,textarea{width:100%;background:#0e0a22;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:11px 12px;font:inherit;font-size:15px}
+input:focus,select:focus{outline:none;border-color:var(--gold)}
+button{background:linear-gradient(180deg,#f2c75c,#d49b25);color:#1b1230;border:0;border-radius:10px;padding:12px 22px;font-weight:600;font-size:15px;cursor:pointer;font-family:inherit}
+button.ghost{background:transparent;color:var(--gold2);border:1px solid var(--gold)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.hidden{display:none}
+.two{display:grid;grid-template-columns:minmax(280px,400px) 1fr;gap:20px;align-items:start}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+svg.chart{width:100%;height:auto;display:block}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--mut);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;background:var(--card2);border:1px solid var(--line);margin:2px 4px 2px 0}
+.pill.g{color:var(--good);border-color:#2f6b4c}.pill.b{color:var(--bad);border-color:#7a3a37}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--card2);color:var(--txt);border:1px solid var(--line);padding:9px 14px;border-radius:999px;font-size:14px;font-weight:500}
+.tab.on{background:var(--gold);color:#1b1230;border-color:var(--gold)}
+.reading p{line-height:1.7;margin:8px 0;color:#ddd8f3}
+.reading ul{margin:6px 0 6px 18px;line-height:1.65;color:#ddd8f3}
+.kv{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.kv div{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:130px}
+.kv b{display:block;color:var(--gold2);font-size:16px;margin-top:2px}
+.kv small{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.sub{color:var(--mut);font-size:12px}
+.note{font-size:12px;color:var(--mut);line-height:1.6;text-align:center;margin-top:24px}
+.dasha-now{background:#2a1f57}
+.tsel{display:flex;gap:6px}.tsel select{padding:11px 6px}
+.qbox{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0;font-size:14px}
+.step{display:flex;gap:10px;align-items:baseline}.step .n{background:var(--gold);color:#1b1230;border-radius:999px;min-width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.mantra{color:var(--gold2);font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <div class="lang"><button data-lang="en">English</button><button data-lang="hi">हिंदी</button></div>
+  <div class="logo" data-i="logo"></div>
+  <div class="tag" data-i="tagline"></div>
+</header>
+<main>
+
+<section class="card" id="formCard">
+  <h2 data-i="enterDetails"></h2>
+  <div class="grid">
+    <div><label data-i="fullName"></label><input id="name" data-ph="namePh"></div>
+    <div><label data-i="gender"></label><select id="gender"></select></div>
+    <div><label data-i="dob"></label><input id="dob" type="date" value="1995-07-22"></div>
+    <div><label data-i="tob"></label><div class="tsel"><select id="hh"></select><select id="mm"></select><select id="ap"></select></div></div>
+    <div><label data-i="pob"></label><select id="city"></select></div>
+  </div>
+  <p class="tag" style="text-align:left;margin:8px 0 0" data-i="timeHint"></p>
+  <div class="grid hidden" id="customBox" style="margin-top:12px">
+    <div><label data-i="lat"></label><input id="lat" type="number" step="0.0001" value="32.7266"></div>
+    <div><label data-i="lon"></label><input id="lon" type="number" step="0.0001" value="74.8570"></div>
+    <div><label data-i="tz"></label><input id="tz" type="number" step="0.25" value="5.5"></div>
+  </div>
+  <h2 style="margin-top:24px" data-i="probHead"></h2>
+  <div><label data-i="chooseProb"></label><select id="probSel"></select></div>
+  <div style="margin-top:12px"><label data-i="describe"></label><input id="probTxt" data-ph="askPh"></div>
+  <div class="row"><button id="go" data-i="generate"></button><span class="tag" style="margin:0" data-i="exactTime"></span></div>
+</section>
+
+<div id="result" class="hidden">
+  <section class="card">
+    <h2 data-i="solve"></h2>
+    <div class="reading" id="reading"></div>
+    <h3 style="margin-top:22px" data-i="another"></h3>
+    <div class="tabs" id="tabs"></div>
+    <div class="row" style="margin-top:0;margin-bottom:4px">
+      <input id="ask" data-ph="askPh" style="flex:1;min-width:220px">
+      <button class="ghost" id="askBtn" data-i="getGuidance"></button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 id="hello"></h2>
+    <div class="kv" id="summary"></div>
+    <div class="two" style="margin-top:14px">
+      <div><svg class="chart" id="chart" viewBox="0 0 400 400"></svg><div class="tag" style="text-align:center" data-i="chartCap"></div></div>
+      <div><table id="ptable"></table></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 data-i="dashaTitle"></h2>
+    <p class="tag" style="text-align:left;margin:0 0 10px" data-i="dashaDesc"></p>
+    <table id="dtable"></table>
+    <h3 data-i="antarTitle"></h3>
+    <table id="atable"></table>
+  </section>
+
+  <div class="row" style="justify-content:center"><button class="ghost" id="again" data-i="newKundli"></button></div>
+</div>
+
+<p class="note"><span data-i="disclaimer"></span><br><a href="privacy.html" style="color:#a59fc7">Privacy Policy / गोपनीयता नीति</a></p>
+</main>
+
+<script>
+// ================= Language =================
+let LANG="en";
+try{const s=localStorage.getItem("krishan_lang"); if(s==="hi"||s==="en") LANG=s;}catch(e){}
+const UI={
+ en:{logo:'✦ KRISHAN <span>ASTROLOGER</span> ✦',tagline:"Vedic Kundli · Dasha · Guidance for life's problems",enterDetails:"Enter Birth Details",fullName:"Full name",namePh:"e.g. Rahul Sharma",gender:"Gender",genders:["Male","Female","Other"],dob:"Date of birth",tob:"Time of birth",pob:"Place of birth",otherPlace:"Other place (enter coordinates)",lat:"Latitude (N +)",lon:"Longitude (E +)",tz:"Time zone (hours from UTC)",generate:"Get My Kundli & Solution",exactTime:"Exact time gives an exact Lagna (ascendant).",chartCap:"Lagna chart (North Indian style)",solve:"Your Solution",askPh:"Or type your problem, e.g. 'When will I get a job?' or 'Marriage delay'",getGuidance:"Get Guidance",dashaTitle:"Vimshottari Dasha",dashaDesc:"The planetary periods that shape each phase of life. The highlighted row is running now.",antarTitle:"Current Antardasha (sub-periods)",newKundli:"New Kundli",
+  disclaimer:"Planet positions are calculated astronomically (sidereal, Lahiri ayanamsa, whole-sign houses).<br>Readings are traditional Jyotish interpretation offered as guidance, not guaranteed predictions. For medical, legal or financial decisions, please also consult a qualified professional.",
+  kundliOf:n=>n?n+"'s Kundli":"Your Kundli",lagna:"Lagna",moonSign:"Moon sign (Rashi)",nakshatra:"Nakshatra",pada:"pada",sunSign:"Sun sign (sidereal)",runningMD:"Running Mahadasha",
+  thPlanet:"Planet",thSign:"Sign",thDeg:"Degree",thNak:"Nakshatra",thHouse:"House",thMD:"Mahadasha",thFrom:"From",thTo:"To",antarOf:p=>p+" – Antardasha",retro:"R",timeHint:"Select hour, minute and AM/PM. 12:00 AM = midnight, 12:00 PM = noon.",probHead:"What is your problem?",chooseProb:"Choose your problem",describe:"Describe it in your own words (optional)",another:"Ask about another problem",born:"Born",am:"AM",pm:"PM",hourL:"Hour",minL:"Min"},
+ hi:{logo:'✦ कृष्ण <span>ज्योतिषी</span> ✦',tagline:"वैदिक कुंडली · दशा · जीवन की समस्याओं का मार्गदर्शन",enterDetails:"जन्म विवरण दर्ज करें",fullName:"पूरा नाम",namePh:"जैसे: राहुल शर्मा",gender:"लिंग",genders:["पुरुष","महिला","अन्य"],dob:"जन्म तिथि",tob:"जन्म समय",pob:"जन्म स्थान",otherPlace:"अन्य स्थान (अक्षांश-देशांतर डालें)",lat:"अक्षांश (उत्तर +)",lon:"देशांतर (पूर्व +)",tz:"समय क्षेत्र (UTC से घंटे)",generate:"कुंडली और समाधान देखें",exactTime:"सही समय से सही लग्न आता है।",chartCap:"लग्न कुंडली (उत्तर भारतीय शैली)",solve:"आपका समाधान",askPh:"या अपनी समस्या लिखें, जैसे 'नौकरी कब लगेगी?' या 'शादी में देरी'",getGuidance:"मार्गदर्शन पाएँ",dashaTitle:"विंशोत्तरी दशा",dashaDesc:"ग्रहों की वे अवधियाँ जो जीवन के हर चरण को प्रभावित करती हैं। हाइलाइट की गई पंक्ति अभी चल रही है।",antarTitle:"वर्तमान अंतर्दशा",newKundli:"नई कुंडली",
+  disclaimer:"ग्रहों की स्थिति खगोलीय गणना से निकाली गई है (निरयन, लाहिरी अयनांश, संपूर्ण राशि भाव)।<br>फलादेश पारंपरिक ज्योतिष पर आधारित मार्गदर्शन है, निश्चित भविष्यवाणी नहीं। चिकित्सा, कानूनी या वित्तीय निर्णयों के लिए किसी योग्य विशेषज्ञ से भी सलाह लें।",
+  kundliOf:n=>n?n+" की कुंडली":"आपकी कुंडली",lagna:"लग्न",moonSign:"चंद्र राशि",nakshatra:"नक्षत्र",pada:"पद",sunSign:"सूर्य राशि (निरयन)",runningMD:"चल रही महादशा",
+  thPlanet:"ग्रह",thSign:"राशि",thDeg:"अंश",thNak:"नक्षत्र",thHouse:"भाव",thMD:"महादशा",thFrom:"से",thTo:"तक",antarOf:p=>p+" – अंतर्दशा",retro:"व",timeHint:"घंटा, मिनट और AM/PM चुनें। AM = रात 12 से दोपहर 12 तक, PM = दोपहर 12 से रात 12 तक। (12:00 AM = आधी रात, 12:00 PM = दोपहर)",probHead:"आपकी समस्या क्या है?",chooseProb:"अपनी समस्या चुनें",describe:"अपने शब्दों में लिखें (वैकल्पिक)",another:"किसी और समस्या के बारे में पूछें",born:"जन्म",am:"AM",pm:"PM",hourL:"घंटा",minL:"मिनट"}};
+const L=()=>UI[LANG];
+
+// ================= Data =================
+const CITIES=[["Jammu","जम्मू",32.7266,74.8570],["Srinagar","श्रीनगर",34.0837,74.7973],["Kathua","कठुआ",32.3693,75.5254],["Udhampur","उधमपुर",32.9160,75.1416],["New Delhi","नई दिल्ली",28.6139,77.2090],["Mumbai","मुंबई",19.0760,72.8777],["Kolkata","कोलकाता",22.5726,88.3639],["Chennai","चेन्नई",13.0827,80.2707],["Bengaluru","बेंगलुरु",12.9716,77.5946],["Hyderabad","हैदराबाद",17.3850,78.4867],["Chandigarh","चंडीगढ़",30.7333,76.7794],["Amritsar","अमृतसर",31.6340,74.8723],["Ludhiana","लुधियाना",30.9010,75.8573],["Shimla","शिमला",31.1048,77.1734],["Dehradun","देहरादून",30.3165,78.0322],["Lucknow","लखनऊ",26.8467,80.9462],["Varanasi","वाराणसी",25.3176,82.9739],["Jaipur","जयपुर",26.9124,75.7873],["Ahmedabad","अहमदाबाद",23.0225,72.5714],["Pune","पुणे",18.5204,73.8567],["Patna","पटना",25.5941,85.1376],["Bhopal","भोपाल",23.2599,77.4126],["Indore","इंदौर",22.7196,75.8577],["Guwahati","गुवाहाटी",26.1445,91.7362]];
+const SIGNS={en:["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"],hi:["मेष","वृषभ","मिथुन","कर्क","सिंह","कन्या","तुला","वृश्चिक","धनु","मकर","कुंभ","मीन"]};
+const RASHI=["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrishchika","Dhanu","Makara","Kumbha","Meena"];
+const LORD=["Mars","Venus","Mercury","Moon","Sun","Mercury","Venus","Mars","Jupiter","Saturn","Saturn","Jupiter"];
+const NAK={en:["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"],
+ hi:["अश्विनी","भरणी","कृत्तिका","रोहिणी","मृगशिरा","आर्द्रा","पुनर्वसु","पुष्य","आश्लेषा","मघा","पूर्वा फाल्गुनी","उत्तरा फाल्गुनी","हस्त","चित्रा","स्वाति","विशाखा","अनुराधा","ज्येष्ठा","मूल","पूर्वाषाढ़ा","उत्तराषाढ़ा","श्रवण","धनिष्ठा","शतभिषा","पूर्वा भाद्रपद","उत्तरा भाद्रपद","रेवती"]};
+const PNAME={en:{Sun:"Sun",Moon:"Moon",Mars:"Mars",Mercury:"Mercury",Jupiter:"Jupiter",Venus:"Venus",Saturn:"Saturn",Rahu:"Rahu",Ketu:"Ketu"},hi:{Sun:"सूर्य",Moon:"चंद्र",Mars:"मंगल",Mercury:"बुध",Jupiter:"गुरु",Venus:"शुक्र",Saturn:"शनि",Rahu:"राहु",Ketu:"केतु"}};
+const HINDI_ROMAN={Sun:"Surya",Moon:"Chandra",Mars:"Mangal",Mercury:"Budh",Jupiter:"Guru",Venus:"Shukra",Saturn:"Shani",Rahu:"Rahu",Ketu:"Ketu"};
+const ABBR={en:{Sun:"Su",Moon:"Mo",Mars:"Ma",Mercury:"Me",Jupiter:"Ju",Venus:"Ve",Saturn:"Sa",Rahu:"Ra",Ketu:"Ke",Lagna:"As"},hi:{Sun:"सू",Moon:"चं",Mars:"मं",Mercury:"बु",Jupiter:"गु",Venus:"शु",Saturn:"श",Rahu:"रा",Ketu:"के",Lagna:"ल"}};
+const DLORDS=["Ketu","Venus","Sun","Moon","Mars","Rahu","Jupiter","Saturn","Mercury"];
+const DYEARS={Ketu:7,Venus:20,Sun:6,Moon:10,Mars:7,Rahu:18,Jupiter:16,Saturn:19,Mercury:17};
+const EXALT={Sun:0,Moon:1,Mars:9,Mercury:5,Jupiter:3,Venus:11,Saturn:6};
+const OWN={Sun:[4],Moon:[3],Mars:[0,7],Mercury:[2,5],Jupiter:[8,11],Venus:[1,6],Saturn:[9,10]};
+const DIGN={en:{Exalted:"Exalted",Debilitated:"Debilitated",Own:"Own sign"},hi:{Exalted:"उच्च",Debilitated:"नीच",Own:"स्वराशि"}};
+const BENEFIC=new Set(["Jupiter","Venus","Mercury","Moon"]);
+const pn=p=>PNAME[LANG][p], sn=s=>SIGNS[LANG][s];
+
+// ================= Astronomy =================
+const D2R=Math.PI/180, R2D=180/Math.PI;
+const norm=x=>((x%360)+360)%360;
+const sin=d=>Math.sin(d*D2R), cos=d=>Math.cos(d*D2R);
+function julianDay(y,m,d,hUT){ if(m<=2){y--;m+=12} const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5+hUT/24; }
+const EL={
+ Mercury:[0.38709927,0.00000037,0.20563593,0.00001906,7.00497902,-0.00594749,252.25032350,149472.67411175,77.45779628,0.16047689,48.33076593,-0.12534081],
+ Venus:[0.72333566,0.00000390,0.00677672,-0.00004107,3.39467605,-0.00078890,181.97909950,58517.81538729,131.60246718,0.00268329,76.67984255,-0.27769418],
+ Earth:[1.00000261,0.00000562,0.01671123,-0.00004392,-0.00001531,-0.01294668,100.46457166,35999.37244981,102.93768193,0.32327364,0,0],
+ Mars:[1.52371034,0.00001847,0.09339410,0.00007882,1.84969142,-0.00813131,-4.55343205,19140.30268499,-23.94362959,0.44441088,49.55953891,-0.29257343],
+ Jupiter:[5.20288700,-0.00011607,0.04838624,-0.00013253,1.30439695,-0.00183714,34.39644051,3034.74612775,14.72847983,0.21252668,100.47390909,0.20469106],
+ Saturn:[9.53667594,-0.00125060,0.05386179,-0.00050991,2.48599187,0.00193609,49.95424423,1222.49362201,92.59887831,-0.41897216,113.66242448,-0.28867794]};
+function helio(p,T){const e0=EL[p];const a=e0[0]+e0[1]*T,e=e0[2]+e0[3]*T,I=e0[4]+e0[5]*T,Lm=e0[6]+e0[7]*T,w=e0[8]+e0[9]*T,O=e0[10]+e0[11]*T;
+  const om=w-O; let M=norm(Lm-w); if(M>180)M-=360; const Mr=M*D2R; let E=Mr+e*Math.sin(Mr);
+  for(let i=0;i<30;i++){const dE=(E-e*Math.sin(E)-Mr)/(1-e*Math.cos(E));E-=dE;if(Math.abs(dE)<1e-12)break}
+  const xp=a*(Math.cos(E)-e), yp=a*Math.sqrt(1-e*e)*Math.sin(E);
+  const co=cos(om),so=sin(om),cO=cos(O),sO=sin(O),cI=cos(I),sI=sin(I);
+  return [(co*cO-so*sO*cI)*xp+(-so*cO-co*sO*cI)*yp,(co*sO+so*cO*cI)*xp+(-so*sO+co*cO*cI)*yp,(so*sI)*xp+(co*sI)*yp];}
+function geoLon(p,T){const E=helio("Earth",T); if(p==="Sun") return norm(Math.atan2(-E[1],-E[0])*R2D+1.3970*T);
+  const P=helio(p,T); return norm(Math.atan2(P[1]-E[1],P[0]-E[0])*R2D+1.3970*T);}
+function moonLon(T){const Lm=218.3164477+481267.88123421*T,D=297.8501921+445267.1114034*T,M=357.5291092+35999.0502909*T,Mp=134.9633964+477198.8675055*T,F=93.2720950+483202.0175233*T;
+  const t=[[6.288774,0,0,1,0],[1.274027,2,0,-1,0],[0.658314,2,0,0,0],[0.213618,0,0,2,0],[-0.185116,0,1,0,0],[-0.114332,0,0,0,2],[0.058793,2,0,-2,0],[0.057066,2,-1,-1,0],[0.053322,2,0,1,0],[0.045758,2,-1,0,0],[-0.040923,0,1,-1,0],[-0.034720,1,0,0,0],[-0.030383,0,1,1,0],[0.015327,2,0,0,-2],[-0.012528,0,0,1,2],[0.010980,0,0,1,-2],[0.010675,4,0,-1,0],[0.010034,0,0,3,0],[0.008548,4,0,-2,0],[-0.007888,2,1,-1,0],[-0.006766,2,1,0,0],[-0.005163,1,0,-1,0],[0.004987,1,1,0,0],[0.004036,2,-1,1,0],[0.003994,2,0,2,0],[0.003861,4,0,0,0],[0.003665,2,0,-3,0],[-0.002689,0,1,-2,0],[-0.002602,2,0,-1,2],[0.002390,2,-1,-2,0],[-0.002348,1,0,1,0],[0.002236,2,-2,0,0],[-0.002120,0,1,2,0],[-0.002069,0,2,0,0]];
+  let s=Lm; for(const [c,d,m,mp,f] of t) s+=c*sin(d*D+m*M+mp*Mp+f*F); return norm(s);}
+function ayanamsa(T){return 23.853+1.3970*T}
+function ascendant(jd,lat,lon){const T=(jd-2451545)/36525;
+  const gmst=norm(280.46061837+360.98564736629*(jd-2451545)+0.000387933*T*T);
+  const ramc=norm(gmst+lon), eps=23.439291-0.0130042*T;
+  return norm(Math.atan2(cos(ramc),-(sin(ramc)*cos(eps)+Math.tan(lat*D2R)*sin(eps)))*R2D);}
+function positionsAt(jd){const T=(jd-2451545)/36525, ay=ayanamsa(T), out={};
+  for(const p of ["Sun","Mercury","Venus","Mars","Jupiter","Saturn"]) out[p]=norm(geoLon(p,T)-ay);
+  out.Moon=norm(moonLon(T)-ay);
+  out.Rahu=norm(125.0445479-1934.1362891*T-ay); out.Ketu=norm(out.Rahu+180); return out;}
+
+// ================= Kundli =================
+function buildKundli(inp){
+  const [Y,M,D]=inp.dob.split("-").map(Number), [h,mi]=inp.tob.split(":").map(Number);
+  const jd=julianDay(Y,M,D,h+mi/60-inp.tz), T=(jd-2451545)/36525;
+  const pos=positionsAt(jd), next=positionsAt(jd+1);
+  const asc=norm(ascendant(jd,inp.lat,inp.lon)-ayanamsa(T)), lagna=Math.floor(asc/30);
+  const planets={};
+  for(const p of ["Sun","Moon","Mars","Mercury","Jupiter","Venus","Saturn","Rahu","Ketu"]){
+    const Lp=pos[p], s=Math.floor(Lp/30), n=Math.floor(Lp/(360/27));
+    let diff=norm(next[p]-Lp); if(diff>180) diff-=360;
+    planets[p]={lon:Lp,sign:s,deg:Lp%30,nak:n,pada:Math.floor((Lp%(360/27))/(360/108))+1,house:((s-lagna+12)%12)+1,retro:(p==="Rahu"||p==="Ketu")?true:diff<0};
+  }
+  return {inp,jd,jdLocal:julianDay(Y,M,D,12),asc,lagna,planets,dasha:vimshottari(pos.Moon,jd)};
+}
+function dignityKey(p,s){ if(EXALT[p]===undefined) return ""; if(EXALT[p]===s) return "Exalted"; if((EXALT[p]+6)%12===s) return "Debilitated"; if(OWN[p].includes(s)) return "Own"; return ""; }
+function vimshottari(moon,jd){
+  const span=360/27, n=Math.floor(moon/span), frac=(moon%span)/span, idx=n%9;
+  const YR=365.25; let start=jd-frac*DYEARS[DLORDS[idx]]*YR; const list=[];
+  for(let k=0;k<9;k++){const l=DLORDS[(idx+k)%9], len=DYEARS[l]*YR; list.push({lord:l,start,end:start+len}); start+=len;}
+  return list;
+}
+function antardashas(md){const i=DLORDS.indexOf(md.lord), total=md.end-md.start, out=[]; let s=md.start;
+  for(let k=0;k<9;k++){const l=DLORDS[(i+k)%9], len=total*DYEARS[l]/120; out.push({lord:l,start:s,end:s+len}); s+=len;} return out;}
+function jdToDate(jd){const z=Math.floor(jd+0.5),f=jd+0.5-z;let A=z;if(z>=2299161){const a=Math.floor((z-1867216.25)/36524.25);A=z+1+a-Math.floor(a/4)}
+  const B=A+1524,C=Math.floor((B-122.1)/365.25),D=Math.floor(365.25*C),E=Math.floor((B-D)/30.6001);
+  const day=Math.floor(B-D-Math.floor(30.6001*E)+f),mon=E<14?E-1:E-13,yr=mon>2?C-4716:C-4715; return new Date(yr,mon-1,day);}
+const fmt=jd=>jdToDate(jd).toLocaleDateString(LANG==="hi"?"hi-IN":"en-IN",{day:"numeric",month:"short",year:"numeric"});
+const dms=x=>{const d=Math.floor(x),m=Math.floor((x-d)*60);return d+"°"+String(m).padStart(2,"0")+"′"};
+function julianDayNow(){const n=new Date();return julianDay(n.getUTCFullYear(),n.getUTCMonth()+1,n.getUTCDate(),n.getUTCHours()+n.getUTCMinutes()/60)}
+
+// ================= Readings content =================
+const AREAS={
+ career:{h:[10,6],t:{en:"Career & Job",hi:"करियर और नौकरी"},p:{en:"Job / career problem",hi:"नौकरी / करियर की समस्या"},kw:["job","career","work","promotion","office","boss","naukri","salary","transfer","interview","नौकरी","करियर","काम","प्रमोशन","तबादला","इंटरव्यू"]},
+ business:{h:[7,10],t:{en:"Business",hi:"व्यापार"},p:{en:"Business loss / growth",hi:"व्यापार में नुकसान / तरक्की"},kw:["business","dhandha","vyapar","shop","dukan","startup","client","customer","व्यापार","धंधा","दुकान","बिज़नेस","ग्राहक"]},
+ money:{h:[2,11],t:{en:"Money & Wealth",hi:"धन और संपत्ति"},p:{en:"Money problems / debt",hi:"पैसे की तंगी / कर्ज़"},kw:["money","wealth","income","loan","debt","finance","paisa","karz","karza","savings","पैसा","पैसे","धन","कर्ज","कर्ज़","आय","बचत","तंगी"]},
+ marriage:{h:[7],t:{en:"Marriage",hi:"विवाह"},p:{en:"Marriage delay / married life problems",hi:"शादी में देरी / वैवाहिक समस्या"},kw:["marriage","shaadi","shadi","vivah","spouse","wife","husband","wedding","rishta","divorce","शादी","विवाह","पति","पत्नी","जीवनसाथी","तलाक"]},
+ love:{h:[5,7],t:{en:"Love & Relationships",hi:"प्रेम और रिश्ते"},p:{en:"Love & relationship problems",hi:"प्रेम और रिश्तों की समस्या"},kw:["love","relationship","girlfriend","boyfriend","partner","breakup","crush","pyaar","pyar","प्यार","प्रेम","रिश्ता","ब्रेकअप"]},
+ health:{h:[1,6],t:{en:"Health",hi:"स्वास्थ्य"},p:{en:"Health worries",hi:"स्वास्थ्य की चिंता"},kw:["health","disease","illness","sick","stress","sleep","body","beemari","bimari","tension","स्वास्थ्य","बीमारी","तनाव","नींद","सेहत"]},
+ education:{h:[4,5],t:{en:"Education",hi:"शिक्षा"},p:{en:"Studies / exams",hi:"पढ़ाई / परीक्षा"},kw:["study","exam","education","college","result","degree","competitive","padhai","pariksha","पढ़ाई","परीक्षा","शिक्षा","रिज़ल्ट","कॉलेज"]},
+ family:{h:[4,2],t:{en:"Family & Home",hi:"परिवार और घर"},p:{en:"Family tension / peace at home",hi:"पारिवारिक तनाव / घर की शांति"},kw:["family","mother","father","parents","ghar","jhagda","fight","परिवार","माता","पिता","माँ","झगड़ा","कलह"]},
+ legal:{h:[6,12],t:{en:"Court Case & Disputes",hi:"कोर्ट केस और विवाद"},p:{en:"Court case / disputes / enemies",hi:"कोर्ट केस / विवाद / शत्रु"},kw:["court","case","legal","dispute","enemy","police","mukadma","kesh","कोर्ट","केस","मुकदमा","विवाद","शत्रु","दुश्मन"]},
+ foreign:{h:[12,9],t:{en:"Foreign Travel & Settlement",hi:"विदेश यात्रा और विदेश में बसना"},p:{en:"Going abroad / visa / settling abroad",hi:"विदेश जाना / वीज़ा / विदेश में बसना"},kw:["abroad","foreign","visa","videsh","canada","usa","uk","australia","immigration","pr","विदेश","वीज़ा","वीजा"]},
+ children:{h:[5],t:{en:"Children",hi:"संतान"},p:{en:"Children / progeny",hi:"संतान से जुड़ी बात"},kw:["child","children","baby","son","daughter","santan","bachcha","bacche","pregnan","संतान","बच्चा","बच्चे","बेटा","बेटी"]},
+ property:{h:[4,11],t:{en:"Property & Home",hi:"मकान और संपत्ति"},p:{en:"House / land / property",hi:"मकान / ज़मीन / संपत्ति"},kw:["property","house","land","flat","plot","makan","zameen","home","मकान","ज़मीन","जमीन","घर","प्लॉट","फ्लैट","संपत्ति"]}};
+const HOUSE_MEAN={en:{1:"self and body",2:"wealth, speech and family",3:"courage and effort",4:"home, mother and peace",5:"intelligence, love and children",6:"work, competition, disputes and health",7:"marriage and partnership",8:"sudden changes and longevity",9:"luck, father and dharma",10:"career and status",11:"gains and wishes",12:"expenses, foreign lands and rest"},
+ hi:{1:"स्वयं और शरीर",2:"धन, वाणी और परिवार",3:"साहस और प्रयास",4:"घर, माता और सुख-शांति",5:"बुद्धि, प्रेम और संतान",6:"कार्य, प्रतियोगिता, विवाद और स्वास्थ्य",7:"विवाह और साझेदारी",8:"अचानक बदलाव और आयु",9:"भाग्य, पिता और धर्म",10:"करियर और प्रतिष्ठा",11:"लाभ और इच्छाएँ",12:"खर्च, विदेश और विश्राम"}};
+const PL_NATURE={en:{Sun:"authority, confidence and government links",Moon:"emotions, mind and public dealing",Mars:"energy, courage and action",Mercury:"intellect, communication and trade",Jupiter:"wisdom, growth and blessings",Venus:"love, comfort, beauty and luxury",Saturn:"discipline, delay and hard work that pays off late",Rahu:"ambition, foreign links and unusual paths",Ketu:"detachment, spirituality and sudden breaks"},
+ hi:{Sun:"अधिकार, आत्मविश्वास और सरकारी संबंध",Moon:"भावनाएँ, मन और जनसंपर्क",Mars:"ऊर्जा, साहस और कर्म",Mercury:"बुद्धि, संवाद और व्यापार",Jupiter:"ज्ञान, उन्नति और आशीर्वाद",Venus:"प्रेम, सुख-सुविधा, सुंदरता और ऐश्वर्य",Saturn:"अनुशासन, देरी और देर से फल देने वाली मेहनत",Rahu:"महत्वाकांक्षा, विदेशी संबंध और अलग रास्ते",Ketu:"वैराग्य, आध्यात्मिकता और अचानक बदलाव"}};
+const REMEDY={en:{Sun:"Offer water to the rising Sun and respect your father and seniors.",Moon:"Keep your mind calm, drink water from a silver glass and stay close to your mother.",Mars:"Recite Hanuman Chalisa on Tuesdays and channel anger into exercise.",Mercury:"Feed green fodder to cows on Wednesdays and keep your accounts and words clean.",Jupiter:"Respect teachers, donate yellow items (chana dal, turmeric) on Thursdays and keep your promises.",Venus:"Keep your surroundings clean and beautiful and respect the women in your life.",Saturn:"Serve workers and the elderly, light a mustard-oil lamp on Saturdays and stay patient.",Rahu:"Avoid shortcuts and intoxicants; feed stray dogs and meditate to stay clear-headed.",Ketu:"Do spiritual practice, feed dogs and avoid making decisions in confusion."},
+ hi:{Sun:"उगते सूर्य को जल अर्पित करें और पिता व बड़ों का सम्मान करें।",Moon:"मन शांत रखें, चाँदी के गिलास में पानी पिएँ और माता के निकट रहें।",Mars:"मंगलवार को हनुमान चालीसा का पाठ करें और गुस्से को व्यायाम में लगाएँ।",Mercury:"बुधवार को गाय को हरा चारा खिलाएँ और अपना हिसाब-किताब व वाणी साफ़ रखें।",Jupiter:"गुरुजनों का सम्मान करें, गुरुवार को पीली वस्तुएँ (चने की दाल, हल्दी) दान करें और अपने वचन निभाएँ।",Venus:"अपने आसपास साफ़-सफ़ाई और सुंदरता रखें और जीवन की महिलाओं का सम्मान करें।",Saturn:"मज़दूरों और बुज़ुर्गों की सेवा करें, शनिवार को सरसों के तेल का दीपक जलाएँ और धैर्य रखें।",Rahu:"शॉर्टकट और नशे से बचें; आवारा कुत्तों को भोजन दें और मन को स्पष्ट रखने के लिए ध्यान करें।",Ketu:"आध्यात्मिक साधना करें, कुत्तों को भोजन दें और भ्रम की स्थिति में निर्णय न लें।"}};
+const MANTRA={Sun:["ॐ घृणि सूर्याय नमः","Sunday","रविवार"],Moon:["ॐ सों सोमाय नमः","Monday","सोमवार"],Mars:["ॐ अं अंगारकाय नमः","Tuesday","मंगलवार"],Mercury:["ॐ बुं बुधाय नमः","Wednesday","बुधवार"],Jupiter:["ॐ बृं बृहस्पतये नमः","Thursday","गुरुवार"],Venus:["ॐ शुं शुक्राय नमः","Friday","शुक्रवार"],Saturn:["ॐ शं शनैश्चराय नमः","Saturday","शनिवार"],Rahu:["ॐ रां राहवे नमः","Saturday","शनिवार"],Ketu:["ॐ कें केतवे नमः","Tuesday","मंगलवार"]};
+const PRACTICAL={
+ en:{career:["Update your CV and apply to at least 5 suitable openings every week.","Ask one senior or friend each week for an introduction or referral.","Set a 90-day goal to learn one skill your field values."],
+  business:["Write down your monthly income and expenses and cut the one cost that gives the least return.","Call your 10 best old customers and ask what they need now.","Avoid new loans or partnerships until your accounts are clear."],
+  money:["Track every expense for 30 days.","Pay the highest-interest loan first and avoid new borrowing.","Keep 3 months of expenses as savings before any big investment."],
+  marriage:["Be clear with your family about what you want in a partner.","Meet proposals with an open but practical mind; don't reject only on small issues.","If already married, set aside 15 minutes daily for calm, respectful talk."],
+  love:["Talk honestly and calmly, without blame.","Give each other space; don't decide anything when angry.","If the relationship hurts your peace repeatedly, take advice from someone you trust."],
+  health:["Consult a doctor for any ongoing problem and follow the treatment.","Fix your sleep time and walk 30 minutes daily.","Reduce stress with 10 minutes of pranayama or meditation every morning."],
+  education:["Study in fixed time blocks every morning.","Test yourself weekly with past papers.","Keep your phone away while studying."],
+  family:["Give one evening a week fully to family, without phones.","Speak about problems calmly, one at a time.","Respect elders' views even when you disagree."],
+  legal:["Keep all documents and proofs organised and take regular advice from your lawyer.","Explore a settlement if it saves time and peace.","Avoid arguments and public statements about the matter."],
+  foreign:["Check the exact eligibility for your target country on its official immigration website.","Prepare documents, language tests and funds in advance.","Use only registered and verified agents."],
+  children:["Consult a qualified doctor for any medical concern.","Spend daily quality time with children and encourage them.","Keep a calm, positive atmosphere at home."],
+  property:["Verify all papers and the title with a lawyer before any deal.","Fix a budget and don't over-borrow.","Avoid buying under pressure; compare at least 3 options."]},
+ hi:{career:["अपना बायोडाटा अपडेट करें और हर हफ़्ते कम से कम 5 उपयुक्त नौकरियों में आवेदन करें।","हर हफ़्ते किसी एक वरिष्ठ या मित्र से रेफ़रेंस या परिचय माँगें।","90 दिनों में अपने क्षेत्र का एक नया कौशल सीखने का लक्ष्य बनाएँ।"],
+  business:["महीने की आय और खर्च लिखें और सबसे कम फ़ायदा देने वाला खर्च बंद करें।","अपने 10 पुराने अच्छे ग्राहकों को फ़ोन करें और पूछें कि उन्हें अभी क्या चाहिए।","हिसाब साफ़ होने तक नया कर्ज़ या साझेदारी न करें।"],
+  money:["30 दिनों तक हर खर्च लिखें।","सबसे ज़्यादा ब्याज वाला कर्ज़ पहले चुकाएँ और नया उधार न लें।","किसी बड़े निवेश से पहले 3 महीने के खर्च जितनी बचत अलग रखें।"],
+  marriage:["परिवार से साफ़ बात करें कि आप जीवनसाथी में क्या चाहते हैं।","रिश्तों को खुले लेकिन व्यावहारिक मन से देखें; छोटी बातों पर मना न करें।","यदि विवाहित हैं, तो रोज़ 15 मिनट शांति और सम्मान से बातचीत करें।"],
+  love:["बिना दोष दिए, ईमानदारी और शांति से बात करें।","एक-दूसरे को स्पेस दें; गुस्से में कोई निर्णय न लें।","यदि रिश्ता बार-बार आपकी शांति भंग करता है, तो किसी भरोसेमंद व्यक्ति से सलाह लें।"],
+  health:["किसी भी लगातार समस्या के लिए डॉक्टर से सलाह लें और इलाज पूरा करें।","सोने का समय तय करें और रोज़ 30 मिनट टहलें।","हर सुबह 10 मिनट प्राणायाम या ध्यान से तनाव कम करें।"],
+  education:["हर सुबह तय समय पर पढ़ाई करें।","हर हफ़्ते पिछले प्रश्नपत्रों से खुद को परखें।","पढ़ते समय फ़ोन दूर रखें।"],
+  family:["हर हफ़्ते एक शाम पूरी तरह परिवार को दें, बिना फ़ोन के।","समस्याओं पर एक-एक करके शांति से बात करें।","असहमति होने पर भी बड़ों की राय का सम्मान करें।"],
+  legal:["सारे दस्तावेज़ और सबूत व्यवस्थित रखें और अपने वकील से नियमित सलाह लें।","यदि समय और शांति बचे तो समझौते का रास्ता भी देखें।","इस मामले पर बहस और सार्वजनिक बयानबाज़ी से बचें।"],
+  foreign:["जिस देश जाना है उसकी आधिकारिक इमिग्रेशन वेबसाइट पर सही पात्रता जाँचें।","दस्तावेज़, भाषा परीक्षा और पैसों की तैयारी पहले से करें।","केवल पंजीकृत और जाँचे-परखे एजेंट से ही काम कराएँ।"],
+  children:["किसी भी चिकित्सीय चिंता के लिए योग्य डॉक्टर से सलाह लें।","बच्चों के साथ रोज़ अच्छा समय बिताएँ और उनका उत्साह बढ़ाएँ।","घर का माहौल शांत और सकारात्मक रखें।"],
+  property:["कोई भी सौदा करने से पहले वकील से सभी कागज़ात और मालिकाना हक़ जाँचें।","बजट तय करें और ज़रूरत से ज़्यादा कर्ज़ न लें।","दबाव में न खरीदें; कम से कम 3 विकल्पों की तुलना करें।"]}};
+const TXT={
+ en:{house:(h,mean,sign,lord,lh,lmean,dg)=>`<b>House ${h} (${mean})</b> falls in <b>${sign}</b>, ruled by <b>${lord}</b>, which sits in your house ${lh} (${lmean})${dg?`, <b>${dg.toLowerCase()}</b>`:""}. `,
+  strong:"This is a strong placement: results here come with relatively less struggle. ",weak:"This placement is the main reason for delays or obstacles here; it asks for extra effort and patience. ",balanced:"This is a balanced placement: steady effort brings steady results. ",
+  here:l=>`Planets here: ${l}. `,ben:(p,n)=>`${p} brings ${n}. `,mal:(p,n)=>`${p} adds ${n}, which can create pressure or delay. `,
+  q:"Your question",why:"Why this is happening (your chart)",when:"When things will improve (dasha timing)",rem:"Remedies (Upay)",steps:"Practical steps",
+  running:(md,d,ad,d2)=>`You are running <b>${md} Mahadasha</b> (until ${d})${ad?` with <b>${ad} Antardasha</b> (until ${d2})`:""}. `,
+  active:(p,area,d)=>`${p} is directly connected to ${area.toLowerCase()} in your chart, so <b>this is an active period until ${d}</b>. Matters here are likely to move — take initiative now.`,
+  next:(p1,p2,d1,d2)=>`The current period is not directly tied to this area. <b>A better period comes from ${d1} to ${d2}</b> (${p1} / ${p2}). Prepare until then so you can use it fully.`,
+  none:"The coming dasha periods are not strongly tied to this area, so results will come mainly through steady effort and the practical steps below.",
+  mantra:(m,day)=>`Chant <span class="mantra">${m}</span> 108 times, especially on ${day}.`,
+  overall:"Outlook",fav:"Favourable",eff:"Needs effort",mix:"Mixed"},
+ hi:{house:(h,mean,sign,lord,lh,lmean,dg)=>`<b>भाव ${h} (${mean})</b> में <b>${sign}</b> राशि है, जिसका स्वामी <b>${lord}</b> आपके ${lh}वें भाव (${lmean}) में${dg?` <b>${dg}</b> अवस्था में`:""} स्थित है। `,
+  strong:"यह एक मज़बूत स्थिति है: यहाँ परिणाम अपेक्षाकृत कम संघर्ष से मिलते हैं। ",weak:"यही स्थिति इस क्षेत्र में देरी या बाधा का मुख्य कारण है; इसके लिए अतिरिक्त प्रयास और धैर्य चाहिए। ",balanced:"यह संतुलित स्थिति है: लगातार प्रयास से लगातार परिणाम मिलते हैं। ",
+  here:l=>`यहाँ स्थित ग्रह: ${l}। `,ben:(p,n)=>`${p} ${n} प्रदान करता है। `,mal:(p,n)=>`${p} ${n} का प्रभाव देता है, जिससे दबाव या देरी हो सकती है। `,
+  q:"आपका प्रश्न",why:"ऐसा क्यों हो रहा है (आपकी कुंडली)",when:"कब सुधार होगा (दशा का समय)",rem:"उपाय",steps:"व्यावहारिक कदम",
+  running:(md,d,ad,d2)=>`आपकी <b>${md} महादशा</b> चल रही है (${d} तक)${ad?`, साथ में <b>${ad} अंतर्दशा</b> (${d2} तक)`:""}। `,
+  active:(p,area,d)=>`${p} आपकी कुंडली में सीधे ${area} से जुड़ा है, इसलिए <b>${d} तक यह सक्रिय समय है</b>। इस क्षेत्र के मामले आगे बढ़ सकते हैं — अभी पहल करें।`,
+  next:(p1,p2,d1,d2)=>`वर्तमान दशा इस क्षेत्र से सीधे नहीं जुड़ी है। <b>${d1} से ${d2} तक बेहतर समय आएगा</b> (${p1} / ${p2})। तब तक तैयारी करें ताकि उस समय का पूरा लाभ ले सकें।`,
+  none:"आने वाली दशाएँ इस क्षेत्र से ज़्यादा नहीं जुड़ी हैं, इसलिए परिणाम मुख्य रूप से लगातार प्रयास और नीचे दिए व्यावहारिक कदमों से मिलेंगे।",
+  mantra:(m,day)=>`विशेष रूप से ${day} को <span class="mantra">${m}</span> मंत्र का 108 बार जाप करें।`,
+  overall:"स्थिति",fav:"अनुकूल",eff:"प्रयास आवश्यक",mix:"मिश्रित"}};
+
+function lordOf(k,h){return LORD[(k.lagna+h-1)%12]}
+function planetsIn(k,h){return Object.keys(k.planets).filter(p=>k.planets[p].house===h)}
+function currentMD(k){const now=julianDayNow();return k.dasha.find(d=>now>=d.start&&now<d.end)||k.dasha[k.dasha.length-1]}
+function strength(p,k){const P=k.planets[p], dg=dignityKey(p,P.sign); let s=0;
+  if(dg==="Exalted"||dg==="Own")s+=2; if(dg==="Debilitated")s-=2; if([1,4,5,7,9,10].includes(P.house))s+=1; if([6,8,12].includes(P.house))s-=1; return {s,dg};}
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const H3=(n,t)=>`<h3 class="step"><span class="n">${n}</span>${t}</h3>`;
+function reading(k,key,q){
+  const A=AREAS[key], X=TXT[LANG], now=julianDayNow(), md=currentMD(k), mi=k.dasha.indexOf(md);
+  const ads=antardashas(md), ad=ads.find(a=>now>=a.start&&now<a.end);
+  const seq=ads.map(a=>({md:md.lord,...a})).concat(mi+1<k.dasha.length?antardashas(k.dasha[mi+1]).map(a=>({md:k.dasha[mi+1].lord,...a})):[]);
+  let why="", score=0; const involved=new Set();
+  for(const h of A.h){
+    const lord=lordOf(k,h), lp=k.planets[lord], st=strength(lord,k), inH=planetsIn(k,h);
+    involved.add(lord); inH.forEach(p=>involved.add(p)); score+=st.s;
+    why+=`<p>`+X.house(h,HOUSE_MEAN[LANG][h],sn((k.lagna+h-1)%12),pn(lord),lp.house,HOUSE_MEAN[LANG][lp.house],st.dg?DIGN[LANG][st.dg]:"");
+    why+= st.s>=2?X.strong: st.s<=-1?X.weak:X.balanced;
+    if(inH.length){ why+=X.here(inH.map(p=>`<b>${pn(p)}</b>`).join(", "));
+      inH.forEach(p=>{ if(BENEFIC.has(p)){score+=1;why+=X.ben(pn(p),PL_NATURE[LANG][p])} else {score-=0.5;why+=X.mal(pn(p),PL_NATURE[LANG][p])} }); }
+    why+=`</p>`;
+  }
+  let when=`<p>`+X.running(pn(md.lord),fmt(md.end),ad?pn(ad.lord):"",ad?fmt(ad.end):"");
+  if(involved.has(md.lord)||(ad&&involved.has(ad.lord))) when+=X.active(pn(involved.has(md.lord)?md.lord:ad.lord),A.t[LANG],fmt(involved.has(md.lord)?md.end:ad.end));
+  else { const nxt=seq.find(a=>a.start>now&&(involved.has(a.lord)||involved.has(a.md))); when+= nxt?X.next(pn(nxt.md),pn(nxt.lord),fmt(nxt.start),fmt(nxt.end)):X.none; }
+  when+=`</p>`;
+  const tone=score>=2?["g",X.fav]:score<=-1?["b",X.eff]:["",X.mix];
+  const rem=[...involved].filter(p=>strength(p,k).s<=0).slice(0,2); if(!rem.length) rem.push([...involved][0]);
+  if(!rem.includes(md.lord)&&rem.length<3) rem.push(md.lord);
+  const remHtml=`<ul>${rem.map(p=>`<li><b>${pn(p)}:</b> ${X.mantra(MANTRA[p][0],MANTRA[p][LANG==="hi"?2:1])} ${REMEDY[LANG][p]}</li>`).join("")}</ul>`;
+  const stepsHtml=`<ul>${PRACTICAL[LANG][key].map(t=>`<li>${t}</li>`).join("")}</ul>`;
+  return `${q?`<div class="qbox"><b>${X.q}:</b> ${esc(q)}</div>`:""}<div><span class="pill ${tone[0]}">${A.t[LANG]} — ${X.overall}: ${tone[1]}</span></div>`
+    +H3(1,X.why)+why+H3(2,X.when)+when+H3(3,X.rem)+remHtml+H3(4,X.steps)+stepsHtml;
+}
+
+// ================= Render =================
+function drawChart(k){
+  const pos={1:[200,100],2:[100,45],3:[45,100],4:[100,200],5:[45,300],6:[100,355],7:[200,300],8:[300,355],9:[355,300],10:[300,200],11:[355,100],12:[300,45]};
+  const num={1:[200,175],2:[100,85],3:[85,100],4:[175,200],5:[85,300],6:[100,315],7:[200,225],8:[300,315],9:[315,300],10:[225,200],11:[315,100],12:[300,85]};
+  const AB=ABBR[LANG], rmark=LANG==="hi"?"(व)":"ᴿ";
+  let s=`<rect x="2" y="2" width="396" height="396" rx="6" fill="#120d2c" stroke="#e8b94a" stroke-width="2"/>
+  <g stroke="#e8b94a" stroke-width="1.4" fill="none"><line x1="2" y1="2" x2="398" y2="398"/><line x1="398" y1="2" x2="2" y2="398"/><polygon points="200,2 398,200 200,398 2,200"/></g>`;
+  for(let h=1;h<=12;h++){const sg=(k.lagna+h-1)%12+1; s+=`<text x="${num[h][0]}" y="${num[h][1]}" fill="#a59fc7" font-size="12" text-anchor="middle" dominant-baseline="middle">${sg}</text>`;
+    const items=(h===1?[AB.Lagna]:[]).concat(planetsIn(k,h).map(p=>AB[p]+(k.planets[p].retro&&p!=="Rahu"&&p!=="Ketu"?rmark:"")));
+    items.forEach((t,i)=>{const cols=items.length>1?2:1, row=Math.floor(i/2), col=i%2;
+      const x=pos[h][0]+(cols===2?(col?17:-17):0), y=pos[h][1]+(row-(Math.ceil(items.length/2)-1)/2)*17;
+      s+=`<text x="${x}" y="${y}" fill="${t===AB.Lagna?"#f6d98b":"#ece8fb"}" font-size="${LANG==="hi"?13:14}" font-weight="600" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans Devanagari, Inter, sans-serif">${t}</text>`});}
+  document.getElementById("chart").innerHTML=s;
+}
+function render(k){
+  const P=k.planets, md=currentMD(k), U=L(), now=julianDayNow();
+  document.getElementById("hello").textContent=U.kundliOf(k.inp.name);
+  const sub=i=>LANG==="en"?` <span class="sub">${RASHI[i]}</span>`:"";
+  document.getElementById("summary").innerHTML=[[U.born,`${fmt(k.jdLocal)}, ${k.inp.timeLabel}`],[U.lagna,`${sn(k.lagna)}${sub(k.lagna)} ${dms(k.asc%30)}`],[U.moonSign,`${sn(P.Moon.sign)}${sub(P.Moon.sign)}`],[U.nakshatra,`${NAK[LANG][P.Moon.nak]} – ${U.pada} ${P.Moon.pada}`],[U.sunSign,sn(P.Sun.sign)],[U.runningMD,pn(md.lord)]].map(([a,b])=>`<div><small>${a}</small><b>${b}</b></div>`).join("");
+  drawChart(k);
+  document.getElementById("ptable").innerHTML=`<tr><th>${U.thPlanet}</th><th>${U.thSign}</th><th>${U.thDeg}</th><th>${U.thNak}</th><th>${U.thHouse}</th></tr>`+
+    Object.keys(P).map(p=>{const x=P[p],dg=dignityKey(p,x.sign);return `<tr><td>${pn(p)}${LANG==="en"?` <span class="sub">${HINDI_ROMAN[p]}</span>`:""}${x.retro&&p!=="Rahu"&&p!=="Ketu"?` <span class='pill'>${U.retro}</span>`:""}</td><td>${sn(x.sign)}${dg?` <span class="pill ${dg==="Debilitated"?"b":"g"}">${DIGN[LANG][dg]}</span>`:""}</td><td>${dms(x.deg)}</td><td>${NAK[LANG][x.nak]} ${x.pada}</td><td>${x.house}</td></tr>`}).join("");
+  document.getElementById("dtable").innerHTML=`<tr><th>${U.thMD}</th><th>${U.thFrom}</th><th>${U.thTo}</th></tr>`+k.dasha.map(d=>`<tr class="${now>=d.start&&now<d.end?"dasha-now":""}"><td>${pn(d.lord)}</td><td>${fmt(Math.max(d.start,k.jd))}</td><td>${fmt(d.end)}</td></tr>`).join("");
+  document.getElementById("atable").innerHTML=`<tr><th>${U.antarOf(pn(md.lord))}</th><th>${U.thFrom}</th><th>${U.thTo}</th></tr>`+antardashas(md).map(a=>`<tr class="${now>=a.start&&now<a.end?"dasha-now":""}"><td>${pn(md.lord)} / ${pn(a.lord)}</td><td>${fmt(a.start)}</td><td>${fmt(a.end)}</td></tr>`).join("");
+  const tabs=document.getElementById("tabs"); tabs.innerHTML=Object.entries(AREAS).map(([key,a])=>`<button class="tab" data-k="${key}">${a.t[LANG]}</button>`).join("");
+  tabs.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showArea(b.dataset.k,""));
+  showArea(currentArea);
+}
+let K=null, currentArea="career";
+let currentQ="";
+function showArea(key,q){currentArea=key;if(q!==undefined)currentQ=q;document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.k===key));document.getElementById("reading").innerHTML=reading(K,key,currentQ);}
+function matchArea(q,fallback){q=(q||"").toLowerCase();let best=fallback,bs=0;for(const [key,a] of Object.entries(AREAS)){const sc=a.kw.filter(w=>q.includes(w)).length;if(sc>bs){bs=sc;best=key}}return best;}
+
+const sel=document.getElementById("city"), gsel=document.getElementById("gender");
+function applyLang(){
+  const U=L();
+  document.documentElement.lang=LANG; document.body.classList.toggle("hi",LANG==="hi");
+  document.title=LANG==="hi"?"कृष्ण ज्योतिषी – Krishan Astrologer":"Krishan Astrologer";
+  document.querySelectorAll("[data-i]").forEach(el=>el.innerHTML=U[el.dataset.i]);
+  document.querySelectorAll("[data-ph]").forEach(el=>el.placeholder=U[el.dataset.ph]);
+  document.querySelectorAll(".lang button").forEach(b=>b.classList.toggle("on",b.dataset.lang===LANG));
+  const cv=sel.value, gv=gsel.selectedIndex;
+  sel.innerHTML=CITIES.map((c,i)=>`<option value="${i}">${LANG==="hi"?c[1]:c[0]}</option>`).join("")+`<option value="custom">${U.otherPlace}</option>`;
+  if(cv) sel.value=cv;
+  gsel.innerHTML=U.genders.map(g=>`<option>${g}</option>`).join(""); gsel.selectedIndex=Math.max(0,gv);
+  const hh=document.getElementById("hh"),mm=document.getElementById("mm"),ap=document.getElementById("ap"),ps=document.getElementById("probSel");
+  const hv=hh.value||"10",mv=mm.value||"30",av=ap.value||"AM",pv=ps.value||"career";
+  hh.innerHTML=Array.from({length:12},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join("");
+  mm.innerHTML=Array.from({length:60},(_,i)=>`<option value="${i}">${String(i).padStart(2,"0")}</option>`).join("");
+  ap.innerHTML=`<option value="AM">${U.am}</option><option value="PM">${U.pm}</option>`;
+  hh.value=hv;mm.value=mv;ap.value=av;
+  ps.innerHTML=Object.entries(AREAS).map(([key,a])=>`<option value="${key}">${a.p[LANG]}</option>`).join("");ps.value=pv;
+  if(K) render(K);
+}
+document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{LANG=b.dataset.lang;try{localStorage.setItem("krishan_lang",LANG)}catch(e){}applyLang();});
+sel.onchange=()=>document.getElementById("customBox").classList.toggle("hidden",sel.value!=="custom");
+document.getElementById("go").onclick=()=>{
+  const c=sel.value==="custom"?null:CITIES[+sel.value];
+  const H=+document.getElementById("hh").value, Mi=+document.getElementById("mm").value, AP=document.getElementById("ap").value;
+  const h24=(H%12)+(AP==="PM"?12:0);
+  const inp={name:document.getElementById("name").value.trim(),dob:document.getElementById("dob").value,tob:h24+":"+Mi,timeLabel:`${H}:${String(Mi).padStart(2,"0")} ${AP}`,
+    lat:c?c[2]:+document.getElementById("lat").value,lon:c?c[3]:+document.getElementById("lon").value,tz:c?5.5:+document.getElementById("tz").value};
+  if(!inp.dob){document.getElementById("dob").focus();return}
+  const qt=document.getElementById("probTxt").value.trim();
+  currentArea=matchArea(qt,document.getElementById("probSel").value); currentQ=qt;
+  K=buildKundli(inp); render(K);
+  document.getElementById("formCard").classList.add("hidden"); document.getElementById("result").classList.remove("hidden"); window.scrollTo(0,0);
+};
+document.getElementById("again").onclick=()=>{document.getElementById("result").classList.add("hidden");document.getElementById("formCard").classList.remove("hidden")};
+document.getElementById("askBtn").onclick=()=>{const raw=document.getElementById("ask").value.trim(); if(!raw) return; showArea(matchArea(raw,currentArea),raw); document.getElementById("result").scrollIntoView({behavior:"smooth"});};
+document.getElementById("ask").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("askBtn").click();});
+applyLang();
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}
+</script>
+</body>
+</html>
