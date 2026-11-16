@@ -1,6 +1,6 @@
-const CACHE="krishan-v15";
+const CACHE="krishan-v17";
 const FILES=["./","./index.html","./privacy.html","./terms.html","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png","./icons/apple-touch-icon.png","./icons/owner.jpg",
-  "./js/kb.js","./js/engine.js","./js/install.js","./js/forecast.js","./js/extras.js","./js/vedic.js","./js/cities.js","./data/books.json","./data/bphs.json","./data/phaladeepika.json"];
+  "./js/kb.js","./js/engine.js","./js/install.js","./js/forecast.js","./js/extras.js","./js/vedic.js","./js/calendar.js","./js/cities.js","./data/books.json","./data/bphs.json","./data/phaladeepika.json"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)));self.skipWaiting();});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))));self.clients.claim();});
 self.addEventListener("fetch",e=>{

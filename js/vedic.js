@@ -9,6 +9,12 @@
   // ------------------------------------------------------------------ text
   const T = {
     en: {
+      akT: "Ashtakavarga", akIntro: "Bindus (benefic points) each planet gives to every house, counted from your Lagna (BPHS Ch. 66–72). The bottom row is the Sarvashtakavarga (SAV): 28 is average, 30 or more is strong, below 25 is weak.",
+      akHouse: "House", akSav: "SAV",
+      akStrong: hs => hs.length ? `Strong houses (30+ bindus): <b>${hs.join(", ")}</b> — their matters give good results with less effort.` : "",
+      akWeak: hs => hs.length ? `Weaker houses (below 25): <b>${hs.join(", ")}</b> — these need more patience and remedies.` : "",
+      akTransit: (p, s, b, t) => `${p} is now transiting ${s}, where it has <b>${b}</b> of 8 bindus (SAV ${t}) — ${b >= 4 ? "a supportive transit for you" : "a transit that asks for patience"}.`,
+      akNote: "Traditionally a planet transiting a sign where it has 4 or more bindus in its own Ashtakavarga gives good results.",
       moreT: "More Charts", d9: "Navamsa (D9)", d10: "Dashamsa (D10)", chandra: "Chandra Kundli", gochar: "Gochar (Transit)",
       cap: {
         d9: "Navamsa (D9) — the most important divisional chart: shows the strength of planets, marriage and spouse, and inner potential (BPHS Ch. 6–7).",
@@ -41,6 +47,12 @@
       remedy: (m, d) => `Remedy: chant <span class="mantra">${m}</span> 108 times on ${d}.`,
     },
     hi: {
+      akT: "अष्टकवर्ग", akIntro: "हर ग्रह आपके लग्न से हर भाव को कितने बिंदु (शुभ अंक) देता है (BPHS अध्याय 66–72)। अंतिम पंक्ति सर्वाष्टकवर्ग (SAV) है: 28 औसत, 30 या अधिक बलवान, 25 से कम कमज़ोर।",
+      akHouse: "भाव", akSav: "SAV",
+      akStrong: hs => hs.length ? `बलवान भाव (30+ बिंदु): <b>${hs.join(", ")}</b> — इनके विषय कम प्रयास में अच्छे फल देते हैं।` : "",
+      akWeak: hs => hs.length ? `कमज़ोर भाव (25 से कम): <b>${hs.join(", ")}</b> — इनमें अधिक धैर्य और उपाय चाहिए।` : "",
+      akTransit: (p, s, b, t) => `${p} अभी ${s} राशि में गोचर कर रहा है, जहाँ इसके 8 में से <b>${b}</b> बिंदु हैं (SAV ${t}) — ${b >= 4 ? "यह आपके लिए सहायक गोचर है" : "यह गोचर धैर्य माँगता है"}।`,
+      akNote: "परंपरा के अनुसार जिस राशि में ग्रह के अपने अष्टकवर्ग में 4 या अधिक बिंदु हों, वहाँ उसका गोचर शुभ फल देता है।",
       moreT: "अन्य कुंडलियाँ", d9: "नवांश (D9)", d10: "दशमांश (D10)", chandra: "चंद्र कुंडली", gochar: "गोचर",
       cap: {
         d9: "नवांश (D9) — सबसे महत्वपूर्ण वर्ग कुंडली: ग्रहों का वास्तविक बल, विवाह और जीवनसाथी, तथा आंतरिक क्षमता दिखाती है (BPHS अध्याय 6–7)।",
@@ -193,16 +205,53 @@
     return h;
   }
 
+
+  // ------------------------------------------------------------------ 2b. Ashtakavarga (BPHS Ch. 66–72)
+  // For each planet: houses, counted from each contributor, where it receives a bindu (benefic point).
+  const AV_FROM = ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn", "Lagna"];
+  const AV = {
+    Sun:     [[1,2,4,7,8,9,10,11],[3,6,10,11],[1,2,4,7,8,9,10,11],[3,5,6,9,10,11,12],[5,6,9,11],[6,7,12],[1,2,4,7,8,9,10,11],[3,4,6,10,11,12]],
+    Moon:    [[3,6,7,8,10,11],[1,3,6,7,10,11],[2,3,5,6,9,10,11],[1,3,4,5,7,8,10,11],[1,4,7,8,10,11,12],[3,4,5,7,9,10,11],[3,5,6,11],[3,6,10,11]],
+    Mars:    [[3,5,6,10,11],[3,6,11],[1,2,4,7,8,10,11],[3,5,6,11],[6,10,11,12],[6,8,11,12],[1,4,7,8,9,10,11],[1,3,6,10,11]],
+    Mercury: [[5,6,9,11,12],[2,4,6,8,10,11],[1,2,4,7,8,9,10,11],[1,3,5,6,9,10,11,12],[6,8,11,12],[1,2,3,4,5,8,9,11],[1,2,4,7,8,9,10,11],[1,2,4,6,8,10,11]],
+    Jupiter: [[1,2,3,4,7,8,9,10,11],[2,5,7,9,11],[1,2,4,7,8,10,11],[1,2,4,5,6,9,10,11],[1,2,3,4,7,8,10,11],[2,5,6,9,10,11],[3,5,6,12],[1,2,4,5,6,7,9,10,11]],
+    Venus:   [[8,11,12],[1,2,3,4,5,8,9,11,12],[3,5,6,9,11,12],[3,5,6,9,11],[5,8,9,10,11],[1,2,3,4,5,8,9,10,11],[3,4,5,8,9,10,11],[1,2,3,4,5,8,9,11]],
+    Saturn:  [[1,2,4,7,8,10,11],[3,6,11],[3,5,6,10,11,12],[6,8,9,10,11,12],[5,6,11,12],[6,11,12],[3,5,6,11],[1,3,4,6,10,11]],
+  };
+  function ashtakavarga(k) {
+    const signOf = p => p === "Lagna" ? k.lagna : k.planets[p].sign, bav = {}, sav = Array(12).fill(0);
+    for (const pl in AV) {
+      const row = Array(12).fill(0);
+      AV[pl].forEach((houses, i) => { const from = signOf(AV_FROM[i]); houses.forEach(h => row[(from + h - 1) % 12]++); });
+      bav[pl] = row; row.forEach((v, s) => sav[s] += v);
+    }
+    return { bav, sav };
+  }
+  function ashtakavargaHtml(k) {
+    const x = X(), { bav, sav } = ashtakavarga(k), signs = [...Array(12)].map((_, h) => (k.lagna + h) % 12);
+    const cls = v => v >= 30 ? "g" : v < 25 ? "b" : "";
+    let h = `<h2>${x.akT}</h2><p class="tag" style="text-align:left;margin:0 0 10px">${x.akIntro}</p>`;
+    h += `<div style="overflow-x:auto"><table class="avt"><tr><th>${x.akHouse}</th>${signs.map((s, i) => `<th>${i + 1}<br><span class="sub">${sn(s).slice(0, LANG === "hi" ? 4 : 3)}</span></th>`).join("")}<th>Σ</th></tr>`;
+    for (const pl in bav) h += `<tr><td>${pn(pl)}</td>${signs.map(s => `<td>${bav[pl][s]}</td>`).join("")}<td><b>${bav[pl].reduce((a, b) => a + b, 0)}</b></td></tr>`;
+    h += `<tr><td><b>${x.akSav}</b></td>${signs.map(s => `<td><span class="pill ${cls(sav[s])}">${sav[s]}</span></td>`).join("")}<td><b>${sav.reduce((a, b) => a + b, 0)}</b></td></tr></table></div>`;
+    const strong = signs.map((s, i) => [i + 1, sav[s]]).filter(([, v]) => v >= 30).map(([hh]) => hh), weak = signs.map((s, i) => [i + 1, sav[s]]).filter(([, v]) => v < 25).map(([hh]) => hh);
+    h += `<p>${x.akStrong(strong)} ${x.akWeak(weak)}</p>`;
+    const now = positionsAt(julianDayNow()), js = Math.floor(now.Jupiter / 30), ss = Math.floor(now.Saturn / 30);
+    h += `<p>${x.akTransit(pn("Jupiter"), sn(js), bav.Jupiter[js], sav[js])} ${x.akTransit(pn("Saturn"), sn(ss), bav.Saturn[ss], sav[ss])}</p>`;
+    h += `<p class="sub">${x.akNote}</p>`;
+    return h;
+  }
+
   function renderMore(k) {
     if (!k) return;
     let a = document.getElementById("moreCharts"), b = document.getElementById("avakahada");
     if (!a) {
       const anchor = document.getElementById("chart").closest("section");
-      anchor.insertAdjacentHTML("afterend", `<section class="card" id="moreCharts"></section><section class="card" id="avakahada"></section>`);
+      anchor.insertAdjacentHTML("afterend", `<section class="card" id="moreCharts"></section><section class="card" id="avakahada"></section><section class="card" id="ashtak"></section>`);
       a = document.getElementById("moreCharts"); b = document.getElementById("avakahada");
       a.addEventListener("click", e => { const t = e.target.closest("[data-ct]"); if (t) { chartTab = t.dataset.ct; a.innerHTML = moreChartsHtml(K); } });
     }
-    a.innerHTML = moreChartsHtml(k); b.innerHTML = avakahadaHtml(k);
+    a.innerHTML = moreChartsHtml(k); b.innerHTML = avakahadaHtml(k); document.getElementById("ashtak").innerHTML = ashtakavargaHtml(k);
   }
 
   // ------------------------------------------------------------------ 3. full panchang + muhurat
@@ -302,5 +351,5 @@
     if (typeof VIEW !== "undefined" && VIEW === "daily") renderPanchang();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
-  window.Vedic = { signOfD9, signOfD10, karanaOf, numerologyHtml, panchangHtml };
+  window.Vedic = { ashtakavarga, signOfD9, signOfD10, karanaOf, numerologyHtml, panchangHtml };
 })();

@@ -42,6 +42,7 @@ button.ghost{background:transparent;color:var(--gold2);border:1px solid var(--go
 .hidden{display:none}
 .two{display:grid;grid-template-columns:minmax(280px,400px) 1fr;gap:20px;align-items:start}
 @media(max-width:760px){.two{grid-template-columns:1fr}}
+.avt td,.avt th{text-align:center;padding:6px 4px}.avt td:first-child{text-align:left}
 .chog{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
 svg.chart{width:100%;height:auto;display:block}
 table{width:100%;border-collapse:collapse;font-size:14px}
@@ -876,6 +877,7 @@ if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.se
 <script src="js/forecast.js"></script>
 <script src="js/extras.js"></script>
 <script src="js/vedic.js"></script>
+<script src="js/calendar.js"></script>
 <script>
 document.getElementById("futureOut").addEventListener("click",e=>{if(e.target.closest(".futBirth")){window.pendingFuture=true;showView("home");}});
 document.addEventListener("kb-ready",()=>{ if(VIEW==="future") renderFuture(); });
