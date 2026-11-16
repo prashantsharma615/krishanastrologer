@@ -10,11 +10,11 @@ Default language: **Hindi (hi-IN)**. Add **English (en-IN)** under *Manage trans
 - **hi-IN:** कृष्ण ज्योतिषी: कुंडली
 
 ## Short description (max 80 characters)
-- **en-IN:** Vedic kundli, BPHS-based solutions, matching & forecast in Hindi & English
-- **hi-IN:** वैदिक कुंडली, BPHS आधारित समाधान, कुंडली मिलान और भविष्यफल — हिंदी में
+- **en-IN:** Vedic kundli, BPHS & Phaladeepika solutions, matching, forecast in Hindi
+- **hi-IN:** वैदिक कुंडली, BPHS व फलदीपिका आधारित समाधान, कुंडली मिलान, भविष्यफल
 
 ## Full description — English (en-IN)
-Krishan Astrologer gives you your Vedic birth chart and practical guidance for life's problems, based on Brihat Parashara Hora Shastra (BPHS), the classical text of Parashari astrology. Available fully in Hindi and English.
+Krishan Astrologer gives you your Vedic birth chart and practical guidance for life's problems, based on Brihat Parashara Hora Shastra (BPHS), the classical text of Parashari astrology, together with Mantreswara's Phaladeepika. Available fully in Hindi and English.
 
 ★ ACCURATE KUNDLI
 • Lagna chart (North Indian style) calculated astronomically — sidereal, Lahiri ayanamsa
@@ -28,7 +28,7 @@ Type your question in your own words — Hindi, English or Hinglish — like "na
 2. Astrological reasoning from your chart
 3. Timing from your dasha
 4. Simple, affordable remedies — mantra, charity and fasting day
-plus the source chapter from BPHS and a "Why?" section that explains each rule used.
+plus the source chapters from BPHS and Phaladeepika and a "Why?" section that explains each rule used.
 
 ★ FUTURE FORECAST
 • Next 12 months by pratyantar dasha
@@ -54,7 +54,7 @@ Created by Pallavi Gupta, Founder, Krishan Astrologer.
 Astrological guidance is for spiritual and informational purposes only and is not a substitute for medical, legal, or financial advice.
 
 ## Full description — Hindi (hi-IN)
-कृष्ण ज्योतिषी आपकी वैदिक जन्म कुंडली बनाता है और जीवन की समस्याओं के लिए व्यावहारिक मार्गदर्शन देता है — पाराशरी ज्योतिष के मूल ग्रंथ बृहत् पाराशर होरा शास्त्र (BPHS) के आधार पर। पूरा ऐप हिंदी और अंग्रेज़ी दोनों में।
+कृष्ण ज्योतिषी आपकी वैदिक जन्म कुंडली बनाता है और जीवन की समस्याओं के लिए व्यावहारिक मार्गदर्शन देता है — पाराशरी ज्योतिष के मूल ग्रंथ बृहत् पाराशर होरा शास्त्र (BPHS) और मंत्रेश्वर की फलदीपिका के आधार पर। पूरा ऐप हिंदी और अंग्रेज़ी दोनों में।
 
 ★ सटीक कुंडली
 • खगोलीय गणना से लग्न कुंडली (उत्तर भारतीय शैली) — निरयन, लाहिरी अयनांश
@@ -68,7 +68,7 @@ Astrological guidance is for spiritual and informational purposes only and is no
 2. आपकी कुंडली से ज्योतिषीय कारण
 3. आपकी दशा से सही समय
 4. सरल और सस्ते उपाय — मंत्र, दान और व्रत का दिन
-साथ में BPHS का अध्याय (स्रोत) और "क्यों?" भाग, जो हर नियम समझाता है।
+साथ में BPHS और फलदीपिका के अध्याय (स्रोत) और "क्यों?" भाग, जो हर नियम समझाता है।
 
 ★ भविष्यफल
 • प्रत्यंतर दशा से अगले 12 महीने
