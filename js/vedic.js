@@ -9,6 +9,15 @@
   // ------------------------------------------------------------------ text
   const T = {
     en: {
+      horaT: "Hora (planetary hours)", horaHint: "— tap to open; begin important work in a Jupiter, Venus, Mercury or Moon hora",
+      mdT: "Your Day Today", mdTara: "Tara bala", mdChandra: "Chandra bala (Moon from your sign)", mdDasha: "Vimshottari dasha", mdYogini: "Yogini dasha",
+      mdVerdict: { good: "A favourable day for you — good for starting things and important meetings.", mid: "A mixed day — routine work goes fine; check the hora and Choghadiya for important tasks.", bad: "A sensitive day for you — avoid big decisions, arguments and risky travel; keep it simple." },
+      mdChandrashtama: "Chandrashtama: the Moon is in the 8th from your Moon sign — postpone new beginnings, stay calm and avoid disputes today.",
+      mdNote: (n, s) => `Based on today's Moon in ${n} (${s}) compared with your birth nakshatra and Moon sign.`,
+      gmT: "Gand Mool Nakshatra", gmNo: n => `Your Moon is in ${n}, which is not a Gand Mool nakshatra — <b>no Gand Mool dosh</b>.`,
+      gmYes: (n, pd, st) => `Your Moon is in <b>${n}</b> (pada ${pd}), one of the six Gand Mool nakshatras at the junction of water and fire signs. ${st ? "This pada lies right at the junction, so the effect is taken as stronger." : "This pada is away from the exact junction, so the effect is mild."}`,
+      gmRem: n => `Gand Mool Shanti puja is traditionally done on the 27th day after birth, when the Moon returns to ${n}; it can also be done later on any day the Moon is in ${n}.`,
+      rudra: "Rudraksha", mukhi: "Mukhi",
       sbT: "Shadbala (Planetary Strength)", sbIntro: "The six-fold strength of each planet from BPHS Ch. 27, in rupas: positional (Sthana), directional (Dig), temporal (Kala), motional (Cheshta), natural (Naisargika) and aspectual (Drik). A planet at or above its required strength (ratio 1× or more) can deliver its results well.",
       sbCols: ["Total", "Need", "Ratio", "Sthana", "Dig", "Kala", "Cheshta", "Naisargika", "Drik"],
       sbSum: (a, b, w, weak) => `Strongest planets: <b>${a}</b> and <b>${b}</b> — matters they rule come more easily. Weakest: <b>${w}</b>.${weak.length ? ` Below required strength: ${weak.join(", ")} — their remedies are most useful.` : " Every planet meets its required strength."}`,
@@ -53,7 +62,7 @@
       luckyDay: "Lucky day", luckyNum: "Lucky number", luckyCol: "Lucky colour",
       gemNote: "Gemstones are optional and costly. Mantra, charity and good conduct work without any expense. Wear a gem only after a qualified astrologer checks your full chart — especially Blue Sapphire (Neelam), Hessonite (Gomed) and Cat's eye (Lehsunia).",
       pT: "Muhurat & Choghadiya", place: p => `For ${p}`, delhi: "New Delhi", birthPlace: "your birth place",
-      p: { nak: "Nakshatra", yoga: "Yoga", karana: "Karana", sunrise: "Sunrise", sunset: "Sunset", rahu: "Rahu Kaal", yama: "Yamaganda", gulika: "Gulika Kaal", abhijit: "Abhijit Muhurat", panchak: "Panchak" },
+      p: { brahma: "Brahma Muhurta", nak: "Nakshatra", yoga: "Yoga", karana: "Karana", sunrise: "Sunrise", sunset: "Sunset", rahu: "Rahu Kaal", yama: "Yamaganda", gulika: "Gulika Kaal", abhijit: "Abhijit Muhurat", panchak: "Panchak" },
       panchakOn: t => `In force until ${t}`, panchakTip: "Panchak is running now — avoid travelling south, roof work, buying wood and making a bed or cot until it ends.",
       avoid: "Avoid starting new work in Rahu Kaal, Yamaganda and Gulika Kaal.", abhijitWed: "Abhijit Muhurat is traditionally not used on Wednesdays.",
       chDay: "Day Choghadiya", chNight: "Night Choghadiya", now: "Now",
@@ -67,6 +76,15 @@
       remedy: (m, d) => `Remedy: chant <span class="mantra">${m}</span> 108 times on ${d}.`,
     },
     hi: {
+      horaT: "होरा (ग्रह घंटे)", horaHint: "— खोलने के लिए टैप करें; महत्वपूर्ण काम गुरु, शुक्र, बुध या चंद्र की होरा में शुरू करें",
+      mdT: "आपका आज का दिन", mdTara: "तारा बल", mdChandra: "चंद्र बल (आपकी राशि से चंद्र)", mdDasha: "विंशोत्तरी दशा", mdYogini: "योगिनी दशा",
+      mdVerdict: { good: "आज का दिन आपके लिए शुभ है — नई शुरुआत और महत्वपूर्ण मुलाकातों के लिए अच्छा।", mid: "मिश्रित दिन — सामान्य काम ठीक चलेंगे; महत्वपूर्ण कामों के लिए होरा और चौघड़िया देखें।", bad: "आज का दिन संवेदनशील है — बड़े फैसले, बहस और जोखिम भरी यात्रा से बचें; दिन सरल रखें।" },
+      mdChandrashtama: "चंद्राष्टम: चंद्रमा आपकी राशि से आठवें भाव में है — आज नई शुरुआत टालें, शांत रहें और विवाद से बचें।",
+      mdNote: (n, s) => `आज के चंद्रमा (${n}, ${s}) की आपके जन्म नक्षत्र और चंद्र राशि से तुलना के आधार पर।`,
+      gmT: "गंड मूल नक्षत्र", gmNo: n => `आपका चंद्रमा ${n} में है, जो गंड मूल नक्षत्र नहीं है — <b>गंड मूल दोष नहीं</b>।`,
+      gmYes: (n, pd, st) => `आपका चंद्रमा <b>${n}</b> (चरण ${pd}) में है, जो जल और अग्नि राशियों की संधि पर स्थित छह गंड मूल नक्षत्रों में से एक है। ${st ? "यह चरण ठीक संधि पर है, इसलिए प्रभाव अधिक माना जाता है।" : "यह चरण संधि से दूर है, इसलिए प्रभाव हल्का है।"}`,
+      gmRem: n => `गंड मूल शांति पूजा परंपरा से जन्म के 27वें दिन की जाती है, जब चंद्रमा फिर ${n} में आता है; इसे बाद में भी किसी ऐसे दिन किया जा सकता है जब चंद्रमा ${n} में हो।`,
+      rudra: "रुद्राक्ष", mukhi: "मुखी",
       sbT: "षड्बल (ग्रह बल)", sbIntro: "BPHS अध्याय 27 के अनुसार हर ग्रह का छह प्रकार का बल, रूप में: स्थान बल, दिग्बल, काल बल, चेष्टा बल, नैसर्गिक बल और दृक् बल। जो ग्रह अपने आवश्यक बल के बराबर या अधिक हो (अनुपात 1× या अधिक), वह अपने फल अच्छी तरह देता है।",
       sbCols: ["कुल", "आवश्यक", "अनुपात", "स्थान", "दिक्", "काल", "चेष्टा", "नैसर्गिक", "दृक्"],
       sbSum: (a, b, w, weak) => `सबसे बलवान ग्रह: <b>${a}</b> और <b>${b}</b> — इनके विषय आसानी से फल देते हैं। सबसे कमज़ोर: <b>${w}</b>।${weak.length ? ` आवश्यक बल से कम: ${weak.join(", ")} — इनके उपाय सबसे उपयोगी हैं।` : " हर ग्रह अपने आवश्यक बल को पूरा करता है।"}`,
@@ -111,7 +129,7 @@
       luckyDay: "शुभ दिन", luckyNum: "शुभ अंक", luckyCol: "शुभ रंग",
       gemNote: "रत्न वैकल्पिक और महँगे हैं। मंत्र, दान और अच्छा आचरण बिना खर्च के काम करते हैं। रत्न केवल योग्य ज्योतिषी द्वारा पूरी कुंडली देखने के बाद ही पहनें — विशेषकर नीलम, गोमेद और लहसुनिया।",
       pT: "मुहूर्त और चौघड़िया", place: p => `${p} के लिए`, delhi: "नई दिल्ली", birthPlace: "आपके जन्म स्थान",
-      p: { nak: "नक्षत्र", yoga: "योग", karana: "करण", sunrise: "सूर्योदय", sunset: "सूर्यास्त", rahu: "राहु काल", yama: "यमगंड", gulika: "गुलिक काल", abhijit: "अभिजित मुहूर्त", panchak: "पंचक" },
+      p: { brahma: "ब्रह्म मुहूर्त", nak: "नक्षत्र", yoga: "योग", karana: "करण", sunrise: "सूर्योदय", sunset: "सूर्यास्त", rahu: "राहु काल", yama: "यमगंड", gulika: "गुलिक काल", abhijit: "अभिजित मुहूर्त", panchak: "पंचक" },
       panchakOn: t => `${t} तक जारी`, panchakTip: "अभी पंचक चल रहा है — इसके समाप्त होने तक दक्षिण दिशा की यात्रा, छत का काम, लकड़ी खरीदना और पलंग या चारपाई बनाना टालें।",
       avoid: "राहु काल, यमगंड और गुलिक काल में नया कार्य शुरू करने से बचें।", abhijitWed: "परंपरा में बुधवार को अभिजित मुहूर्त का प्रयोग नहीं किया जाता।",
       chDay: "दिन का चौघड़िया", chNight: "रात का चौघड़िया", now: "अभी",
@@ -240,6 +258,7 @@
     // gems & lucky factors
     const L1 = LORD[k.lagna], L5 = LORD[(k.lagna + 4) % 12], L9 = LORD[(k.lagna + 8) % 12], di = DAYLORD.indexOf(L1);
     h += `<h3>${x.gemT}</h3><div class="kv">` + [[x.life, `${GEM[LANG][L1]} <span class="sub">(${pn(L1)})</span>`], [x.lucky, `${GEM[LANG][L9]} <span class="sub">(${pn(L9)})</span>`], [x.punya, `${GEM[LANG][L5]} <span class="sub">(${pn(L5)})</span>`],
+      [x.rudra, `${RUDRA[L1].join(" / ")} ${x.mukhi} <span class="sub">(${pn(L1)})</span>${LORD[k.planets.Moon.sign] !== L1 ? ` · ${RUDRA[LORD[k.planets.Moon.sign]].join(" / ")} ${x.mukhi} <span class="sub">(${pn(LORD[k.planets.Moon.sign])})</span>` : ""}`],
       [x.luckyDay, DAYS[LANG][di]], [x.luckyNum, LUCKY_NUM[L1]], [x.luckyCol, COLORS[LANG][di]]].map(([a, b]) => `<div><small>${a}</small><b>${b}</b></div>`).join("") + `</div>`;
     h += `<p class="sub">💎 ${x.gemNote}</p>`;
     return h;
@@ -486,6 +505,54 @@
     return h;
   }
 
+  // ------------------------------------------------------------------ 3c. Hora table, Brahma Muhurta
+  const HORA_SEQ = ["Saturn", "Jupiter", "Mars", "Sun", "Venus", "Mercury", "Moon"];
+  const HORA_GOOD = { Sun: "mid", Moon: "good", Mars: "bad", Mercury: "good", Jupiter: "good", Venus: "good", Saturn: "bad" };
+  function horaHtml(sr, ss, sr2, dow, tz, now) {
+    const x = X(), lords = []; let i = HORA_SEQ.indexOf(DAYLORD[dow]);
+    for (let n = 0; n < 24; n++) { lords.push(HORA_SEQ[i % 7]); i++; }
+    const row = (n, a, b) => { const p = lords[n], q = HORA_GOOD[p], on = now >= a && now < b;
+      return `<tr class="${on ? "dasha-now" : ""}"><td><b>${pn(p)}</b>${on ? ` <span class="pill">${x.now}</span>` : ""}</td><td style="white-space:nowrap">${timeTxt(a, tz)} – ${timeTxt(b, tz)}</td><td><span class="pill ${q === "good" ? "g" : q === "bad" ? "b" : ""}">${x.chQ[q]}</span></td></tr>`; };
+    const dl = (ss - sr) / 12, nl = (sr2 - ss) / 12;
+    let h = `<details style="margin-top:12px"><summary><b>${x.horaT}</b> <span class="sub">${x.horaHint}</span></summary><div class="chog">`;
+    h += `<div><h3>${x.chDay}</h3><table>${[...Array(12)].map((_, n) => row(n, sr + n * dl, sr + (n + 1) * dl)).join("")}</table></div>`;
+    h += `<div><h3>${x.chNight}</h3><table>${[...Array(12)].map((_, n) => row(12 + n, ss + n * nl, ss + (n + 1) * nl)).join("")}</table></div></div></details>`;
+    return h;
+  }
+
+  // ------------------------------------------------------------------ 3d. Your day today (Tara bala, Chandra bala, running dashas)
+  const TARA = { en: ["Janma", "Sampat", "Vipat", "Kshema", "Pratyari", "Sadhaka", "Vadha", "Mitra", "Parama Mitra"], hi: ["जन्म", "संपत", "विपत", "क्षेम", "प्रत्यरि", "साधक", "वध", "मित्र", "परम मित्र"] };
+  const TARA_Q = ["mid", "good", "bad", "good", "bad", "good", "bad", "good", "good"];
+  function myDayHtml() {
+    if (!K) return ""; const x = X(), now = julianDayNow(), P = positionsAt(now), nk = Math.floor(P.Moon / (360 / 27)), ms = Math.floor(P.Moon / 30);
+    const cnt = ((nk - K.planets.Moon.nak + 27) % 27) + 1, ti = (cnt - 1) % 9, tq = TARA_Q[ti];
+    const ch = ((ms - K.planets.Moon.sign + 12) % 12) + 1, cq = [1, 3, 6, 7, 10, 11].includes(ch) ? "good" : ch === 8 ? "bad" : "mid";
+    const md = K.dasha.find(d => now >= d.start && now < d.end), ad = md ? antardashas(md).find(a => now >= a.start && now < a.end) : null;
+    const yg = yoginiDasha(K).find(d => now >= d.start && now < d.end);
+    const score = (tq === "good" ? 1 : tq === "bad" ? -1 : 0) + (cq === "good" ? 1 : cq === "bad" ? -1.5 : 0), verdict = score >= 1 ? "good" : score <= -1 ? "bad" : "mid";
+    const pill = q => `<span class="pill ${q === "good" ? "g" : q === "bad" ? "b" : ""}">${x.chQ[q]}</span>`;
+    let h = `<h2>${x.mdT}${K.inp.name ? " — " + esc(K.inp.name) : ""}</h2><p>${x.mdVerdict[verdict]}</p><div class="kv">`;
+    h += [[x.mdTara, `${TARA[LANG][ti]} ${pill(tq)}`], [x.mdChandra, `${x.vHouse(ch)} ${pill(cq)}`], [x.mdDasha, md ? `${pn(md.lord)}${ad ? " / " + pn(ad.lord) : ""}` : "—"], [x.mdYogini, yg ? `${YOG[yg.i][LANG]} (${pn(YOG[yg.i].p)})` : "—"]].map(([a, b]) => `<div><small>${a}</small><b>${b}</b></div>`).join("") + `</div>`;
+    if (ch === 8) h += `<p class="sub">⚠ ${x.mdChandrashtama}</p>`;
+    h += `<p class="sub">${x.mdNote(NAK[LANG][nk], sn(ms))}</p>`;
+    return h;
+  }
+  function renderMyDay() {
+    let c = document.getElementById("myday");
+    if (!c) { document.getElementById("panchang").closest("section").insertAdjacentHTML("afterend", `<section class="card" id="myday"></section>`); c = document.getElementById("myday"); }
+    const h = myDayHtml(); c.innerHTML = h; c.classList.toggle("hidden", !h);
+  }
+
+  // ------------------------------------------------------------------ 3e. Gand Mool (added to the Dosh check)
+  const GAND = [0, 8, 9, 17, 18, 26], GAND_STRONG = { 0: 1, 8: 4, 9: 1, 17: 4, 18: 1, 26: 4 }; // nakshatra → most severe pada (at the sign junction)
+  function gandMoolBlock(k) {
+    const x = X(), M = k.planets.Moon;
+    if (!GAND.includes(M.nak)) return doshBlock(x.gmT, DT[LANG].absent, "g", x.gmNo(NAK[LANG][M.nak]));
+    const strong = GAND_STRONG[M.nak] === M.pada;
+    return doshBlock(x.gmT, strong ? DT[LANG].present : DT[LANG].mild, strong ? "b" : "", x.gmYes(NAK[LANG][M.nak], M.pada, strong), x.gmRem(NAK[LANG][M.nak]));
+  }
+  const RUDRA = { Sun: [1, 12], Moon: [2], Mars: [3], Mercury: [4], Jupiter: [5], Venus: [6], Saturn: [7], Rahu: [8], Ketu: [9] };
+
   function renderMore(k) {
     if (!k) return;
     let a = document.getElementById("moreCharts"), b = document.getElementById("avakahada");
@@ -512,7 +579,7 @@
     const yoga = Math.floor(norm(S.Sun + S.Moon) / (360 / 27)), nak = Math.floor(S.Moon / (360 / 27));
     const dl = (ss - sr) / 8, seg = n => [sr + (n - 1) * dl, sr + n * dl], span = ([a, b]) => `${timeTxt(a, tz)} – ${timeTxt(b, tz)}`;
     const noon = (sr + ss) / 2, ab = [noon - (ss - sr) / 30, noon + (ss - sr) / 30];
-    const kv = [[x.p.nak, NAK[LANG][nak]], [x.p.yoga, YOGA[LANG][yoga]], [x.p.karana, KARANA[LANG][karanaOf(diff)]], [x.p.sunrise, timeTxt(sr, tz)], [x.p.sunset, timeTxt(ss, tz)],
+    const kv = [[x.p.brahma, `${timeTxt(sr - 96 / 1440, tz)} – ${timeTxt(sr - 48 / 1440, tz)}`], [x.p.nak, NAK[LANG][nak]], [x.p.yoga, YOGA[LANG][yoga]], [x.p.karana, KARANA[LANG][karanaOf(diff)]], [x.p.sunrise, timeTxt(sr, tz)], [x.p.sunset, timeTxt(ss, tz)],
       [x.p.rahu, span(seg(RAHU_SEG[dow]))], [x.p.yama, span(seg(YAMA_SEG[dow]))], [x.p.gulika, span(seg(GULI_SEG[dow]))], [x.p.abhijit, span(ab)]];
     // Panchak in force now? (Moon in sidereal Aquarius/Pisces)
     const mNow = positionsAt(now).Moon;
@@ -532,6 +599,7 @@
     const dayIdx = [...Array(8)].map((_, i) => (CH_DAY_START[dow] + i) % 7);
     const nightIdx = [...Array(8)].map((_, i) => CH_NIGHT[(CH_NIGHT_START[dow] + i) % 7]);
     h += `<div class="chog">${table(x.chDay, sr, dl, dayIdx)}${table(x.chNight, ss, (sr2 - ss) / 8, nightIdx)}</div>`;
+    h += horaHtml(sr, ss, sr2, dow, tz, now);
     return h;
   }
   function renderPanchang() {
@@ -586,7 +654,8 @@
   UI.en.navNumero = T.en.navNumero; UI.hi.navNumero = T.hi.navNumero;
   const _render = window.render, _rashi = window.renderRashifal, _show = window.showView, _lang = window.applyLang;
   window.render = function (k) { _render(k); try { renderMore(k); } catch (e) { console.error(e); } };
-  window.renderRashifal = function () { _rashi(); try { renderPeriodTabs(); renderPanchang(); } catch (e) { console.error(e); } };
+  window.renderRashifal = function () { _rashi(); try { renderMyDay(); renderPeriodTabs(); renderPanchang(); } catch (e) { console.error(e); } };
+  const _dosh = window.doshHtml; window.doshHtml = function (k) { let h = _dosh(k); try { h += gandMoolBlock(k); } catch (e) { console.error(e); } return h; };
   window.showView = function (v, noHash) { _show(v, noHash); if (v === "numero") renderNumerology(); };
   window.applyLang = function () {
     _lang();
@@ -605,5 +674,5 @@
     if (typeof VIEW !== "undefined" && VIEW === "daily") renderPanchang();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
-  window.Vedic = { shadbala, yoginiDasha, solarReturn, periodHtml, ashtakavarga, signOfD9, signOfD10, karanaOf, numerologyHtml, panchangHtml };
+  window.Vedic = { sunset: sunsetJD, shadbala, yoginiDasha, solarReturn, periodHtml, ashtakavarga, signOfD9, signOfD10, karanaOf, numerologyHtml, panchangHtml };
 })();

@@ -18,6 +18,9 @@ Live: https://krishanastrologer.netlify.app/
 - **Yogini Dasha:** 8 Yoginis / 36-year cycle with sub-periods and the running period highlighted
 - **Varshphal:** Tajik yearly chart for the Sun's return (Varsha Pravesh), Varsha lagna, Muntha and its lord, year-by-year navigation
 - **Monthly & yearly rashifal:** transit-based forecasts per Moon sign with sign changes, retrograde/direct dates and favourable days
+- **Shubh Muhurat finder (90 days):** time windows for marriage, griha pravesh, vehicle, business, travel, naamkaran and property — nakshatra, tithi, yoga, Bhadra, Rahu Kaal, weekday, Panchak, Kharmas, Chaturmas and combust Jupiter/Venus rules
+- **Your Day Today:** personal Tara bala, Chandra bala (Chandrashtama warning) and running Vimshottari/Yogini dasha
+- **Hora table & Brahma Muhurta** in the daily panchang; **Gand Mool** check in Dosh; **Rudraksha** suggestion with gemstones
 - **Numerology (Ank Jyotish):** Mulank, Bhagyank, name number (Chaldean) with ruling planet, lucky day/colour and remedy
 - Install on Android (install prompt) and iPhone (Add to Home Screen guide); works offline
 
@@ -53,6 +56,7 @@ Astrological guidance is for spiritual and informational purposes only and is no
 js/cities.js          296 searchable Indian + world cities with time zones
 js/vedic.js           divisional/transit charts, Avakahada, gems, full panchang & choghadiya, numerology
 js/calendar.js        festival & vrat calendar
+js/muhurat.js         shubh muhurat finder
 js/extras.js          city search, WhatsApp share, PDF/print, family profiles
 terms.html            Terms of use (Hindi + English)
 store/                Google Play listing kit: listing text, feature graphic, 8 screenshots
