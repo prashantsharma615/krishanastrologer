@@ -34,7 +34,8 @@
       luckyDay: "Lucky day", luckyNum: "Lucky number", luckyCol: "Lucky colour",
       gemNote: "Gemstones are optional and costly. Mantra, charity and good conduct work without any expense. Wear a gem only after a qualified astrologer checks your full chart — especially Blue Sapphire (Neelam), Hessonite (Gomed) and Cat's eye (Lehsunia).",
       pT: "Muhurat & Choghadiya", place: p => `For ${p}`, delhi: "New Delhi", birthPlace: "your birth place",
-      p: { nak: "Nakshatra", yoga: "Yoga", karana: "Karana", sunrise: "Sunrise", sunset: "Sunset", rahu: "Rahu Kaal", yama: "Yamaganda", gulika: "Gulika Kaal", abhijit: "Abhijit Muhurat" },
+      p: { nak: "Nakshatra", yoga: "Yoga", karana: "Karana", sunrise: "Sunrise", sunset: "Sunset", rahu: "Rahu Kaal", yama: "Yamaganda", gulika: "Gulika Kaal", abhijit: "Abhijit Muhurat", panchak: "Panchak" },
+      panchakOn: t => `In force until ${t}`, panchakTip: "Panchak is running now — avoid travelling south, roof work, buying wood and making a bed or cot until it ends.",
       avoid: "Avoid starting new work in Rahu Kaal, Yamaganda and Gulika Kaal.", abhijitWed: "Abhijit Muhurat is traditionally not used on Wednesdays.",
       chDay: "Day Choghadiya", chNight: "Night Choghadiya", now: "Now",
       chQ: { good: "Good", mid: "Neutral", bad: "Avoid" },
@@ -72,7 +73,8 @@
       luckyDay: "शुभ दिन", luckyNum: "शुभ अंक", luckyCol: "शुभ रंग",
       gemNote: "रत्न वैकल्पिक और महँगे हैं। मंत्र, दान और अच्छा आचरण बिना खर्च के काम करते हैं। रत्न केवल योग्य ज्योतिषी द्वारा पूरी कुंडली देखने के बाद ही पहनें — विशेषकर नीलम, गोमेद और लहसुनिया।",
       pT: "मुहूर्त और चौघड़िया", place: p => `${p} के लिए`, delhi: "नई दिल्ली", birthPlace: "आपके जन्म स्थान",
-      p: { nak: "नक्षत्र", yoga: "योग", karana: "करण", sunrise: "सूर्योदय", sunset: "सूर्यास्त", rahu: "राहु काल", yama: "यमगंड", gulika: "गुलिक काल", abhijit: "अभिजित मुहूर्त" },
+      p: { nak: "नक्षत्र", yoga: "योग", karana: "करण", sunrise: "सूर्योदय", sunset: "सूर्यास्त", rahu: "राहु काल", yama: "यमगंड", gulika: "गुलिक काल", abhijit: "अभिजित मुहूर्त", panchak: "पंचक" },
+      panchakOn: t => `${t} तक जारी`, panchakTip: "अभी पंचक चल रहा है — इसके समाप्त होने तक दक्षिण दिशा की यात्रा, छत का काम, लकड़ी खरीदना और पलंग या चारपाई बनाना टालें।",
       avoid: "राहु काल, यमगंड और गुलिक काल में नया कार्य शुरू करने से बचें।", abhijitWed: "परंपरा में बुधवार को अभिजित मुहूर्त का प्रयोग नहीं किया जाता।",
       chDay: "दिन का चौघड़िया", chNight: "रात का चौघड़िया", now: "अभी",
       chQ: { good: "शुभ", mid: "सामान्य", bad: "अशुभ" },
@@ -268,9 +270,17 @@
     const noon = (sr + ss) / 2, ab = [noon - (ss - sr) / 30, noon + (ss - sr) / 30];
     const kv = [[x.p.nak, NAK[LANG][nak]], [x.p.yoga, YOGA[LANG][yoga]], [x.p.karana, KARANA[LANG][karanaOf(diff)]], [x.p.sunrise, timeTxt(sr, tz)], [x.p.sunset, timeTxt(ss, tz)],
       [x.p.rahu, span(seg(RAHU_SEG[dow]))], [x.p.yama, span(seg(YAMA_SEG[dow]))], [x.p.gulika, span(seg(GULI_SEG[dow]))], [x.p.abhijit, span(ab)]];
+    // Panchak in force now? (Moon in sidereal Aquarius/Pisces)
+    const mNow = positionsAt(now).Moon;
+    if (mNow >= 300) {
+      let e = now; while (positionsAt(e).Moon >= 300) e += 0.1;
+      let a = e - 0.1, b = e; for (let i = 0; i < 30; i++) { const m = (a + b) / 2; if (positionsAt(m).Moon >= 300) a = m; else b = m; }
+      const d = new Date((b - 2440587.5) * 864e5 + tz * 36e5);
+      kv.push([x.p.panchak, x.panchakOn(`${d.toLocaleDateString(LANG === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short", timeZone: "UTC" })}, ${timeTxt(b, tz)}`)]);
+    }
     let h = `<h2>${x.pT}</h2><p class="tag" style="text-align:left;margin:0 0 10px">${x.place(K ? x.birthPlace : x.delhi)} · ${DAYS[LANG][dow]}</p>`;
     h += `<div class="kv">${kv.map(([a, b]) => `<div><small>${a}</small><b>${b}</b></div>`).join("")}</div>`;
-    h += `<p class="sub">⚠ ${x.avoid}${dow === 3 ? " " + x.abhijitWed : ""}</p>`;
+    h += `<p class="sub">⚠ ${x.avoid}${dow === 3 ? " " + x.abhijitWed : ""}${mNow >= 300 ? " " + x.panchakTip : ""}</p>`;
     const table = (title, start, len, idxs) => `<div><h3>${title}</h3><table>` + idxs.map((ci, i) => {
       const a = start + i * len, b = a + len, on = now >= a && now < b, q = CHOG_Q[ci];
       return `<tr class="${on ? "dasha-now" : ""}"><td><b>${CHOG[LANG][ci]}</b>${on ? ` <span class="pill">${x.now}</span>` : ""}</td><td style="white-space:nowrap">${timeTxt(a, tz)} – ${timeTxt(b, tz)}</td><td><span class="pill ${q === "good" ? "g" : q === "bad" ? "b" : ""}">${x.chQ[q]}</span></td></tr>`;

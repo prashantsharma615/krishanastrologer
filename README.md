@@ -13,7 +13,7 @@ Live: https://krishanastrologer.netlify.app/
 - **Avakahada chakra:** varna, vashya, yoni, gana, nadi, tatva, paya, nakshatra/rashi/lagna lords, naming letters, birth tithi-yoga-karana-vaar; gemstones (life/lucky/punya) and lucky day, number, colour
 - **Full panchang & muhurat:** tithi, nakshatra, yoga, karana at sunrise; sunrise/sunset, Rahu Kaal, Yamaganda, Gulika, Abhijit; day & night Choghadiya
 - **Ashtakavarga:** Bhinnashtakavarga for 7 planets + Sarvashtakavarga by house (BPHS Ch. 66–72), strong/weak houses, Jupiter & Saturn transit bindus
-- **Festival & vrat calendar (12 months):** major festivals plus Ekadashi, Purnima, Amavasya, Pradosh, Sankashti, Masik Shivaratri, Sankranti — amanta months with Adhik maas, festival-specific kaal rules, Smarta Ekadashi rules; checked against Drik Panchang 2027 & 2028 (New Delhi)
+- **Festival & vrat calendar (12 months):** major festivals plus Ekadashi, Purnima, Amavasya, Pradosh, Sankashti, Masik Shivaratri, Sankranti, Panchak (start/end time and type: Rog, Raj, Agni, Chor, Mrityu) — amanta months with Adhik maas, festival-specific kaal rules, Smarta Ekadashi rules; checked against Drik Panchang 2027 & 2028 (New Delhi)
 - **Numerology (Ank Jyotish):** Mulank, Bhagyank, name number (Chaldean) with ruling planet, lucky day/colour and remedy
 - Install on Android (install prompt) and iPhone (Add to Home Screen guide); works offline
 

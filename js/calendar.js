@@ -45,12 +45,18 @@
   ];
   const T = {
     en: { nav: "Festivals", title: "Festival & Vrat Calendar", intro: p => `Hindu festivals and monthly vrats for the next 12 months, ${p}. Dates follow the tithi prevailing at the traditional time of each festival, with North Indian (purnimanta) month names.`,
-      place: p => `calculated for ${p}`, delhi: "New Delhi", birth: "your birth place", fest: "Festivals", vrat: "Vrats", all: "All",
+      place: p => `calculated for ${p}`, delhi: "New Delhi", birth: "your birth place", fest: "Festivals", vrat: "Vrats", panchak: "Panchak", all: "All",
+      pBegin: (t, ty) => `Panchak begins ${t} — <b>${ty}</b>`, pEnd: t => `Panchak ends ${t}`,
+      pTypes: ["Rog Panchak", "Raj Panchak", "Agni Panchak", "Panchak (Wednesday — milder)", "Panchak (Thursday — milder)", "Chor Panchak", "Mrityu Panchak"],
+      pNote: "Panchak is the 5-nakshatra stretch when the Moon passes from the second half of Dhanishta through Revati (Aquarius and Pisces). Tradition avoids travelling south, collecting wood or grass, building a roof, making a bed or cot, and cremation without the special Panchak rites. Mrityu (Saturday) and Agni (Tuesday) Panchak are taken as the most inauspicious; Raj Panchak (Monday) is considered fine for government and property work.",
       ekadashi: (m, pk) => `Ekadashi (${m}, ${pk})`, purnima: m => `Purnima — ${m}`, amavasya: m => `Amavasya — ${m}`, pradosh: "Pradosh Vrat", sankashti: "Sankashti Chaturthi", shivaratri: "Masik Shivaratri",
       sankranti: s => `${s} Sankranti`, makar: "Makar Sankranti", adhik: "Adhik", today: "Today",
       note: "Some festivals can fall a day apart in different traditions (e.g. Smarta vs Vaishnava Janmashtami/Ekadashi) or regions. Confirm the exact muhurat with your local panchang or priest." },
     hi: { nav: "त्योहार", title: "त्योहार और व्रत कैलेंडर", intro: p => `अगले 12 महीनों के हिंदू त्योहार और मासिक व्रत, ${p}। तिथियाँ हर त्योहार के पारंपरिक समय पर चल रही तिथि के अनुसार हैं, और महीनों के नाम उत्तर भारतीय (पूर्णिमांत) पद्धति से।`,
-      place: p => `${p} के लिए गणना`, delhi: "नई दिल्ली", birth: "आपके जन्म स्थान", fest: "त्योहार", vrat: "व्रत", all: "सभी",
+      place: p => `${p} के लिए गणना`, delhi: "नई दिल्ली", birth: "आपके जन्म स्थान", fest: "त्योहार", vrat: "व्रत", panchak: "पंचक", all: "सभी",
+      pBegin: (t, ty) => `पंचक आरंभ ${t} — <b>${ty}</b>`, pEnd: t => `पंचक समाप्त ${t}`,
+      pTypes: ["रोग पंचक", "राज पंचक", "अग्नि पंचक", "पंचक (बुधवार — सामान्य)", "पंचक (गुरुवार — सामान्य)", "चोर पंचक", "मृत्यु पंचक"],
+      pNote: "पंचक वह समय है जब चंद्रमा धनिष्ठा के उत्तरार्ध से रेवती तक (कुंभ और मीन राशि में) रहता है। परंपरा में इस दौरान दक्षिण दिशा की यात्रा, लकड़ी या घास इकट्ठा करना, छत डालना, पलंग या चारपाई बनाना, और विशेष पंचक विधि के बिना दाह संस्कार वर्जित माने जाते हैं। मृत्यु पंचक (शनिवार) और अग्नि पंचक (मंगलवार) सबसे अशुभ माने जाते हैं; राज पंचक (सोमवार) सरकारी और संपत्ति के कार्यों के लिए ठीक माना जाता है।",
       ekadashi: (m, pk) => `एकादशी (${m}, ${pk})`, purnima: m => `पूर्णिमा — ${m}`, amavasya: m => `अमावस्या — ${m}`, pradosh: "प्रदोष व्रत", sankashti: "संकष्टी चतुर्थी", shivaratri: "मासिक शिवरात्रि",
       sankranti: s => `${s} संक्रांति`, makar: "मकर संक्रांति", adhik: "अधिक", today: "आज",
       note: "कुछ त्योहार अलग परंपराओं (जैसे स्मार्त और वैष्णव जन्माष्टमी/एकादशी) या क्षेत्रों में एक दिन आगे-पीछे हो सकते हैं। सटीक मुहूर्त के लिए स्थानीय पंचांग या पुरोहित से पुष्टि करें।" },
@@ -164,6 +170,24 @@
         else if (s2 === 0) add(y, "fest", "Baisakhi / Mesha Sankranti", "बैसाखी / मेष संक्रांति");
         else add(y, "vrat", T.en.sankranti(SIGNS.en[s2]), T.hi.sankranti(SIGNS.hi[s2])); }
     }
+
+    // Panchak: Moon in sidereal Aquarius + Pisces (300° → 360°), i.e. Dhanishta 3rd pada to the end of Revati
+    const moonAt = jd => positionsAt(jd).Moon, cross = (a, b, deg) => { const f = x => ((moonAt(x) - deg + 540) % 360) - 180; for (let k = 0; k < 40; k++) { const m = (a + b) / 2; if (f(a) * f(m) <= 0) b = m; else a = m; } return (a + b) / 2; };
+    const civil = jd => { const d = new Date((jd - 2440587.5) * 864e5 + tz * 36e5); return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())); };
+    const dTxt = (jd, l) => new Date((jd - 2440587.5) * 864e5 + tz * 36e5).toLocaleDateString(l === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short", timeZone: "UTC" }) + ", ";
+    const clock = jd => { const d = new Date((jd - 2440587.5) * 864e5 + tz * 36e5); let h = d.getUTCHours(); const mm = String(d.getUTCMinutes()).padStart(2, "0"), ap = h < 12 ? "AM" : "PM"; h = h % 12 || 12; return `${h}:${mm} ${ap}`; };
+    for (let jd = D[0].sr - 5; jd < D[D.length - 1].sr; jd += 0.25) {
+      const a = moonAt(jd), b = moonAt(jd + 0.25);
+      if (!(a < 300 && b >= 300 && a > 200)) continue;
+      const st = cross(jd, jd + 0.25, 300); let e = st + 3.5; while (moonAt(e) >= 300) e += 0.25; const en = cross(e - 0.25, e, 0);
+      const sd = civil(st), ed = civil(en), srD = D.find(x => x.d.getTime() === sd.getTime());
+      let dow = sd.getUTCDay(); if (srD && st < srD.sr) dow = (dow + 6) % 7;   // Hindu weekday starts at sunrise
+      const sameDay = sd.getTime() === ed.getTime(), endTxt = { en: (sameDay ? "" : dTxt(en, "en")) + clock(en), hi: (sameDay ? "" : dTxt(en, "hi")) + clock(en) };
+      const push = (date, en_, hi_) => { if (date >= startDay && date < new Date(startDay.getTime() + days * 86400000)) out.push({ date, type: "panchak", en: en_, hi: hi_ }); };
+      push(sd, T.en.pBegin(clock(st), T.en.pTypes[dow]) + ` · ${T.en.pEnd(endTxt.en)}`, T.hi.pBegin(clock(st), T.hi.pTypes[dow]) + ` · ${T.hi.pEnd(endTxt.hi)}`);
+      if (!sameDay) push(ed, T.en.pEnd(clock(en)), T.hi.pEnd(clock(en)));
+      jd = en;
+    }
     out.sort((a, b) => a.date - b.date || (a.type === "fest" ? -1 : 1));
     return out;
   }
@@ -176,17 +200,17 @@
     const key = `${pl.lat},${pl.lon},${start.getTime()}`;
     if (!cache || cache.key !== key) cache = { key, list: build(pl, start, 366) };
     const list = cache.list.filter(e => filter === "all" || e.type === filter);
-    const btns = ["all", "fest", "vrat"].map(f => `<button class="tab ${f === filter ? "on" : ""}" data-cf="${f}">${x[f]}</button>`).join("");
+    const btns = ["all", "fest", "vrat", "panchak"].map(f => `<button class="tab ${f === filter ? "on" : ""}" data-cf="${f}">${x[f]}</button>`).join("");
     let h = `<h2>${x.title}</h2><p class="tag" style="text-align:left;margin:0 0 10px">${x.intro(x.place(K ? x.birth : x.delhi))}</p><div class="tabs">${btns}</div>`;
     let lastM = "";
     for (const e of list) {
       const d = e.date, mk = d.toLocaleDateString(LANG === "hi" ? "hi-IN" : "en-IN", { month: "long", year: "numeric", timeZone: "UTC" });
       if (mk !== lastM) { if (lastM) h += `</table>`; h += `<h3>${mk}</h3><table>`; lastM = mk; }
       const isToday = d.getTime() === start.getTime();
-      h += `<tr class="${isToday ? "dasha-now" : ""}"><td style="white-space:nowrap;width:110px"><b>${d.getUTCDate()}</b> <span class="sub">${DAYS[LANG][d.getUTCDay()]}</span>${isToday ? ` <span class="pill">${x.today}</span>` : ""}</td><td>${e.type === "fest" ? "🪔 <b>" : ""}${e[LANG]}${e.type === "fest" ? "</b>" : ""}</td></tr>`;
+      h += `<tr class="${isToday ? "dasha-now" : ""}"><td style="white-space:nowrap;width:110px"><b>${d.getUTCDate()}</b> <span class="sub">${DAYS[LANG][d.getUTCDay()]}</span>${isToday ? ` <span class="pill">${x.today}</span>` : ""}</td><td>${e.type === "fest" ? "🪔 <b>" : e.type === "panchak" ? "⚠️ " : ""}${e[LANG]}${e.type === "fest" ? "</b>" : ""}</td></tr>`;
     }
     if (lastM) h += `</table>`;
-    h += `<p class="sub">${x.note}</p>`;
+    h += `${filter === "panchak" || filter === "all" ? `<p class="sub">⚠️ ${x.pNote}</p>` : ""}<p class="sub">${x.note}</p>`;
     const out = document.getElementById("calOut"); out.innerHTML = h;
   }
   function setup() {
