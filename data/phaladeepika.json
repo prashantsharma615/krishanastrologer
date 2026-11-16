@@ -1690,6 +1690,39 @@
    }
   },
   {
+   "id": "pd.principle.aspect_benefic",
+   "topic": "principle",
+   "rule_en": "Benefics aspecting a house strengthen it and bring its good results; Mars, Jupiter and Saturn have their special aspects in addition to the 7th.",
+   "rule_hi": "शुभ ग्रहों की दृष्टि भाव को बल देती है और उसके शुभ फल लाती है; मंगल, गुरु और शनि की सातवीं के अतिरिक्त विशेष दृष्टियाँ भी होती हैं।",
+   "source": "Phaladeepika, Ch. 15 (Method of judging the Bhavas)",
+   "confidence": "chapter",
+   "match": {
+    "principle": "aspect_benefic"
+   }
+  },
+  {
+   "id": "pd.principle.aspect_malefic",
+   "topic": "principle",
+   "rule_en": "Malefics aspecting a house, without benefic help, harm its matters; judge them together with the strength of the house lord.",
+   "rule_hi": "बिना शुभ सहायता के पाप ग्रहों की दृष्टि भाव के विषयों को हानि पहुँचाती है; इसे भाव स्वामी के बल के साथ मिलाकर देखें।",
+   "source": "Phaladeepika, Ch. 15 (Method of judging the Bhavas)",
+   "confidence": "chapter",
+   "match": {
+    "principle": "aspect_malefic"
+   }
+  },
+  {
+   "id": "pd.principle.combust",
+   "topic": "principle",
+   "rule_en": "A house lord that is combust (too near the Sun) cannot protect its house; its results shrink.",
+   "rule_hi": "अस्त (सूर्य के बहुत निकट) भाव स्वामी अपने भाव की रक्षा नहीं कर पाता; उसके फल घट जाते हैं।",
+   "source": "Phaladeepika, Ch. 15 (Method of judging the Bhavas)",
+   "confidence": "chapter",
+   "match": {
+    "principle": "combust"
+   }
+  },
+  {
    "id": "pd.principle.karaka",
    "topic": "principle",
    "rule_en": "Judge every house together with its significator (karaka); a strong karaka supports the house even when other factors are mixed.",

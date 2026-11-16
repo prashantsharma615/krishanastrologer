@@ -285,6 +285,17 @@ const norm=x=>((x%360)+360)%360;
 const sin=d=>Math.sin(d*D2R), cos=d=>Math.cos(d*D2R);
 function julianDay(y,m,d,hUT){ if(m<=2){y--;m+=12} const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
   return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5+hUT/24; }
+// ΔT = TT − UT in seconds (Espenak & Meeus polynomials)
+function deltaT(jd){const y=2000+(jd-2451545)/365.25; let t;
+  if(y<1860){t=(y-1820)/100;return -20+32*t*t;}
+  if(y<1900){t=y-1860;return 7.62+0.5737*t-0.251754*t*t+0.01680668*t**3-0.0004473624*t**4+t**5/233174;}
+  if(y<1920){t=y-1900;return -2.79+1.494119*t-0.0598939*t*t+0.0061966*t**3-0.000197*t**4;}
+  if(y<1941){t=y-1920;return 21.20+0.84493*t-0.0761*t*t+0.0020936*t**3;}
+  if(y<1961){t=y-1950;return 29.07+0.407*t-t*t/233+t**3/2547;}
+  if(y<1986){t=y-1975;return 45.45+1.067*t-t*t/260-t**3/718;}
+  if(y<2005){t=y-2000;return 63.86+0.3345*t-0.060374*t*t+0.0017275*t**3+0.000651814*t**4+0.00002373599*t**5;}
+  if(y<2050){t=y-2000;return 62.92+0.32217*t+0.005589*t*t;}
+  t=(y-1820)/100;return -20+32*t*t-0.5628*(2150-y);}
 const EL={
  Mercury:[0.38709927,0.00000037,0.20563593,0.00001906,7.00497902,-0.00594749,252.25032350,149472.67411175,77.45779628,0.16047689,48.33076593,-0.12534081],
  Venus:[0.72333566,0.00000390,0.00677672,-0.00004107,3.39467605,-0.00078890,181.97909950,58517.81538729,131.60246718,0.00268329,76.67984255,-0.27769418],
@@ -300,25 +311,38 @@ function helio(p,T){const e0=EL[p];const a=e0[0]+e0[1]*T,e=e0[2]+e0[3]*T,I=e0[4]
   return [(co*cO-so*sO*cI)*xp+(-so*cO-co*sO*cI)*yp,(co*sO+so*cO*cI)*xp+(-so*sO+co*cO*cI)*yp,(so*sI)*xp+(co*sI)*yp];}
 function geoLon(p,T){const E=helio("Earth",T); if(p==="Sun") return norm(Math.atan2(-E[1],-E[0])*R2D+1.3970*T);
   const P=helio(p,T); return norm(Math.atan2(P[1]-E[1],P[0]-E[0])*R2D+1.3970*T);}
-function moonLon(T){const Lm=218.3164477+481267.88123421*T,D=297.8501921+445267.1114034*T,M=357.5291092+35999.0502909*T,Mp=134.9633964+477198.8675055*T,F=93.2720950+483202.0175233*T;
-  const t=[[6.288774,0,0,1,0],[1.274027,2,0,-1,0],[0.658314,2,0,0,0],[0.213618,0,0,2,0],[-0.185116,0,1,0,0],[-0.114332,0,0,0,2],[0.058793,2,0,-2,0],[0.057066,2,-1,-1,0],[0.053322,2,0,1,0],[0.045758,2,-1,0,0],[-0.040923,0,1,-1,0],[-0.034720,1,0,0,0],[-0.030383,0,1,1,0],[0.015327,2,0,0,-2],[-0.012528,0,0,1,2],[0.010980,0,0,1,-2],[0.010675,4,0,-1,0],[0.010034,0,0,3,0],[0.008548,4,0,-2,0],[-0.007888,2,1,-1,0],[-0.006766,2,1,0,0],[-0.005163,1,0,-1,0],[0.004987,1,1,0,0],[0.004036,2,-1,1,0],[0.003994,2,0,2,0],[0.003861,4,0,0,0],[0.003665,2,0,-3,0],[-0.002689,0,1,-2,0],[-0.002602,2,0,-1,2],[0.002390,2,-1,-2,0],[-0.002348,1,0,1,0],[0.002236,2,-2,0,0],[-0.002120,0,1,2,0],[-0.002069,0,2,0,0]];
-  let s=Lm; for(const [c,d,m,mp,f] of t) s+=c*sin(d*D+m*M+mp*Mp+f*F); return norm(s);}
-function ayanamsa(T){return 23.853+1.3970*T}
+// Moon: full Meeus ch. 47 longitude series (60 terms + eccentricity factor + additive terms)
+const MOON_T=[[0,0,1,0,6288774],[2,0,-1,0,1274027],[2,0,0,0,658314],[0,0,2,0,213618],[0,1,0,0,-185116],[0,0,0,2,-114332],[2,0,-2,0,58793],[2,-1,-1,0,57066],[2,0,1,0,53322],[2,-1,0,0,45758],[0,1,-1,0,-40923],[1,0,0,0,-34720],[0,1,1,0,-30383],[2,0,0,-2,15327],[0,0,1,2,-12528],[0,0,1,-2,10980],[4,0,-1,0,10675],[0,0,3,0,10034],[4,0,-2,0,8548],[2,1,-1,0,-7888],[2,1,0,0,-6766],[1,0,-1,0,-5163],[1,1,0,0,4987],[2,-1,1,0,4036],[2,0,2,0,3994],[4,0,0,0,3861],[2,0,-3,0,3665],[0,1,-2,0,-2689],[2,0,-1,2,-2602],[2,-1,-2,0,2390],[1,0,1,0,-2348],[2,-2,0,0,2236],[0,1,2,0,-2120],[0,2,0,0,-2069],[2,-2,-1,0,2048],[2,0,1,-2,-1773],[2,0,0,2,-1595],[4,-1,-1,0,1215],[0,0,2,2,-1110],[3,0,-1,0,-892],[2,1,1,0,-810],[4,-1,-2,0,759],[0,2,-1,0,-713],[2,2,-1,0,-700],[2,1,-2,0,691],[2,-1,0,-2,596],[4,0,1,0,549],[0,0,4,0,537],[4,-1,0,0,520],[1,0,-2,0,-487],[2,1,0,-2,-399],[0,0,2,-2,-381],[1,1,1,0,351],[3,0,-2,0,-340],[4,0,-3,0,330],[2,-1,2,0,327],[0,2,1,0,-323],[1,1,-1,0,299],[2,0,3,0,294]];
+function moonLon(T){const T2=T*T,T3=T2*T,T4=T3*T;
+  const Lm=218.3164477+481267.88123421*T-0.0015786*T2+T3/538841-T4/65194000;
+  const D=297.8501921+445267.1114034*T-0.0018819*T2+T3/545868-T4/113065000;
+  const M=357.5291092+35999.0502909*T-0.0001536*T2+T3/24490000;
+  const Mp=134.9633964+477198.8675055*T+0.0087414*T2+T3/69699-T4/14712000;
+  const F=93.2720950+483202.0175233*T-0.0036539*T2-T3/3526000+T4/863310000;
+  const E=1-0.002516*T-0.0000074*T2, A1=119.75+131.849*T, A2=53.09+479264.290*T;
+  let s=0; for(const [d,m,mp,f,c] of MOON_T) s+=c*(m===0?1:Math.abs(m)===1?E:E*E)*sin(d*D+m*M+mp*Mp+f*F);
+  s+=3958*sin(A1)+1962*sin(Lm-F)+318*sin(A2);
+  return norm(Lm+s/1e6);}
+// Lahiri (Chitrapaksha) ayanamsa w.r.t. the mean equinox: 23°15′00.658″ at 21 Mar 1956, moved by general precession
+function ayanamsa(T){return 23.857070+(5028.796195*T+1.1054348*T*T)/3600}
 function ascendant(jd,lat,lon){const T=(jd-2451545)/36525;
   const gmst=norm(280.46061837+360.98564736629*(jd-2451545)+0.000387933*T*T);
   const ramc=norm(gmst+lon), eps=23.439291-0.0130042*T;
   return norm(Math.atan2(cos(ramc),-(sin(ramc)*cos(eps)+Math.tan(lat*D2R)*sin(eps)))*R2D);}
-function positionsAt(jd){const T=(jd-2451545)/36525, ay=ayanamsa(T), out={};
+function positionsAt(jd){const T=(jd+deltaT(jd)/86400-2451545)/36525, ay=ayanamsa(T), out={};
   for(const p of ["Sun","Mercury","Venus","Mars","Jupiter","Saturn"]) out[p]=norm(geoLon(p,T)-ay);
   out.Moon=norm(moonLon(T)-ay);
-  out.Rahu=norm(125.0445479-1934.1362891*T-ay); out.Ketu=norm(out.Rahu+180); return out;}
+  out.Rahu=norm(125.0445479-1934.1362891*T+0.0020754*T*T-ay); out.Ketu=norm(out.Rahu+180); return out;}
 
 // ================= Kundli =================
+// India ran clocks one hour ahead (UTC+6:30) in two wartime spells (IANA tzdata Asia/Kolkata)
+function effectiveTz(tz,Y,M,D){if(tz!==5.5) return tz; const n=Y*10000+M*100+D;
+  return (n>=19411001&&n<19420515)||(n>=19420901&&n<19451015)?6.5:5.5;}
 function buildKundli(inp){
   const [Y,M,D]=inp.dob.split("-").map(Number), [h,mi]=inp.tob.split(":").map(Number);
-  const jd=julianDay(Y,M,D,h+mi/60-inp.tz), T=(jd-2451545)/36525;
+  const jd=julianDay(Y,M,D,h+mi/60-effectiveTz(inp.tz,Y,M,D)), T=(jd-2451545)/36525;
   const pos=positionsAt(jd), next=positionsAt(jd+1);
-  const asc=norm(ascendant(jd,inp.lat,inp.lon)-ayanamsa(T)), lagna=Math.floor(asc/30);
+  const asc=norm(ascendant(jd,inp.lat,inp.lon)-ayanamsa(T+deltaT(jd)/86400/36525)), lagna=Math.floor(asc/30);
   const planets={};
   for(const p of ["Sun","Moon","Mars","Mercury","Jupiter","Venus","Saturn","Rahu","Ketu"]){
     const Lp=pos[p], s=Math.floor(Lp/30), n=Math.floor(Lp/(360/27));
@@ -542,7 +566,7 @@ function mangalInfo(k){const M=k.planets.Mars, hL=M.house, hM=((M.sign-k.planets
   return {hL,hM,fromL,fromM,present:fromL||fromM,strong:fromL,reduced:(dg==="Own"||dg==="Exalted"),dg};}
 function kaalSarp(k){const r=k.planets.Rahu.lon; const ds=["Sun","Moon","Mars","Mercury","Jupiter","Venus","Saturn"].map(p=>norm(k.planets[p].lon-r));
   const yes=ds.every(d=>d<180)||ds.every(d=>d>180); return {yes,name:KS_NAMES[LANG][k.planets.Rahu.house-1]};}
-function saturnSign(jd){const T=(jd-2451545)/36525;return Math.floor(norm(geoLon("Saturn",T)-ayanamsa(T))/30);}
+function saturnSign(jd){const T=(jd+deltaT(jd)/86400-2451545)/36525;return Math.floor(norm(geoLon("Saturn",T)-ayanamsa(T))/30);}
 function transitPeriods(k,offsets){const ms=k.planets.Moon.sign, now=julianDayNow(), step=4, out=[]; let cur=null;
   for(let jd=now-9*365.25; jd<now+32*365.25; jd+=step){const rel=((saturnSign(jd)-ms+12)%12); const inS=offsets.includes(rel);
     if(inS){ if(cur&&jd-cur.end<450) cur.end=jd; else {cur={start:jd,end:jd}; out.push(cur);} } }
@@ -611,7 +635,8 @@ const VASHYA_T=[[2,1,1,0.5,1],[1,2,0.5,0,1],[1,0.5,2,1,1],[0.5,0,1,2,0],[1,1,1,0
 function vashyaOf(P){const s=P.sign,d=P.deg; if(s===0||s===1) return 0; if(s===8) return d<15?1:0; if(s===9) return d<15?0:2; if(s===3||s===11) return 2; if(s===4) return 3; if(s===7) return 4; return 1;}
 const YONI_N={en:["Horse","Elephant","Sheep","Serpent","Dog","Cat","Rat","Cow","Buffalo","Tiger","Deer","Monkey","Mongoose","Lion"],hi:["अश्व","गज","मेष","सर्प","श्वान","मार्जार","मूषक","गौ","महिष","व्याघ्र","मृग","वानर","नकुल","सिंह"]};
 const YONI_OF=[0,1,2,3,3,4,5,2,5,6,6,7,8,9,8,9,10,10,4,11,12,11,13,0,13,7,1];
-const YONI_ENEMY=[[0,8],[1,13],[2,11],[3,12],[4,10],[5,6],[7,9]];
+// Yoni koota points (0–4) for every pair of the 14 yonis — standard Ashtakoot table; 0 = sworn enemies
+const YONI_T=[[4,2,2,3,2,2,2,1,0,1,3,3,2,1],[2,4,3,3,2,2,2,2,3,1,2,3,2,0],[2,3,4,2,1,2,1,3,3,1,2,0,3,1],[3,3,2,4,2,1,1,1,1,2,2,2,0,2],[2,2,1,2,4,2,1,2,2,1,0,2,1,1],[2,2,2,1,2,4,0,2,2,1,3,3,2,1],[2,2,1,1,1,0,4,2,2,2,2,2,1,2],[1,2,3,1,2,2,2,4,3,0,3,2,2,1],[0,3,3,1,2,2,2,3,4,1,2,2,2,1],[1,1,1,2,1,1,2,0,1,4,1,1,2,1],[3,2,2,2,0,3,2,3,2,1,4,2,2,1],[3,3,0,2,2,3,2,2,2,1,2,4,3,2],[2,2,3,0,1,2,1,2,2,2,2,3,4,2],[1,0,1,2,1,1,2,1,1,1,1,2,2,4]];
 const FRIENDS={Sun:{F:["Moon","Mars","Jupiter"],E:["Venus","Saturn"]},Moon:{F:["Sun","Mercury"],E:[]},Mars:{F:["Sun","Moon","Jupiter"],E:["Mercury"]},Mercury:{F:["Sun","Venus"],E:["Moon"]},Jupiter:{F:["Sun","Moon","Mars"],E:["Mercury","Venus"]},Venus:{F:["Mercury","Saturn"],E:["Sun","Moon"]},Saturn:{F:["Mercury","Venus"],E:["Sun","Moon","Mars"]}};
 const rel=(a,b)=>FRIENDS[a].F.includes(b)?"F":FRIENDS[a].E.includes(b)?"E":"N";
 const GANA_N={en:["Deva","Manushya","Rakshasa"],hi:["देव","मनुष्य","राक्षस"]};
@@ -627,8 +652,8 @@ function gunaMilan(B,G){
   const vb=vashyaOf(b),vg=vashyaOf(g); out.push({max:2,got:VASHYA_T[vb][vg],bv:VASHYA_N[LANG][vb],gv:VASHYA_N[LANG][vg]});
   const tg=c=>![3,5,7].includes(c%9); const c1=((b.nak-g.nak+27)%27)+1, c2=((g.nak-b.nak+27)%27)+1;
   out.push({max:3,got:(tg(c1)?1.5:0)+(tg(c2)?1.5:0),bv:NAK[LANG][b.nak],gv:NAK[LANG][g.nak]});
-  const yb=YONI_OF[b.nak],yg=YONI_OF[g.nak], enemy=YONI_ENEMY.some(([x,y])=>(x===yb&&y===yg)||(x===yg&&y===yb));
-  out.push({max:4,got:yb===yg?4:enemy?0:2,bv:YONI_N[LANG][yb],gv:YONI_N[LANG][yg]});
+  const yb=YONI_OF[b.nak],yg=YONI_OF[g.nak];
+  out.push({max:4,got:YONI_T[yb][yg],bv:YONI_N[LANG][yb],gv:YONI_N[LANG][yg]});
   const lb=LORD[b.sign],lg=LORD[g.sign]; let gm; if(lb===lg) gm=5; else {const k=[rel(lb,lg),rel(lg,lb)].sort().join(""); gm={FF:5,FN:4,NN:3,EF:1,EN:0.5,EE:0}[k];}
   out.push({max:5,got:gm,bv:pn(lb),gv:pn(lg)});
   const gb=GANA_OF[b.nak],gg=GANA_OF[g.nak]; out.push({max:6,got:GANA_T[gb][gg],bv:GANA_N[LANG][gb],gv:GANA_N[LANG][gg]});
@@ -682,17 +707,31 @@ const SIGN_SYM=["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒
 const GOOD_MOON=[1,3,6,7,10,11];
 const RF={en:{1:"The Moon is in your own sign today, so your mind feels fresh and confident. A good day for personal work, meeting people and starting something small. Don't get over-emotional.",2:"Watch your words and your wallet today. Family matters may need attention and expenses can rise. Speak softly and avoid lending money.",3:"Your courage and energy are high. Efforts bring success, especially in communication, short trips and dealings with siblings. A good day to take initiative.",4:"You may feel restless or worried about home matters. Avoid arguments in the family, spend time with your mother and get proper rest.",5:"Your mind may be indecisive today. Avoid risky investments and speculation. Children or studies may need attention — think before you decide.",6:"A day of victory. Pending work gets done, competitors stay quiet and health improves. Good for clearing debts and settling disputes.",7:"A good day for partnership, your spouse and meetings. Business talks and travel can be fruitful, and relationships feel warm.",8:"Be careful today: sudden obstacles or delays are possible. Drive carefully, look after your health and postpone big decisions.",9:"Luck is a little mixed and some work may get delayed. Prayer, spiritual activity and respect for elders bring peace.",10:"A strong day for career. Your work gets noticed and seniors are supportive. Good time to present ideas or ask for something at work.",11:"A day of gains. Wishes can be fulfilled, friends help and money can come in. Good for networking and social plans.",12:"Expenses and tiredness are possible. Rest, avoid lending money and don't over-commit. A good day for meditation and planning."},
  hi:{1:"आज चंद्रमा आपकी ही राशि में है, इसलिए मन ताज़ा और आत्मविश्वास से भरा रहेगा। निजी काम, लोगों से मिलने और कोई छोटा काम शुरू करने के लिए अच्छा दिन है। ज़्यादा भावुक होने से बचें।",2:"आज अपनी वाणी और खर्च पर ध्यान दें। परिवार के मामलों पर ध्यान देना पड़ सकता है और खर्च बढ़ सकते हैं। नरमी से बोलें और किसी को उधार न दें।",3:"आपका साहस और ऊर्जा ऊँचे रहेंगे। मेहनत से सफलता मिलेगी, खासकर बातचीत, छोटी यात्राओं और भाई-बहनों से जुड़े कामों में। पहल करने के लिए अच्छा दिन है।",4:"घर के मामलों को लेकर बेचैनी या चिंता हो सकती है। परिवार में बहस से बचें, माता के साथ समय बिताएँ और पूरा आराम करें।",5:"आज मन निर्णय लेने में उलझ सकता है। जोखिम वाले निवेश और सट्टे से बचें। संतान या पढ़ाई पर ध्यान देना पड़ सकता है — सोच-समझकर निर्णय लें।",6:"विजय का दिन है। रुके हुए काम पूरे होंगे, विरोधी शांत रहेंगे और स्वास्थ्य सुधरेगा। कर्ज़ चुकाने और विवाद सुलझाने के लिए अच्छा समय है।",7:"साझेदारी, जीवनसाथी और मुलाकातों के लिए अच्छा दिन है। व्यापार की बातचीत और यात्रा फलदायी हो सकती है, रिश्तों में मधुरता रहेगी।",8:"आज सावधान रहें: अचानक बाधा या देरी हो सकती है। वाहन ध्यान से चलाएँ, स्वास्थ्य का ध्यान रखें और बड़े निर्णय टाल दें।",9:"भाग्य थोड़ा मिला-जुला रहेगा और कुछ काम में देरी हो सकती है। पूजा-पाठ, आध्यात्मिक कार्य और बड़ों का सम्मान शांति देगा।",10:"करियर के लिए मज़बूत दिन है। आपके काम की सराहना होगी और वरिष्ठ साथ देंगे। काम पर अपने विचार रखने या कुछ माँगने का अच्छा समय है।",11:"लाभ का दिन है। इच्छाएँ पूरी हो सकती हैं, मित्र मदद करेंगे और धन आ सकता है। मेल-जोल और सामाजिक योजनाओं के लिए अच्छा समय है।",12:"खर्च और थकान हो सकती है। आराम करें, उधार देने से बचें और ज़्यादा ज़िम्मेदारियाँ न लें। ध्यान और योजना बनाने के लिए अच्छा दिन है।"}};
-const RT={en:{moonIn:"Moon today",luckyColor:"Lucky colour",luckyNum:"Lucky number",upay:"Today's remedy",rating:"Today's rating",ss:"Shani's Sade Sati is running for this Rashi — stay patient and avoid shortcuts.",dh:"Shani's Dhaiya is running for this Rashi — be careful with health and big decisions.",yours:"Your Rashi",chant:(m,p)=>`Chant <span class="mantra">${m}</span> 108 times today (${p}'s day).`},
- hi:{moonIn:"आज चंद्रमा",luckyColor:"शुभ रंग",luckyNum:"शुभ अंक",upay:"आज का उपाय",rating:"आज का दिन",ss:"इस राशि पर शनि की साढ़ेसाती चल रही है — धैर्य रखें और शॉर्टकट से बचें।",dh:"इस राशि पर शनि की ढैय्या चल रही है — स्वास्थ्य और बड़े निर्णयों में सावधानी रखें।",yours:"आपकी राशि",chant:(m,p)=>`आज ${p} का दिन है — <span class="mantra">${m}</span> का 108 बार जाप करें।`}};
+const RT={en:{moonIn:"Moon today",sunrise:"Sunrise",luckyColor:"Lucky colour",luckyNum:"Lucky number",upay:"Today's remedy",rating:"Today's rating",ss:"Shani's Sade Sati is running for this Rashi — stay patient and avoid shortcuts.",dh:"Shani's Dhaiya is running for this Rashi — be careful with health and big decisions.",yours:"Your Rashi",chant:(m,p)=>`Chant <span class="mantra">${m}</span> 108 times today (${p}'s day).`},
+ hi:{moonIn:"आज चंद्रमा",sunrise:"सूर्योदय",luckyColor:"शुभ रंग",luckyNum:"शुभ अंक",upay:"आज का उपाय",rating:"आज का दिन",ss:"इस राशि पर शनि की साढ़ेसाती चल रही है — धैर्य रखें और शॉर्टकट से बचें।",dh:"इस राशि पर शनि की ढैय्या चल रही है — स्वास्थ्य और बड़े निर्णयों में सावधानी रखें।",yours:"आपकी राशि",chant:(m,p)=>`आज ${p} का दिन है — <span class="mantra">${m}</span> का 108 बार जाप करें।`}};
 let selRashi=null;
 try{const r=localStorage.getItem("krishan_rashi"); if(r!==null) selRashi=+r;}catch(e){}
-function todayData(){const jd=julianDayNow(), P=positionsAt(jd), d=new Date();
-  const diff=norm(P.Moon-P.Sun), t=Math.floor(diff/12), paksha=t<15?0:1, ti=t===14?14:t===29?15:t%15;
-  return {P,dow:d.getDay(),moonSign:Math.floor(P.Moon/30),moonNak:Math.floor(P.Moon/(360/27)),tithi:ti,paksha,jup:Math.floor(P.Jupiter/30),sat:Math.floor(P.Saturn/30)};}
+// sunrise (upper limb, standard refraction) as a Julian Day (UT) for a civil date at a place
+function sunriseJD(Y,M,D,lat,lon,tz){let jd=julianDay(Y,M,D,6-tz);
+  for(let i=0;i<4;i++){const T=(jd+deltaT(jd)/86400-2451545)/36525, l=geoLon("Sun",T), e=23.439291-0.0130042*T;
+    const ra=norm(Math.atan2(cos(e)*sin(l),cos(l))*R2D), dec=Math.asin(sin(e)*sin(l))*R2D;
+    const c=(sin(-0.833)-sin(lat)*sin(dec))/(cos(lat)*cos(dec)); if(c<-1||c>1) return jd;
+    const H0=Math.acos(c)*R2D, Tu=(jd-2451545)/36525, lst=norm(280.46061837+360.98564736629*(jd-2451545)+0.000387933*Tu*Tu+lon);
+    let dH=norm(lst-ra+H0); if(dH>180) dH-=360; jd-=dH/360.98564736629;}
+  return jd;}
+// Panchang place: the saved birth city, else New Delhi. Tithi, nakshatra and vaar are taken at sunrise, as in printed panchangs.
+function todayData(){const now=julianDayNow(), pl=K&&K.inp?K.inp:{lat:28.6139,lon:77.2090,tz:5.5};
+  const tz=pl.tz??5.5, loc=new Date(Date.now()+tz*3600000); let Y=loc.getUTCFullYear(),Mo=loc.getUTCMonth()+1,Dd=loc.getUTCDate();
+  let sr=sunriseJD(Y,Mo,Dd,pl.lat,pl.lon,tz), day=new Date(Date.UTC(Y,Mo-1,Dd));
+  if(now<sr){day=new Date(day.getTime()-86400000); sr=sunriseJD(day.getUTCFullYear(),day.getUTCMonth()+1,day.getUTCDate(),pl.lat,pl.lon,tz);}
+  const S=positionsAt(sr), P=positionsAt(now);
+  const diff=norm(S.Moon-S.Sun), t=Math.floor(diff/12), paksha=t<15?0:1, ti=t===14?14:t===29?15:t%15;
+  const srLocal=new Date((sr-2440587.5)*86400000+tz*3600000), srTxt=`${srLocal.getUTCHours()}:${String(srLocal.getUTCMinutes()).padStart(2,"0")}`;
+  return {P,dow:day.getUTCDay(),moonSign:Math.floor(P.Moon/30),moonNak:Math.floor(S.Moon/(360/27)),tithi:ti,paksha,jup:Math.floor(P.Jupiter/30),sat:Math.floor(P.Saturn/30),sunrise:srTxt};}
 function renderRashifal(){
   const U=L(), X=RT[LANG], T=todayData();
   const dateStr=new Date().toLocaleDateString(LANG==="hi"?"hi-IN":"en-IN",{day:"numeric",month:"long",year:"numeric"});
-  document.getElementById("panchang").innerHTML=[[U.dateL,dateStr],[U.vaar,DAYS[LANG][T.dow]],[U.tithiL,`${TITHI[LANG][T.tithi]}`],[U.pakshaL,PAKSHA[LANG][T.paksha]],[X.moonIn,`${sn(T.moonSign)} · ${NAK[LANG][T.moonNak]}`]].map(([a,b])=>`<div><small>${a}</small><b>${b}</b></div>`).join("");
+  document.getElementById("panchang").innerHTML=[[U.dateL,dateStr],[U.vaar,DAYS[LANG][T.dow]],[U.tithiL,`${TITHI[LANG][T.tithi]}`],[U.pakshaL,PAKSHA[LANG][T.paksha]],[X.moonIn,`${sn(T.moonSign)} · ${NAK[LANG][T.moonNak]}`],[X.sunrise,T.sunrise]].map(([a,b])=>`<div><small>${a}</small><b>${b}</b></div>`).join("");
   if(selRashi===null&&K) selRashi=K.planets.Moon.sign;
   if(selRashi===null) selRashi=0;
   const my=K?K.planets.Moon.sign:null;
@@ -799,7 +838,7 @@ document.getElementById("go").onclick=()=>{
   const H=+document.getElementById("hh").value, Mi=+document.getElementById("mm").value, AP=document.getElementById("ap").value;
   const h24=(H%12)+(AP==="PM"?12:0);
   const inp={name:document.getElementById("name").value.trim(),dob:document.getElementById("dob").value,tob:h24+":"+Mi,timeLabel:`${H}:${String(Mi).padStart(2,"0")} ${AP}`,
-    lat:c?c[2]:+document.getElementById("lat").value,lon:c?c[3]:+document.getElementById("lon").value,tz:c?(c[4]??5.5):+document.getElementById("tz").value};
+    lat:c?c[2]:+document.getElementById("lat").value,lon:c?c[3]:+document.getElementById("lon").value,tz:c?(c[4]??5.5):+document.getElementById("tz").value,gender:gsel.selectedIndex};
   if(!inp.dob){document.getElementById("dob").focus();return}
   const qt=document.getElementById("probTxt").value.trim();
   currentArea=matchArea(qt,document.getElementById("probSel").value); currentQ=qt;

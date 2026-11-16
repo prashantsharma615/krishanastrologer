@@ -12,7 +12,7 @@ window.Engine = (function () {
     money:    { h: [2, 11], k: ["Jupiter", "Venus"] },
     marriage: { h: [7], k: ["Venus", "Jupiter"] },
     love:     { h: [5, 7], k: ["Venus", "Moon"] },
-    health:   { h: [1], k: ["Sun", "Moon"] },
+    health:   { h: [1, 6], k: ["Sun", "Moon"] },
     education:{ h: [4, 5], k: ["Mercury", "Jupiter"] },
     family:   { h: [4, 2], k: ["Moon", "Jupiter"] },
     legal:    { h: [6], k: ["Mars", "Saturn"] },
@@ -22,6 +22,11 @@ window.Engine = (function () {
   };
   const PRO = new Set(["health", "legal", "money", "business"]);
   const KENDRA = [1, 4, 7, 10];
+  // graha drishti (BPHS Ch. 26): all aspect the 7th; Mars 4/8, Jupiter 5/9, Saturn 3/10
+  const ASPECTS = { Sun: [7], Moon: [7], Mercury: [7], Venus: [7], Mars: [4, 7, 8], Jupiter: [5, 7, 9], Saturn: [3, 7, 10] };
+  const COMBUST = { Moon: 12, Mars: 17, Mercury: 14, Jupiter: 11, Venus: 10, Saturn: 15 };
+  const isBenefic = (k, p) => p === "Jupiter" || p === "Venus" || p === "Mercury" || (p === "Moon" && norm(k.planets.Moon.lon - k.planets.Sun.lon) < 180);
+  const combust = (k, p) => { if (!COMBUST[p]) return false; let d = Math.abs(k.planets[p].lon - k.planets.Sun.lon) % 360; if (d > 180) d = 360 - d; return d < COMBUST[p]; };
   const LORD_SCORE = { lord_own: 2, lord_kt: 2, lord_gain: 1, lord_3: 0, lord_dus: -2 };
   const DIG_SCORE = { exalted: 2, own: 1.5, friend: 0.5, neutral: 0, enemy: -0.5, debilitated: -2 };
   const POS_YOGA = new Set(["gajakesari", "raj", "yogakaraka", "dhan", "ruchaka", "bhadra", "hamsa", "malavya", "sasa", "neechabhanga"]);
@@ -35,6 +40,8 @@ window.Engine = (function () {
       houseWord: hs => hs.map(h => `${h}${h === 1 ? "st" : h === 2 ? "nd" : h === 3 ? "rd" : "th"}`).join(" & ") + (hs.length > 1 ? " houses" : " house"),
       bLord: (h, lord, lh, cat) => `Lord of the ${ord(h)} house, <b>${pn(lord)}</b>, is in the ${ord(lh)} house — ${({ lord_own: "its own house, which protects it", lord_kt: "a kendra/trikona, which helps this matter flourish", lord_gain: "a house of gains, which is supportive", lord_3: "the house of effort, so results come through your own work", lord_dus: "a dusthana (6/8/12), which brings delays or obstacles" })[cat]}.`,
       bIn: (p, h, good) => `<b>${pn(p)}</b> sits in the ${ord(h)} house — ${good ? "a supportive placement" : "a placement that asks for effort"}.`,
+      bAsp: (p, h, good) => `<b>${pn(p)}</b> aspects the ${ord(h)} house — ${good ? "a protective, supportive influence" : "pressure that calls for patience and effort"}.`,
+      bComb: (p, h) => `Lord of the ${ord(h)} house, <b>${pn(p)}</b>, is combust (too close to the Sun), which weakens it.`,
       bKar: (p, s, d, h) => `Significator <b>${pn(p)}</b> is in ${sn(s)} (${({ exalted: "exalted", own: "own sign", friend: "friend's sign", neutral: "neutral sign", enemy: "enemy's sign", debilitated: "debilitated" })[d]}), ${ord(h)} house.`,
       bYoga: (n, extra) => `<b>${n}</b> is present in your chart${extra ? " " + extra : ""}.`,
       kemaCancelled: "(cancelled by planets in kendras, so its effect is mild)",
@@ -70,6 +77,8 @@ window.Engine = (function () {
       houseWord: hs => hs.map(h => hiOrd(h)).join(" और ") + " भाव",
       bLord: (h, lord, lh, cat) => `${hiOrd(h)} भाव का स्वामी <b>${pn(lord)}</b> ${hiOrd(lh)} भाव में है — ${({ lord_own: "अपने ही भाव में, जो इसे सुरक्षित रखता है", lord_kt: "केंद्र/त्रिकोण में, जिससे यह विषय फलता-फूलता है", lord_gain: "लाभ के भाव में, जो सहायक है", lord_3: "प्रयास के भाव में, इसलिए फल अपनी मेहनत से मिलेगा", lord_dus: "दुःस्थान (6/8/12) में, जिससे देरी या बाधा आती है" })[cat]}।`,
       bIn: (p, h, good) => `<b>${pn(p)}</b> ${hiOrd(h)} भाव में है — ${good ? "यह सहायक स्थिति है" : "यह स्थिति प्रयास माँगती है"}।`,
+      bAsp: (p, h, good) => `<b>${pn(p)}</b> की ${hiOrd(h)} भाव पर दृष्टि है — ${good ? "यह रक्षा और सहयोग देती है" : "यह दबाव बनाती है, धैर्य और प्रयास चाहिए"}।`,
+      bComb: (p, h) => `${hiOrd(h)} भाव का स्वामी <b>${pn(p)}</b> अस्त है (सूर्य के बहुत निकट), जिससे यह कमज़ोर होता है।`,
       bKar: (p, s, d, h) => `कारक <b>${pn(p)}</b> ${sn(s)} राशि (${({ exalted: "उच्च", own: "स्वराशि", friend: "मित्र राशि", neutral: "सम राशि", enemy: "शत्रु राशि", debilitated: "नीच" })[d]}) में, ${hiOrd(h)} भाव में है।`,
       bYoga: (n, extra) => `आपकी कुंडली में <b>${n}</b> है${extra ? " " + extra : ""}।`,
       kemaCancelled: "(केंद्र में ग्रह होने से भंग, इसलिए प्रभाव हल्का है)",
@@ -141,7 +150,9 @@ window.Engine = (function () {
 
   // ---- build one answer
   function areaAnswer(k, key, q, intent) {
-    const X = T[LANG], A = AREA[key], area = AREAS[key].t[LANG], used = [], add = (e, fact) => { if (e && !used.some(u => u.e.id === e.id && u.fact === fact)) used.push({ e, fact }); };
+    const X = T[LANG], area = AREAS[key].t[LANG], used = [], add = (e, fact) => { if (e && !used.some(u => u.e.id === e.id && u.fact === fact)) used.push({ e, fact }); };
+    // marriage: Venus is the spouse significator; for a woman's chart tradition takes Jupiter (husband) first
+    const A = key === "marriage" && k.inp && k.inp.gender === 1 ? { h: AREA.marriage.h, k: ["Jupiter", "Venus"] } : AREA[key];
     const rel = new Set(A.k), bullets = [];
     let score = 0;
     // houses + lords + occupants
@@ -159,6 +170,15 @@ window.Engine = (function () {
         const e = KB.find("planet_house", { planet: p, house: h }), good = e && e.tone === "good";
         score += good ? 1 : -0.5;
         const l = X.bIn(p, h, good); bullets.push(l); add(e, l.replace(/<[^>]+>/g, ""));
+      }
+      // combust house lord
+      if (combust(k, lord)) { score -= 1; const l = X.bComb(lord, h); bullets.push(l); add(KB.find("principle", { principle: "combust" }), l.replace(/<[^>]+>/g, "")); }
+      // aspects on the house (planets sitting in it are already counted)
+      for (const p in ASPECTS) {
+        const P = k.planets[p]; if (!P || P.house === h) continue;
+        if (!ASPECTS[p].includes(((h - P.house + 12) % 12) + 1)) continue;
+        const good = isBenefic(k, p); score += good ? 0.75 : -0.5; rel.add(p);
+        const l = X.bAsp(p, h, good); bullets.push(l); add(KB.find("principle", { principle: good ? "aspect_benefic" : "aspect_malefic" }), l.replace(/<[^>]+>/g, ""));
       }
     }
     // karakas

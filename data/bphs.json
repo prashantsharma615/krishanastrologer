@@ -3452,6 +3452,28 @@
    }
   },
   {
+   "id": "bphs.principle.aspect_benefic",
+   "topic": "principle",
+   "rule_en": "Every planet aspects the 7th house from itself; Mars also aspects the 4th and 8th, Jupiter the 5th and 9th, and Saturn the 3rd and 10th. When a natural benefic aspects a house, it protects and supports that house's matters.",
+   "rule_hi": "हर ग्रह अपने से सातवें भाव को देखता है; मंगल चौथे और आठवें, गुरु पाँचवें और नौवें, तथा शनि तीसरे और दसवें भाव को भी देखता है। जब कोई प्राकृतिक शुभ ग्रह किसी भाव को देखता है, तो वह उस भाव के विषयों की रक्षा और सहायता करता है।",
+   "source": "BPHS, Ch. 26 (Evaluation of aspects)",
+   "confidence": "chapter",
+   "match": {
+    "principle": "aspect_benefic"
+   }
+  },
+  {
+   "id": "bphs.principle.aspect_malefic",
+   "topic": "principle",
+   "rule_en": "When a natural malefic (Sun, Mars, Saturn) aspects a house, it puts pressure on that house's matters: results come through effort, delay or some conflict.",
+   "rule_hi": "जब कोई प्राकृतिक पाप ग्रह (सूर्य, मंगल, शनि) किसी भाव को देखता है, तो उस भाव के विषयों पर दबाव बनता है: फल प्रयास, देरी या कुछ संघर्ष से मिलते हैं।",
+   "source": "BPHS, Ch. 26 (Evaluation of aspects)",
+   "confidence": "chapter",
+   "match": {
+    "principle": "aspect_malefic"
+   }
+  },
+  {
    "id": "bphs.principle.benefic_malefic",
    "topic": "principle",
    "rule_en": "Jupiter, Venus, well-placed Mercury and the waxing Moon are natural benefics; the Sun, Mars, Saturn, Rahu and Ketu are natural malefics.",
@@ -3460,6 +3482,17 @@
    "confidence": "chapter",
    "match": {
     "principle": "benefic_malefic"
+   }
+  },
+  {
+   "id": "bphs.principle.combust",
+   "topic": "principle",
+   "rule_en": "A planet very close to the Sun becomes combust (asta) and loses strength; as a house lord it weakens that house's results. Usual orbs: Moon 12°, Mars 17°, Mercury 14°, Jupiter 11°, Venus 10°, Saturn 15°.",
+   "rule_hi": "सूर्य के बहुत निकट आया ग्रह अस्त हो जाता है और उसका बल घटता है; भाव स्वामी के रूप में वह उस भाव के फल को कमज़ोर करता है। सामान्य अंश: चंद्र 12°, मंगल 17°, बुध 14°, गुरु 11°, शुक्र 10°, शनि 15°।",
+   "source": "Parashari tradition (combustion orbs as given in Surya Siddhanta)",
+   "confidence": "tradition",
+   "match": {
+    "principle": "combust"
    }
   },
   {

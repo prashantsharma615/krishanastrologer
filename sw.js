@@ -1,4 +1,4 @@
-const CACHE="krishan-v13";
+const CACHE="krishan-v14";
 const FILES=["./","./index.html","./privacy.html","./terms.html","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png","./icons/apple-touch-icon.png","./icons/owner.jpg",
   "./js/kb.js","./js/engine.js","./js/install.js","./js/forecast.js","./js/extras.js","./js/cities.js","./data/books.json","./data/bphs.json","./data/phaladeepika.json"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)));self.skipWaiting();});

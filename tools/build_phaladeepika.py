@@ -215,6 +215,9 @@ PR = {
  "lord_kt":("A house lord placed in a kendra or trikona, in strength, makes that house flourish.","भाव का स्वामी बलवान होकर केंद्र या त्रिकोण में हो तो वह भाव फलता-फूलता है।"),
  "lord_gain":("A house lord in the 11th or 2nd, unafflicted, adds gains to that house's matters.","भाव का स्वामी 11वें या दूसरे भाव में, बिना पीड़ा के, उस भाव के विषयों में लाभ जोड़ता है।"),
  "lord_dus":("A house lord in the 6th, 8th or 12th, debilitated, combust or in an enemy's sign, weakens that house — its results come with delay or effort.","भाव का स्वामी 6, 8 या 12 में, नीच, अस्त या शत्रु राशि में हो तो वह भाव कमज़ोर होता है — फल देरी या प्रयास से मिलता है।"),
+ "aspect_benefic":("Benefics aspecting a house strengthen it and bring its good results; Mars, Jupiter and Saturn have their special aspects in addition to the 7th.","शुभ ग्रहों की दृष्टि भाव को बल देती है और उसके शुभ फल लाती है; मंगल, गुरु और शनि की सातवीं के अतिरिक्त विशेष दृष्टियाँ भी होती हैं।"),
+ "aspect_malefic":("Malefics aspecting a house, without benefic help, harm its matters; judge them together with the strength of the house lord.","बिना शुभ सहायता के पाप ग्रहों की दृष्टि भाव के विषयों को हानि पहुँचाती है; इसे भाव स्वामी के बल के साथ मिलाकर देखें।"),
+ "combust":("A house lord that is combust (too near the Sun) cannot protect its house; its results shrink.","अस्त (सूर्य के बहुत निकट) भाव स्वामी अपने भाव की रक्षा नहीं कर पाता; उसके फल घट जाते हैं।"),
  "karaka":("Judge every house together with its significator (karaka); a strong karaka supports the house even when other factors are mixed.","हर भाव का विचार उसके कारक ग्रह के साथ करें; बलवान कारक अन्य कारकों के मिश्रित होने पर भी भाव को सहारा देता है।"),
 }
 for k, (en, hi) in PR.items():
