@@ -9,6 +9,10 @@ Live: https://krishanastrologer.netlify.app/
 - **Ask your problem** chat — answers in the language the question is written in (Devanagari/Hinglish → Hindi)
 - Every answer: ① Problem summary → ② Astrological reasoning → ③ Prediction & timing (dasha) → ④ Remedies → 📖 Source line + expandable **Why?** listing each BPHS rule used
 - Kundli Milan (36 gunas), Daily Rashifal + Panchang, Dosh check (Mangal, Kaal Sarp, Sade Sati)
+- **More charts:** Navamsa (D9), Dashamsa (D10), Chandra kundli, Gochar chart + transit results from the Moon (Phaladeepika Ch. 26)
+- **Avakahada chakra:** varna, vashya, yoni, gana, nadi, tatva, paya, nakshatra/rashi/lagna lords, naming letters, birth tithi-yoga-karana-vaar; gemstones (life/lucky/punya) and lucky day, number, colour
+- **Full panchang & muhurat:** tithi, nakshatra, yoga, karana at sunrise; sunrise/sunset, Rahu Kaal, Yamaganda, Gulika, Abhijit; day & night Choghadiya
+- **Numerology (Ank Jyotish):** Mulank, Bhagyank, name number (Chaldean) with ruling planet, lucky day/colour and remedy
 - Install on Android (install prompt) and iPhone (Add to Home Screen guide); works offline
 
 ## Project structure
@@ -41,6 +45,7 @@ Astrological guidance is for spiritual and informational purposes only and is no
 ## More files
 ```
 js/cities.js          296 searchable Indian + world cities with time zones
+js/vedic.js           divisional/transit charts, Avakahada, gems, full panchang & choghadiya, numerology
 js/extras.js          city search, WhatsApp share, PDF/print, family profiles
 terms.html            Terms of use (Hindi + English)
 store/                Google Play listing kit: listing text, feature graphic, 8 screenshots
