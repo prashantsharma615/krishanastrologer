@@ -99,6 +99,10 @@ details.why ol{margin:8px 0 0 18px;font-size:13px;line-height:1.55;color:#cfc9ea
 .owner{display:flex;align-items:center;gap:16px;max-width:980px;margin:16px auto 0}
 .owner img{width:96px;height:96px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0}
 .owner .sub{text-transform:uppercase;letter-spacing:.6px;font-size:11px}.oname{font-family:Cinzel,"Noto Sans Devanagari",serif;font-size:22px;color:var(--gold2)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.fcard{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px}
+.fm{font-weight:600;font-size:14px;margin-bottom:2px}.fcard .stars{font-size:16px}
+.flist{display:flex;flex-direction:column;gap:8px}.fyear{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;line-height:1.6;font-size:14px}
 .banner{background:#3a2c74;border:1px solid var(--gold);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:14px}
 </style>
 </head>
@@ -107,7 +111,7 @@ details.why ol{margin:8px 0 0 18px;font-size:13px;line-height:1.55;color:#cfc9ea
   <div class="toprow"><div class="lang"><button data-lang="en">English</button><button data-lang="hi">हिंदी</button></div><button class="ghost install" id="installBtn" data-i="install"></button></div>
   <div class="logo" data-i="logo"></div>
   <div class="tag" data-i="tagline"></div>
-  <nav class="nav"><button data-view="home" data-i="navHome"></button><button data-view="ask" data-i="navAsk"></button><button data-view="match" data-i="navMatch"></button><button data-view="daily" data-i="navDaily"></button><button data-view="dosh" data-i="navDosh"></button></nav>
+  <nav class="nav"><button data-view="home" data-i="navHome"></button><button data-view="ask" data-i="navAsk"></button><button data-view="future" data-i="navFuture"></button><button data-view="match" data-i="navMatch"></button><button data-view="daily" data-i="navDaily"></button><button data-view="dosh" data-i="navDosh"></button></nav>
 </header>
 <main>
 <div id="view-home" class="view">
@@ -180,6 +184,10 @@ details.why ol{margin:8px 0 0 18px;font-size:13px;line-height:1.55;color:#cfc9ea
 </section>
 </div>
 
+<div id="view-future" class="view hidden">
+<section class="card"><div class="reading" id="futureOut"></div></section>
+</div>
+
 <div id="view-match" class="view hidden">
 <section class="card">
   <h2 data-i="navMatch"></h2>
@@ -223,11 +231,11 @@ const UI={
  en:{logo:'✦ KRISHAN <span>ASTROLOGER</span> ✦',tagline:"Vedic Kundli · Dasha · Guidance for life's problems",enterDetails:"Enter Birth Details",fullName:"Full name",namePh:"e.g. Rahul Sharma",gender:"Gender",genders:["Male","Female","Other"],dob:"Date of birth",tob:"Time of birth",pob:"Place of birth",otherPlace:"Other place (enter coordinates)",lat:"Latitude (N +)",lon:"Longitude (E +)",tz:"Time zone (hours from UTC)",generate:"Get My Kundli & Solution",exactTime:"Exact time gives an exact Lagna (ascendant).",chartCap:"Lagna chart (North Indian style)",solve:"Your Solution",askPh:"Or type your problem, e.g. 'When will I get a job?' or 'Marriage delay'",getGuidance:"Get Guidance",dashaTitle:"Vimshottari Dasha",dashaDesc:"The planetary periods that shape each phase of life. The highlighted row is running now.",antarTitle:"Current Antardasha (sub-periods)",newKundli:"New Kundli",
   disclaimer:"Planet positions are calculated astronomically (sidereal, Lahiri ayanamsa, whole-sign houses). Interpretations follow Brihat Parashara Hora Shastra.<br><b>Astrological guidance is for spiritual and informational purposes only and is not a substitute for medical, legal, or financial advice.</b>",
   kundliOf:n=>n?n+"'s Kundli":"Your Kundli",lagna:"Lagna",moonSign:"Moon sign (Rashi)",nakshatra:"Nakshatra",pada:"pada",sunSign:"Sun sign (sidereal)",runningMD:"Running Mahadasha",
-  thPlanet:"Planet",thSign:"Sign",thDeg:"Degree",thNak:"Nakshatra",thHouse:"House",thMD:"Mahadasha",thFrom:"From",thTo:"To",antarOf:p=>p+" – Antardasha",retro:"R",timeHint:"Select hour, minute and AM/PM. 12:00 AM = midnight, 12:00 PM = noon.",probHead:"What is your problem?",chooseProb:"Choose your problem",describe:"Describe it in your own words (optional)",another:"Ask about another problem",born:"Born",am:"AM",pm:"PM",hourL:"Hour",minL:"Min",navHome:"Kundli & Solution",ownerTitle:"Created by",ownerName:"Pallavi Gupta",ownerRole:"Founder, Krishan Astrologer",install:"📲 Install App",navAsk:"Ask Your Problem",askTitle:"Ask Krishan Astrologer",chatPh:"Type your problem… e.g. When will I get a job?",send:"Ask",navMatch:"Kundli Matching",navDaily:"Daily Horoscope",navDosh:"Dosh Check",boy:"Boy's details",girl:"Girl's details",boyS:"Boy",girlS:"Girl",matchBtn:"Match Kundli",matchTitle:"Guna Milan Result",thKoota:"Koota",thGot:"Score",todayTitle:"Today's Panchang",chooseRashi:"Choose your Rashi (Moon sign)",rashiHint:"Don't know your Rashi? Make your kundli in the first tab — it shows your Moon sign.",doshTitle:"Dosh Check",doshNeed:"Enter your birth details and generate your kundli to see Mangal Dosh, Kaal Sarp Dosh and Shani Sade Sati.",dateL:"Date",vaar:"Day",tithiL:"Tithi",pakshaL:"Paksha"},
+  thPlanet:"Planet",thSign:"Sign",thDeg:"Degree",thNak:"Nakshatra",thHouse:"House",thMD:"Mahadasha",thFrom:"From",thTo:"To",antarOf:p=>p+" – Antardasha",retro:"R",timeHint:"Select hour, minute and AM/PM. 12:00 AM = midnight, 12:00 PM = noon.",probHead:"What is your problem?",chooseProb:"Choose your problem",describe:"Describe it in your own words (optional)",another:"Ask about another problem",born:"Born",am:"AM",pm:"PM",hourL:"Hour",minL:"Min",navHome:"Kundli & Solution",navFuture:"Future Forecast",ownerTitle:"Created by",ownerName:"Pallavi Gupta",ownerRole:"Founder, Krishan Astrologer",install:"📲 Install App",navAsk:"Ask Your Problem",askTitle:"Ask Krishan Astrologer",chatPh:"Type your problem… e.g. When will I get a job?",send:"Ask",navMatch:"Kundli Matching",navDaily:"Daily Horoscope",navDosh:"Dosh Check",boy:"Boy's details",girl:"Girl's details",boyS:"Boy",girlS:"Girl",matchBtn:"Match Kundli",matchTitle:"Guna Milan Result",thKoota:"Koota",thGot:"Score",todayTitle:"Today's Panchang",chooseRashi:"Choose your Rashi (Moon sign)",rashiHint:"Don't know your Rashi? Make your kundli in the first tab — it shows your Moon sign.",doshTitle:"Dosh Check",doshNeed:"Enter your birth details and generate your kundli to see Mangal Dosh, Kaal Sarp Dosh and Shani Sade Sati.",dateL:"Date",vaar:"Day",tithiL:"Tithi",pakshaL:"Paksha"},
  hi:{logo:'✦ कृष्ण <span>ज्योतिषी</span> ✦',tagline:"वैदिक कुंडली · दशा · जीवन की समस्याओं का मार्गदर्शन",enterDetails:"जन्म विवरण दर्ज करें",fullName:"पूरा नाम",namePh:"जैसे: राहुल शर्मा",gender:"लिंग",genders:["पुरुष","महिला","अन्य"],dob:"जन्म तिथि",tob:"जन्म समय",pob:"जन्म स्थान",otherPlace:"अन्य स्थान (अक्षांश-देशांतर डालें)",lat:"अक्षांश (उत्तर +)",lon:"देशांतर (पूर्व +)",tz:"समय क्षेत्र (UTC से घंटे)",generate:"कुंडली और समाधान देखें",exactTime:"सही समय से सही लग्न आता है।",chartCap:"लग्न कुंडली (उत्तर भारतीय शैली)",solve:"आपका समाधान",askPh:"या अपनी समस्या लिखें, जैसे 'नौकरी कब लगेगी?' या 'शादी में देरी'",getGuidance:"मार्गदर्शन पाएँ",dashaTitle:"विंशोत्तरी दशा",dashaDesc:"ग्रहों की वे अवधियाँ जो जीवन के हर चरण को प्रभावित करती हैं। हाइलाइट की गई पंक्ति अभी चल रही है।",antarTitle:"वर्तमान अंतर्दशा",newKundli:"नई कुंडली",
   disclaimer:"ग्रहों की स्थिति खगोलीय गणना से निकाली गई है (निरयन, लाहिरी अयनांश, संपूर्ण राशि भाव)। फलादेश बृहत् पाराशर होरा शास्त्र पर आधारित है।<br><b>ज्योतिषीय मार्गदर्शन केवल आध्यात्मिक और सूचनात्मक उद्देश्य के लिए है और यह चिकित्सा, कानूनी या वित्तीय सलाह का विकल्प नहीं है।</b>",
   kundliOf:n=>n?n+" की कुंडली":"आपकी कुंडली",lagna:"लग्न",moonSign:"चंद्र राशि",nakshatra:"नक्षत्र",pada:"पद",sunSign:"सूर्य राशि (निरयन)",runningMD:"चल रही महादशा",
-  thPlanet:"ग्रह",thSign:"राशि",thDeg:"अंश",thNak:"नक्षत्र",thHouse:"भाव",thMD:"महादशा",thFrom:"से",thTo:"तक",antarOf:p=>p+" – अंतर्दशा",retro:"व",timeHint:"घंटा, मिनट और AM/PM चुनें। AM = रात 12 से दोपहर 12 तक, PM = दोपहर 12 से रात 12 तक। (12:00 AM = आधी रात, 12:00 PM = दोपहर)",probHead:"आपकी समस्या क्या है?",chooseProb:"अपनी समस्या चुनें",describe:"अपने शब्दों में लिखें (वैकल्पिक)",another:"किसी और समस्या के बारे में पूछें",born:"जन्म",am:"AM",pm:"PM",hourL:"घंटा",minL:"मिनट",navHome:"कुंडली और समाधान",ownerTitle:"ऐप निर्माता",ownerName:"पल्लवी गुप्ता",ownerRole:"संस्थापक, कृष्ण ज्योतिषी",install:"📲 ऐप इंस्टॉल करें",navAsk:"समस्या पूछें",askTitle:"कृष्ण ज्योतिषी से पूछें",chatPh:"अपनी समस्या लिखें… जैसे: नौकरी कब लगेगी?",send:"पूछें",navMatch:"कुंडली मिलान",navDaily:"आज का राशिफल",navDosh:"दोष जाँच",boy:"वर (लड़के) का विवरण",girl:"कन्या (लड़की) का विवरण",boyS:"वर",girlS:"कन्या",matchBtn:"कुंडली मिलाएँ",matchTitle:"गुण मिलान परिणाम",thKoota:"कूट",thGot:"प्राप्त गुण",todayTitle:"आज का पंचांग",chooseRashi:"अपनी राशि (चंद्र राशि) चुनें",rashiHint:"अपनी राशि नहीं पता? पहले टैब में कुंडली बनाएँ — उसमें आपकी चंद्र राशि दिखेगी।",doshTitle:"दोष जाँच",doshNeed:"मांगलिक दोष, काल सर्प दोष और शनि की साढ़ेसाती देखने के लिए अपना जन्म विवरण भरकर कुंडली बनाएँ।",dateL:"तारीख",vaar:"वार",tithiL:"तिथि",pakshaL:"पक्ष"}};
+  thPlanet:"ग्रह",thSign:"राशि",thDeg:"अंश",thNak:"नक्षत्र",thHouse:"भाव",thMD:"महादशा",thFrom:"से",thTo:"तक",antarOf:p=>p+" – अंतर्दशा",retro:"व",timeHint:"घंटा, मिनट और AM/PM चुनें। AM = रात 12 से दोपहर 12 तक, PM = दोपहर 12 से रात 12 तक। (12:00 AM = आधी रात, 12:00 PM = दोपहर)",probHead:"आपकी समस्या क्या है?",chooseProb:"अपनी समस्या चुनें",describe:"अपने शब्दों में लिखें (वैकल्पिक)",another:"किसी और समस्या के बारे में पूछें",born:"जन्म",am:"AM",pm:"PM",hourL:"घंटा",minL:"मिनट",navHome:"कुंडली और समाधान",navFuture:"भविष्यफल",ownerTitle:"ऐप निर्माता",ownerName:"पल्लवी गुप्ता",ownerRole:"संस्थापक, कृष्ण ज्योतिषी",install:"📲 ऐप इंस्टॉल करें",navAsk:"समस्या पूछें",askTitle:"कृष्ण ज्योतिषी से पूछें",chatPh:"अपनी समस्या लिखें… जैसे: नौकरी कब लगेगी?",send:"पूछें",navMatch:"कुंडली मिलान",navDaily:"आज का राशिफल",navDosh:"दोष जाँच",boy:"वर (लड़के) का विवरण",girl:"कन्या (लड़की) का विवरण",boyS:"वर",girlS:"कन्या",matchBtn:"कुंडली मिलाएँ",matchTitle:"गुण मिलान परिणाम",thKoota:"कूट",thGot:"प्राप्त गुण",todayTitle:"आज का पंचांग",chooseRashi:"अपनी राशि (चंद्र राशि) चुनें",rashiHint:"अपनी राशि नहीं पता? पहले टैब में कुंडली बनाएँ — उसमें आपकी चंद्र राशि दिखेगी।",doshTitle:"दोष जाँच",doshNeed:"मांगलिक दोष, काल सर्प दोष और शनि की साढ़ेसाती देखने के लिए अपना जन्म विवरण भरकर कुंडली बनाएँ।",dateL:"तारीख",vaar:"वार",tithiL:"तिथि",pakshaL:"पक्ष"}};
 const L=()=>UI[LANG];
 
 // ================= Data =================
@@ -686,6 +694,7 @@ function showView(v,noHash){VIEW=v;
   if(!noHash){try{history.replaceState(null,"","#"+v)}catch(e){location.hash=v}}
   if(v==="daily") renderRashifal();
   if(v==="ask") renderChat();
+  if(v==="future"&&window.renderFuture) renderFuture();
   if(v==="dosh"&&K&&document.getElementById("result").classList.contains("hidden")){render(K);document.getElementById("formCard").classList.add("hidden");document.getElementById("result").classList.remove("hidden");}
   if(v==="dosh"){ if(K){document.getElementById("doshCard").scrollIntoView({behavior:"smooth"});} else {document.getElementById("doshNeed").classList.remove("hidden"); document.getElementById("formCard").scrollIntoView({behavior:"smooth"});} }
   else document.getElementById("doshNeed").classList.add("hidden");
@@ -757,6 +766,7 @@ function applyLang(){
   if(lastMatch) renderMatch();
   if(VIEW==="daily") renderRashifal();
   if(VIEW==="ask") renderChat();
+  if(VIEW==="future"&&window.renderFuture) renderFuture();
 }
 document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{LANG=b.dataset.lang;try{localStorage.setItem("krishan_lang",LANG)}catch(e){}applyLang();});
 sel.onchange=()=>document.getElementById("customBox").classList.toggle("hidden",sel.value!=="custom");
@@ -774,6 +784,7 @@ document.getElementById("go").onclick=()=>{
   document.getElementById("formCard").classList.add("hidden"); document.getElementById("result").classList.remove("hidden"); window.scrollTo(0,0);
   document.getElementById("doshNeed").classList.add("hidden");
   if(pendingAsk){pendingAsk=false; showView("ask"); return;}
+  if(window.pendingFuture){window.pendingFuture=false; showView("future"); return;}
   if(VIEW==="dosh") setTimeout(()=>document.getElementById("doshCard").scrollIntoView({behavior:"smooth"}),60);
 };
 document.getElementById("again").onclick=()=>{document.getElementById("result").classList.add("hidden");document.getElementById("formCard").classList.remove("hidden")};
@@ -791,13 +802,16 @@ try{const sv=JSON.parse(localStorage.getItem("krishan_birth")||"null"); if(sv&&s
   sel.value=sv.city; document.getElementById("hh").value=sv.hh; document.getElementById("mm").value=sv.mm; document.getElementById("ap").value=sv.ap;
   if(sv.city==="custom"){document.getElementById("customBox").classList.remove("hidden");document.getElementById("lat").value=sv.inp.lat;document.getElementById("lon").value=sv.inp.lon;document.getElementById("tz").value=sv.inp.tz;}
   K=buildKundli(sv.inp);}}catch(e){}
-{const h=location.hash.slice(1); if(["home","ask","match","daily","dosh"].includes(h)) showView(h,true); else showView("home",true);}
+{const h=location.hash.slice(1); if(["home","ask","future","match","daily","dosh"].includes(h)) showView(h,true); else showView("home",true);}
 if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}
 </script>
 <script src="js/kb.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/install.js"></script>
+<script src="js/forecast.js"></script>
 <script>
+document.getElementById("futureOut").addEventListener("click",e=>{if(e.target.closest(".futBirth")){window.pendingFuture=true;showView("home");}});
+document.addEventListener("kb-ready",()=>{ if(VIEW==="future") renderFuture(); });
 document.addEventListener("kb-ready",()=>{ if(K&&!document.getElementById("result").classList.contains("hidden")) showArea(currentArea); if(VIEW==="ask") renderChat(); });
 KB.load();
 </script>
