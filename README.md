@@ -14,6 +14,7 @@ Live: https://krishanastrologer.netlify.app/
 - **Full panchang & muhurat:** tithi, nakshatra, yoga, karana at sunrise; sunrise/sunset, Rahu Kaal, Yamaganda, Gulika, Abhijit; day & night Choghadiya
 - **Ashtakavarga:** Bhinnashtakavarga for 7 planets + Sarvashtakavarga by house (BPHS Ch. 66–72), strong/weak houses, Jupiter & Saturn transit bindus
 - **Festival & vrat calendar (12 months):** major festivals plus Ekadashi, Purnima, Amavasya, Pradosh, Sankashti, Masik Shivaratri, Sankranti, Panchak (start/end time and type: Rog, Raj, Agni, Chor, Mrityu) — amanta months with Adhik maas, festival-specific kaal rules, Smarta Ekadashi rules; checked against Drik Panchang 2027 & 2028 (New Delhi)
+- **Shadbala:** six-fold planetary strength (BPHS Ch. 27) in rupas with required strength and ratio; approximate (no Yuddha bala)
 - **Yogini Dasha:** 8 Yoginis / 36-year cycle with sub-periods and the running period highlighted
 - **Varshphal:** Tajik yearly chart for the Sun's return (Varsha Pravesh), Varsha lagna, Muntha and its lord, year-by-year navigation
 - **Monthly & yearly rashifal:** transit-based forecasts per Moon sign with sign changes, retrograde/direct dates and favourable days

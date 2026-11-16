@@ -9,6 +9,10 @@
   // ------------------------------------------------------------------ text
   const T = {
     en: {
+      sbT: "Shadbala (Planetary Strength)", sbIntro: "The six-fold strength of each planet from BPHS Ch. 27, in rupas: positional (Sthana), directional (Dig), temporal (Kala), motional (Cheshta), natural (Naisargika) and aspectual (Drik). A planet at or above its required strength (ratio 1× or more) can deliver its results well.",
+      sbCols: ["Total", "Need", "Ratio", "Sthana", "Dig", "Kala", "Cheshta", "Naisargika", "Drik"],
+      sbSum: (a, b, w, weak) => `Strongest planets: <b>${a}</b> and <b>${b}</b> — matters they rule come more easily. Weakest: <b>${w}</b>.${weak.length ? ` Below required strength: ${weak.join(", ")} — their remedies are most useful.` : " Every planet meets its required strength."}`,
+      sbNote: "Approximate calculation (Yuddha bala is not included); totals can differ slightly from other software that uses different orbs, ayanamsa or varga rules.",
       yT: "Yogini Dasha", yIntro: "A second dasha system of 8 Yoginis in a 36-year cycle, widely used in North India to confirm the timing shown by Vimshottari.",
       yMD: "Yogini (planet)", yFrom: "From", yTo: "To", yrs: " yrs", yr1: " yr", yAD: n => `Sub-periods in ${n}`,
       yNow: (n, p, e, g) => `You are now in <b>${n}</b> Yogini (ruled by ${p}) until ${e} — ${g ? "an auspicious period that supports growth" : "a demanding period; patience and the planet's remedy help"}.`,
@@ -63,6 +67,10 @@
       remedy: (m, d) => `Remedy: chant <span class="mantra">${m}</span> 108 times on ${d}.`,
     },
     hi: {
+      sbT: "षड्बल (ग्रह बल)", sbIntro: "BPHS अध्याय 27 के अनुसार हर ग्रह का छह प्रकार का बल, रूप में: स्थान बल, दिग्बल, काल बल, चेष्टा बल, नैसर्गिक बल और दृक् बल। जो ग्रह अपने आवश्यक बल के बराबर या अधिक हो (अनुपात 1× या अधिक), वह अपने फल अच्छी तरह देता है।",
+      sbCols: ["कुल", "आवश्यक", "अनुपात", "स्थान", "दिक्", "काल", "चेष्टा", "नैसर्गिक", "दृक्"],
+      sbSum: (a, b, w, weak) => `सबसे बलवान ग्रह: <b>${a}</b> और <b>${b}</b> — इनके विषय आसानी से फल देते हैं। सबसे कमज़ोर: <b>${w}</b>।${weak.length ? ` आवश्यक बल से कम: ${weak.join(", ")} — इनके उपाय सबसे उपयोगी हैं।` : " हर ग्रह अपने आवश्यक बल को पूरा करता है।"}`,
+      sbNote: "अनुमानित गणना (युद्ध बल शामिल नहीं); अलग अंश, अयनांश या वर्ग नियमों वाले सॉफ़्टवेयर से कुल में थोड़ा अंतर हो सकता है।",
       yT: "योगिनी दशा", yIntro: "8 योगिनियों की 36 वर्ष की दूसरी दशा पद्धति, जिसका उत्तर भारत में विंशोत्तरी के समय की पुष्टि के लिए व्यापक प्रयोग होता है।",
       yMD: "योगिनी (ग्रह)", yFrom: "से", yTo: "तक", yrs: " वर्ष", yr1: " वर्ष", yAD: n => `${n} की अंतर्दशाएँ`,
       yNow: (n, p, e, g) => `आप अभी <b>${n}</b> योगिनी (स्वामी ${p}) में हैं, ${e} तक — ${g ? "यह शुभ समय है जो उन्नति में सहायक है" : "यह कठिन समय है; धैर्य और ग्रह का उपाय सहायक है"}।`,
@@ -374,16 +382,120 @@
     box.querySelectorAll("[data-rp]").forEach(b => b.onclick = () => { rPeriod = b.dataset.rp; renderRashifal(); });
   }
 
+  // ------------------------------------------------------------------ 2e. Shadbala (BPHS Ch. 27) — six-fold strength, in virupas (60 = 1 rupa)
+  const SB_P = ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn"];
+  const DEEP_EX = { Sun: 10, Moon: 33, Mars: 298, Mercury: 165, Jupiter: 95, Venus: 357, Saturn: 200 };
+  const MOOLA = { Sun: [120, 140], Moon: [33, 60], Mars: [0, 12], Mercury: [165, 170], Jupiter: [240, 250], Venus: [180, 195], Saturn: [300, 320] };
+  const NAISARGIKA = { Sun: 60, Moon: 51.43, Venus: 42.86, Jupiter: 34.29, Mercury: 25.71, Mars: 17.14, Saturn: 8.57 };
+  const REQUIRED = { Sun: 5, Moon: 6, Mars: 5, Mercury: 7, Jupiter: 6.5, Venus: 5.5, Saturn: 5 };
+  const sgn = l => Math.floor(norm(l) / 30), dgr = l => norm(l) % 30;
+  const VARGA = {
+    D1: l => sgn(l),
+    D2: l => { const s = sgn(l), first = dgr(l) < 15; return (s % 2 === 0) === first ? 4 : 3; },             // Parashara hora: Leo (Sun) / Cancer (Moon)
+    D3: l => (sgn(l) + [0, 4, 8][Math.floor(dgr(l) / 10)]) % 12,
+    D7: l => (sgn(l) + (sgn(l) % 2 === 0 ? 0 : 6) + Math.floor(dgr(l) / (30 / 7))) % 12,
+    D9: l => Math.floor(norm(l) * 9 / 30) % 12,
+    D12: l => (sgn(l) + Math.floor(dgr(l) / 2.5)) % 12,
+    D30: l => { const d = dgr(l); return sgn(l) % 2 === 0 ? (d < 5 ? 0 : d < 10 ? 10 : d < 18 ? 8 : d < 25 ? 2 : 6) : (d < 5 ? 1 : d < 12 ? 5 : d < 20 ? 11 : d < 25 ? 9 : 7); },
+  };
+  function compoundRel(k, p, q) { // p's compound relationship towards q: 2 great friend … -2 great enemy
+    const nat = FRIENDS[p].F.includes(q) ? 1 : FRIENDS[p].E.includes(q) ? -1 : 0;
+    const h = ((k.planets[q].sign - k.planets[p].sign + 12) % 12) + 1, tmp = [2, 3, 4, 10, 11, 12].includes(h) ? 1 : -1;
+    return nat + tmp;
+  }
+  function shadbala(k) {
+    const P = k.planets, jd = k.jd, T_ = (jd + deltaT(jd) / 86400 - 2451545) / 36525, ay = ayanamsa(T_), eps = 23.439291 - 0.0130042 * T_;
+    const [Y, M, D] = k.inp.dob.split("-").map(Number), tz = effectiveTz(k.inp.tz, Y, M, D);
+    let sr = sunriseJD(Y, M, D, k.inp.lat, k.inp.lon, tz), ss = sunsetJD(Y, M, D, k.inp.lat, k.inp.lon, tz);
+    const day = jd >= sr && jd < ss; let vedicDay = new Date(Date.UTC(Y, M - 1, D));
+    if (jd < sr) { vedicDay = new Date(vedicDay.getTime() - 864e5); const d = vedicDay; sr = sunriseJD(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate(), k.inp.lat, k.inp.lon, tz); ss = sunsetJD(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate(), k.inp.lat, k.inp.lon, tz); }
+    const nextD = new Date(vedicDay.getTime() + 864e5), sr2 = sunriseJD(nextD.getUTCFullYear(), nextD.getUTCMonth() + 1, nextD.getUTCDate(), k.inp.lat, k.inp.lon, tz);
+    const dow = vedicDay.getUTCDay(), elong = norm(P.Moon.lon - P.Sun.lon), waxing = elong < 180;
+    const benefic = p => p === "Jupiter" || p === "Venus" || p === "Mercury" || (p === "Moon" && waxing);
+    // MC for dig bala
+    const gmst = norm(280.46061837 + 360.98564736629 * (jd - 2451545)), ramc = norm(gmst + k.inp.lon);
+    const mc = norm(Math.atan2(sin(ramc), cos(ramc) * cos(eps)) * R2D - ay), asc = k.asc;
+    const DIG_STRONG = { Sun: mc, Mars: mc, Jupiter: asc, Mercury: asc, Saturn: norm(asc + 180), Moon: norm(mc + 180), Venus: norm(mc + 180) };
+    // Sun's hour angle for nathonnata
+    const lamT = norm(P.Sun.lon + ay), raS = norm(Math.atan2(cos(eps) * sin(lamT), cos(lamT)) * R2D);
+    let H = norm(ramc - raS); if (H > 180) H -= 360;
+    // planetary hour lord and Kali ahargana lords (abda / masa)
+    const CHALDEAN = ["Saturn", "Jupiter", "Mars", "Sun", "Venus", "Mercury", "Moon"], DAYL = ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn"];
+    const horaLen = day ? (ss - sr) / 12 : (sr2 - ss) / 12, horaN = Math.floor((jd - (day ? sr : ss)) / horaLen) + (day ? 0 : 12);
+    const horaLord = CHALDEAN[(CHALDEAN.indexOf(DAYL[dow]) + horaN) % 7];
+    const ahar = Math.floor(jd + tz / 24 + 0.5) - 588466;                    // days since the Kali epoch (Friday)
+    const wd = n => DAYL[((n % 7) + 7 + 5) % 7];
+    const abdaLord = wd(Math.floor(ahar / 360) * 360), masaLord = wd(Math.floor(ahar / 30) * 30);
+    // cheshta kendra helpers (mean longitudes from the orbital elements)
+    const meanL = p => { const e = EL[p]; return norm(e[6] + e[7] * T_); }, meanSun = norm(meanL("Earth") + 180);
+    const out = {};
+    for (const p of SB_P) {
+      const lon = P[p].lon, s = P[p].sign, R = {};
+      // ---- 1. Sthana bala
+      let dd = Math.abs(norm(lon - DEEP_EX[p] + 180)); dd = dd > 180 ? 360 - dd : dd; const uchcha = dd / 3;
+      let sapta = 0;
+      for (const v in VARGA) {
+        const vs = VARGA[v](lon), lord = LORD[vs];
+        if (v === "D1" && norm(lon) >= MOOLA[p][0] && norm(lon) < MOOLA[p][1]) sapta += 45;
+        else if (lord === p) sapta += 30;
+        else sapta += { 2: 22.5, 1: 15, 0: 7.5, "-1": 3.75, "-2": 1.875 }[compoundRel(k, p, lord)];
+      }
+      const fem = p === "Moon" || p === "Venus";
+      const oja = ((s % 2 === 1) === fem ? 15 : 0) + ((VARGA.D9(lon) % 2 === 1) === fem ? 15 : 0);
+      const hs = ((s - k.lagna + 12) % 12) + 1, kendra = [1, 4, 7, 10].includes(hs) ? 60 : [2, 5, 8, 11].includes(hs) ? 30 : 15;
+      const dk = Math.floor(dgr(lon) / 10), drek = ({ Sun: 0, Mars: 0, Jupiter: 0, Mercury: 1, Saturn: 1, Moon: 2, Venus: 2 }[p] === dk) ? 15 : 0;
+      R.sthana = uchcha + sapta + oja + kendra + drek;
+      // ---- 2. Dig bala
+      let dg = Math.abs(norm(lon - DIG_STRONG[p])); dg = dg > 180 ? 360 - dg : dg; R.dig = (180 - dg) / 3;
+      // ---- 3. Kala bala
+      const nath = p === "Mercury" ? 60 : ["Sun", "Jupiter", "Venus"].includes(p) ? (180 - Math.abs(H)) / 3 : Math.abs(H) / 3;
+      const pk = (elong > 180 ? 360 - elong : elong) / 3, paksha = (benefic(p) ? pk : 60 - pk) * (p === "Moon" ? 2 : 1);
+      const part = day ? Math.floor((jd - sr) / ((ss - sr) / 3)) : Math.floor((jd - ss) / ((sr2 - ss) / 3));
+      const tri = p === "Jupiter" || (day ? ["Mercury", "Sun", "Saturn"][part] === p : ["Moon", "Venus", "Mars"][part] === p) ? 60 : 0;
+      const avmh = (abdaLord === p ? 15 : 0) + (masaLord === p ? 30 : 0) + (DAYL[dow] === p ? 45 : 0) + (horaLord === p ? 60 : 0);
+      const decl = Math.asin(sin(eps) * sin(norm(lon + ay))) * R2D;
+      let ayana = (["Moon", "Saturn"].includes(p) ? 24 - decl : p === "Mercury" ? 24 + Math.abs(decl) : 24 + decl) / 48 * 60; if (p === "Sun") ayana *= 2;
+      R.kala = nath + paksha + tri + avmh + ayana;
+      // ---- 4. Cheshta bala
+      if (p === "Sun") R.cheshta = ayana / 2;
+      else if (p === "Moon") R.cheshta = paksha / 2;
+      else {
+        const sup = ["Mars", "Jupiter", "Saturn"].includes(p), sigh = sup ? meanSun : meanL(p), madhya = sup ? meanL(p) : meanSun, tru = norm(lon + ay);
+        let ck = norm(sigh - (madhya + tru) / 2); if (Math.abs(madhya - tru) > 180) ck = norm(ck + 180); ck = ck > 180 ? 360 - ck : ck; R.cheshta = ck / 3;
+      }
+      // ---- 5. Naisargika
+      R.nais = NAISARGIKA[p];
+      out[p] = R;
+    }
+    // ---- 6. Drik bala (aspects received; benefic +, malefic −, quarter value)
+    const aspectVal = (q, d) => { let v = d >= 30 && d < 60 ? (d - 30) / 2 : d >= 60 && d < 90 ? d - 60 + 15 : d >= 90 && d < 120 ? (120 - d) / 2 + 30 : d >= 120 && d < 150 ? 150 - d : d >= 150 && d < 180 ? (d - 150) * 2 : d >= 180 && d < 300 ? (300 - d) / 2 : 0;
+      if (q === "Mars" && ((d >= 90 && d <= 120) || (d >= 210 && d <= 240))) v += 15;
+      if (q === "Jupiter" && ((d >= 120 && d <= 150) || (d >= 240 && d <= 270))) v += 30;
+      if (q === "Saturn" && ((d >= 60 && d <= 90) || (d >= 270 && d <= 300))) v += 45; return v; };
+    for (const p of SB_P) { let sum = 0; for (const q of SB_P) { if (q === p) continue; const v = aspectVal(q, norm(P[p].lon - P[q].lon)); sum += benefic(q) ? v : -v; } out[p].drik = sum / 4; }
+    for (const p of SB_P) { const R = out[p]; R.total = R.sthana + R.dig + R.kala + R.cheshta + R.nais + R.drik; R.rupa = R.total / 60; R.ratio = R.rupa / REQUIRED[p]; }
+    return out;
+  }
+  function shadbalaHtml(k) {
+    const x = X(), S = shadbala(k), r = v => (v / 60).toFixed(2);
+    const ranked = SB_P.slice().sort((a, b) => S[b].ratio - S[a].ratio);
+    let h = `<h2>${x.sbT}</h2><p class="tag" style="text-align:left;margin:0 0 10px">${x.sbIntro}</p>`;
+    h += `<div style="overflow-x:auto"><table class="avt"><tr><th></th>${x.sbCols.map(c => `<th>${c}</th>`).join("")}</tr>` + SB_P.map(p => { const R = S[p];
+      return `<tr><td>${pn(p)}</td><td><b>${R.rupa.toFixed(2)}</b></td><td>${REQUIRED[p]}</td><td><span class="pill ${R.ratio >= 1 ? "g" : "b"}">${R.ratio.toFixed(2)}×</span></td><td>${r(R.sthana)}</td><td>${r(R.dig)}</td><td>${r(R.kala)}</td><td>${r(R.cheshta)}</td><td>${r(R.nais)}</td><td>${r(R.drik)}</td></tr>`; }).join("") + `</table></div>`;
+    h += `<p>${x.sbSum(pn(ranked[0]), pn(ranked[1]), pn(ranked[6]), ranked.filter(p => S[p].ratio < 1).map(pn))}</p><p class="sub">${x.sbNote}</p>`;
+    return h;
+  }
+
   function renderMore(k) {
     if (!k) return;
     let a = document.getElementById("moreCharts"), b = document.getElementById("avakahada");
     if (!a) {
       const anchor = document.getElementById("chart").closest("section");
-      anchor.insertAdjacentHTML("afterend", `<section class="card" id="moreCharts"></section><section class="card" id="avakahada"></section><section class="card" id="ashtak"></section><section class="card" id="yogini"></section><section class="card" id="varsh"></section>`);
+      anchor.insertAdjacentHTML("afterend", `<section class="card" id="moreCharts"></section><section class="card" id="avakahada"></section><section class="card" id="ashtak"></section><section class="card" id="shadbala"></section><section class="card" id="yogini"></section><section class="card" id="varsh"></section>`);
       a = document.getElementById("moreCharts"); b = document.getElementById("avakahada");
       a.addEventListener("click", e => { const t = e.target.closest("[data-ct]"); if (t) { chartTab = t.dataset.ct; a.innerHTML = moreChartsHtml(K); } });
     }
-    a.innerHTML = moreChartsHtml(k); b.innerHTML = avakahadaHtml(k); document.getElementById("ashtak").innerHTML = ashtakavargaHtml(k);
+    a.innerHTML = moreChartsHtml(k); b.innerHTML = avakahadaHtml(k); document.getElementById("ashtak").innerHTML = ashtakavargaHtml(k); document.getElementById("shadbala").innerHTML = shadbalaHtml(k);
     document.getElementById("yogini").innerHTML = yoginiHtml(k); document.getElementById("varsh").innerHTML = varshHtml(k);
     document.getElementById("varsh").onclick = e => { const t = e.target.closest("[data-vy]"); if (t) { varshOffset += +t.dataset.vy; document.getElementById("varsh").innerHTML = varshHtml(K); } };
   }
@@ -493,5 +605,5 @@
     if (typeof VIEW !== "undefined" && VIEW === "daily") renderPanchang();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
-  window.Vedic = { yoginiDasha, solarReturn, periodHtml, ashtakavarga, signOfD9, signOfD10, karanaOf, numerologyHtml, panchangHtml };
+  window.Vedic = { shadbala, yoginiDasha, solarReturn, periodHtml, ashtakavarga, signOfD9, signOfD10, karanaOf, numerologyHtml, panchangHtml };
 })();
