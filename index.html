@@ -103,12 +103,32 @@ details.why ol{margin:8px 0 0 18px;font-size:13px;line-height:1.55;color:#cfc9ea
 .fcard{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px}
 .fm{font-weight:600;font-size:14px;margin-bottom:2px}.fcard .stars{font-size:16px}
 .flist{display:flex;flex-direction:column;gap:8px}.fyear{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;line-height:1.6;font-size:14px}
+.csearch{margin-bottom:6px}.cinfo{margin-top:4px;font-size:12px}
+.profiles{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px}.profiles:empty{display:none}
+.prof{display:inline-flex;align-items:center}.pdel{background:transparent;color:var(--mut);border:0;padding:4px 6px;font-size:13px}
+.printonly{display:none}
+@media print{
+ body{background:#fff!important;color:#111!important}
+ header .toprow,header .nav,.noprint,.sharebar,#formCard,#chips,#chatIn,#chatSend,.tabs,#ask,#askBtn,#installModal,.owner img{display:none!important}
+ .printonly{display:block;text-align:center;font-size:12px;color:#555;margin-bottom:8px}
+ .card,.fyear,.fcard,.kv div,.msg.b,.dosh{background:#fff!important;border:1px solid #ccc!important;color:#111!important;box-shadow:none!important}
+ .fyear,.fcard,.kv div,.dosh,li,svg.chart,table tr{break-inside:avoid}
+ .logo span{color:#111!important}
+ .kv b,.oname,.fm{color:#7a4b00!important}
+ body{min-height:0!important}
+ h2,h3,.ah,.logo,.oname,.src,.mantra,details.why summary{color:#7a4b00!important}
+ .reading p,.reading ul,details.why ol,.sub,.tag,td,th,.note{color:#222!important}
+ svg.chart rect{fill:#fff!important}svg.chart text{fill:#111!important}
+ .pill{border-color:#999!important;color:#111!important;background:#fff!important}
+ a{color:#111!important}
+}
 .banner{background:#3a2c74;border:1px solid var(--gold);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:14px}
 </style>
 </head>
 <body>
 <header>
   <div class="toprow"><div class="lang"><button data-lang="en">English</button><button data-lang="hi">हिंदी</button></div><button class="ghost install" id="installBtn" data-i="install"></button></div>
+  <div class="printonly">Krishan Astrologer · krishanastrologer.netlify.app</div>
   <div class="logo" data-i="logo"></div>
   <div class="tag" data-i="tagline"></div>
   <nav class="nav"><button data-view="home" data-i="navHome"></button><button data-view="ask" data-i="navAsk"></button><button data-view="future" data-i="navFuture"></button><button data-view="match" data-i="navMatch"></button><button data-view="daily" data-i="navDaily"></button><button data-view="dosh" data-i="navDosh"></button></nav>
@@ -117,6 +137,7 @@ details.why ol{margin:8px 0 0 18px;font-size:13px;line-height:1.55;color:#cfc9ea
 <div id="view-home" class="view">
 <section class="card" id="formCard">
   <div class="banner hidden" id="doshNeed" data-i="doshNeed"></div>
+  <div class="profiles" id="profiles"></div>
   <h2 data-i="enterDetails"></h2>
   <div class="grid">
     <div><label data-i="fullName"></label><input id="name" data-ph="namePh"></div>
@@ -138,6 +159,7 @@ details.why ol{margin:8px 0 0 18px;font-size:13px;line-height:1.55;color:#cfc9ea
 </section>
 
 <div id="result" class="hidden">
+  <div class="row sharebar noprint" style="justify-content:center;margin-top:0"></div>
   <section class="card">
     <h2 data-i="solve"></h2>
     <div class="reading" id="reading"></div>
@@ -185,7 +207,7 @@ details.why ol{margin:8px 0 0 18px;font-size:13px;line-height:1.55;color:#cfc9ea
 </div>
 
 <div id="view-future" class="view hidden">
-<section class="card"><div class="reading" id="futureOut"></div></section>
+<section class="card"><div class="reading" id="futureOut"></div><div class="row sharebar noprint"></div></section>
 </div>
 
 <div id="view-match" class="view hidden">
@@ -220,9 +242,10 @@ details.why ol{margin:8px 0 0 18px;font-size:13px;line-height:1.55;color:#cfc9ea
   <div><div class="sub" data-i="ownerTitle"></div><div class="oname" data-i="ownerName"></div><div class="tag" style="margin:2px 0 0" data-i="ownerRole"></div></div>
 </section>
 <div class="modal hidden" id="installModal"><div class="im-body"></div></div>
-<p class="note"><span data-i="disclaimer"></span><br><a href="privacy.html" style="color:#a59fc7">Privacy Policy / गोपनीयता नीति</a></p>
+<p class="note"><span data-i="disclaimer"></span><br><a href="privacy.html" style="color:#a59fc7">Privacy Policy / गोपनीयता नीति</a> · <a href="terms.html" style="color:#a59fc7">Terms / नियम व शर्तें</a></p>
 </main>
 
+<script src="js/cities.js"></script>
 <script>
 // ================= Language =================
 let LANG="en";
@@ -239,7 +262,7 @@ const UI={
 const L=()=>UI[LANG];
 
 // ================= Data =================
-const CITIES=[["Jammu","जम्मू",32.7266,74.8570],["Srinagar","श्रीनगर",34.0837,74.7973],["Kathua","कठुआ",32.3693,75.5254],["Udhampur","उधमपुर",32.9160,75.1416],["New Delhi","नई दिल्ली",28.6139,77.2090],["Mumbai","मुंबई",19.0760,72.8777],["Kolkata","कोलकाता",22.5726,88.3639],["Chennai","चेन्नई",13.0827,80.2707],["Bengaluru","बेंगलुरु",12.9716,77.5946],["Hyderabad","हैदराबाद",17.3850,78.4867],["Chandigarh","चंडीगढ़",30.7333,76.7794],["Amritsar","अमृतसर",31.6340,74.8723],["Ludhiana","लुधियाना",30.9010,75.8573],["Shimla","शिमला",31.1048,77.1734],["Dehradun","देहरादून",30.3165,78.0322],["Lucknow","लखनऊ",26.8467,80.9462],["Varanasi","वाराणसी",25.3176,82.9739],["Jaipur","जयपुर",26.9124,75.7873],["Ahmedabad","अहमदाबाद",23.0225,72.5714],["Pune","पुणे",18.5204,73.8567],["Patna","पटना",25.5941,85.1376],["Bhopal","भोपाल",23.2599,77.4126],["Indore","इंदौर",22.7196,75.8577],["Guwahati","गुवाहाटी",26.1445,91.7362]];
+const CITIES=window.CITY_DB||[["Jammu","जम्मू",32.7266,74.8570],["Srinagar","श्रीनगर",34.0837,74.7973],["Kathua","कठुआ",32.3693,75.5254],["Udhampur","उधमपुर",32.9160,75.1416],["New Delhi","नई दिल्ली",28.6139,77.2090],["Mumbai","मुंबई",19.0760,72.8777],["Kolkata","कोलकाता",22.5726,88.3639],["Chennai","चेन्नई",13.0827,80.2707],["Bengaluru","बेंगलुरु",12.9716,77.5946],["Hyderabad","हैदराबाद",17.3850,78.4867],["Chandigarh","चंडीगढ़",30.7333,76.7794],["Amritsar","अमृतसर",31.6340,74.8723],["Ludhiana","लुधियाना",30.9010,75.8573],["Shimla","शिमला",31.1048,77.1734],["Dehradun","देहरादून",30.3165,78.0322],["Lucknow","लखनऊ",26.8467,80.9462],["Varanasi","वाराणसी",25.3176,82.9739],["Jaipur","जयपुर",26.9124,75.7873],["Ahmedabad","अहमदाबाद",23.0225,72.5714],["Pune","पुणे",18.5204,73.8567],["Patna","पटना",25.5941,85.1376],["Bhopal","भोपाल",23.2599,77.4126],["Indore","इंदौर",22.7196,75.8577],["Guwahati","गुवाहाटी",26.1445,91.7362]];
 const SIGNS={en:["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"],hi:["मेष","वृषभ","मिथुन","कर्क","सिंह","कन्या","तुला","वृश्चिक","धनु","मकर","कुंभ","मीन"]};
 const RASHI=["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrishchika","Dhanu","Makara","Kumbha","Meena"];
 const LORD=["Mars","Venus","Mercury","Moon","Sun","Mercury","Venus","Mars","Jupiter","Saturn","Saturn","Jupiter"];
@@ -632,7 +655,7 @@ let lastMatch=null;
 function readPerson(pre){const c=CITIES[+document.getElementById(pre+"city").value];
   const H=+document.getElementById(pre+"hh").value, Mi=+document.getElementById(pre+"mm").value, AP=document.getElementById(pre+"ap").value;
   const dob=document.getElementById(pre+"dob").value; if(!dob) return null;
-  return {name:document.getElementById(pre+"name").value.trim(),dob,tob:((H%12)+(AP==="PM"?12:0))+":"+Mi,timeLabel:`${H}:${String(Mi).padStart(2,"0")} ${AP}`,lat:c[2],lon:c[3],tz:5.5};}
+  return {name:document.getElementById(pre+"name").value.trim(),dob,tob:((H%12)+(AP==="PM"?12:0))+":"+Mi,timeLabel:`${H}:${String(Mi).padStart(2,"0")} ${AP}`,lat:c[2],lon:c[3],tz:c[4]??5.5};}
 function renderMatch(){
   if(!lastMatch) return; const [B,G]=lastMatch, U=L(), X=MT[LANG], rows=gunaMilan(B,G);
   const total=rows.reduce((a,r)=>a+r.got,0), v=X.verdict(total);
@@ -767,6 +790,7 @@ function applyLang(){
   if(VIEW==="daily") renderRashifal();
   if(VIEW==="ask") renderChat();
   if(VIEW==="future"&&window.renderFuture) renderFuture();
+  if(window.extrasRefresh) extrasRefresh();
 }
 document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{LANG=b.dataset.lang;try{localStorage.setItem("krishan_lang",LANG)}catch(e){}applyLang();});
 sel.onchange=()=>document.getElementById("customBox").classList.toggle("hidden",sel.value!=="custom");
@@ -775,12 +799,13 @@ document.getElementById("go").onclick=()=>{
   const H=+document.getElementById("hh").value, Mi=+document.getElementById("mm").value, AP=document.getElementById("ap").value;
   const h24=(H%12)+(AP==="PM"?12:0);
   const inp={name:document.getElementById("name").value.trim(),dob:document.getElementById("dob").value,tob:h24+":"+Mi,timeLabel:`${H}:${String(Mi).padStart(2,"0")} ${AP}`,
-    lat:c?c[2]:+document.getElementById("lat").value,lon:c?c[3]:+document.getElementById("lon").value,tz:c?5.5:+document.getElementById("tz").value};
+    lat:c?c[2]:+document.getElementById("lat").value,lon:c?c[3]:+document.getElementById("lon").value,tz:c?(c[4]??5.5):+document.getElementById("tz").value};
   if(!inp.dob){document.getElementById("dob").focus();return}
   const qt=document.getElementById("probTxt").value.trim();
   currentArea=matchArea(qt,document.getElementById("probSel").value); currentQ=qt;
   K=buildKundli(inp); render(K);
   try{localStorage.setItem("krishan_birth",JSON.stringify({inp,city:sel.value,hh:document.getElementById("hh").value,mm:document.getElementById("mm").value,ap:document.getElementById("ap").value}))}catch(e){}
+  if(window.saveProfile) saveProfile();
   document.getElementById("formCard").classList.add("hidden"); document.getElementById("result").classList.remove("hidden"); window.scrollTo(0,0);
   document.getElementById("doshNeed").classList.add("hidden");
   if(pendingAsk){pendingAsk=false; showView("ask"); return;}
@@ -809,6 +834,7 @@ if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.se
 <script src="js/engine.js"></script>
 <script src="js/install.js"></script>
 <script src="js/forecast.js"></script>
+<script src="js/extras.js"></script>
 <script>
 document.getElementById("futureOut").addEventListener("click",e=>{if(e.target.closest(".futBirth")){window.pendingFuture=true;showView("home");}});
 document.addEventListener("kb-ready",()=>{ if(VIEW==="future") renderFuture(); });

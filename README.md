@@ -35,3 +35,11 @@ Chapter numbers follow the R. Santhanam English edition (1984, 97 chapters). All
 3. Add the file to `FILES` in `sw.js`. Its rules appear automatically under "Why?" next to the BPHS rule for the same topic.
 
 Astrological guidance is for spiritual and informational purposes only and is not a substitute for medical, legal, or financial advice.
+
+## More files
+```
+js/cities.js          296 searchable Indian + world cities with time zones
+js/extras.js          city search, WhatsApp share, PDF/print, family profiles
+terms.html            Terms of use (Hindi + English)
+store/                Google Play listing kit: listing text, feature graphic, 8 screenshots
+```
