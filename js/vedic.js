@@ -9,6 +9,21 @@
   // ------------------------------------------------------------------ text
   const T = {
     en: {
+      yT: "Yogini Dasha", yIntro: "A second dasha system of 8 Yoginis in a 36-year cycle, widely used in North India to confirm the timing shown by Vimshottari.",
+      yMD: "Yogini (planet)", yFrom: "From", yTo: "To", yrs: " yrs", yr1: " yr", yAD: n => `Sub-periods in ${n}`,
+      yNow: (n, p, e, g) => `You are now in <b>${n}</b> Yogini (ruled by ${p}) until ${e} — ${g ? "an auspicious period that supports growth" : "a demanding period; patience and the planet's remedy help"}.`,
+      yNote: "Mangala, Dhanya, Bhadrika and Siddha are auspicious Yoginis; Pingala, Bhramari, Ulka and Sankata are demanding.",
+      vT: "Varshphal (Yearly Chart)", vIntro: "The Tajik yearly chart is cast for the exact moment the Sun returns to its birth position each year (Varsha Pravesh). It shows the themes of that year of life.",
+      vAge: a => `age ${a}→${a + 1}`, vEntry: "Varsha Pravesh", vLagna: "Varsha Lagna", vMuntha: "Muntha", vMlord: "Muntha lord", vHouse: h => `${h}${[, "st", "nd", "rd"][h] || "th"} house`,
+      vMres: (h, g) => g ? `Muntha in the ${h}${[, "st", "nd", "rd"][h] || "th"} house is favourable: the year supports progress in ${HTHEME.en[h]}.` : `Muntha in the ${h}${[, "st", "nd", "rd"][h] || "th"} house asks for care this year with ${HTHEME.en[h]}.`,
+      vPl: (p, h, g) => `${p} in the ${h}${[, "st", "nd", "rd"][h] || "th"} house of the yearly chart ${g ? "supports" : "puts pressure on"} ${HTHEME.en[h]}.`,
+      vNote: "Calculated for the birth place. The Varsheshwar (year lord) and Tajik yogas are not shown.",
+      rp: { today: "Today", month: "This Month", year: "This Year" }, rRating: k => k === "month" ? "month rating" : "year rating",
+      rIntro: k => k === "month" ? "Planetary transits this month, counted from your Moon sign (Phaladeepika Ch. 26):" : "The slow planets that shape your year, counted from your Moon sign:",
+      rEvents: k => k === "month" ? "Changes during the month" : "Key transit dates this year",
+      ev: (p, s, h, g) => `${p} enters ${s} — your ${h}${[, "st", "nd", "rd"][h] || "th"} house (${g ? "favourable" : "needs care"})`, evR: p => `${p} turns retrograde`, evD: p => `${p} turns direct`,
+      rGood: "Favourable days (Moon well placed for you)", rSS: "Saturn's Sade Sati is running for this sign — steady effort, Saturday charity and Hanuman Chalisa help.",
+      rDh: "Saturn's Dhaiya (Kantak/Ashtam Shani) is running for this sign — avoid shortcuts and big risks.", rNote: "General forecast by Moon sign; your full kundli and dasha give the personal picture.",
       akT: "Ashtakavarga", akIntro: "Bindus (benefic points) each planet gives to every house, counted from your Lagna (BPHS Ch. 66–72). The bottom row is the Sarvashtakavarga (SAV): 28 is average, 30 or more is strong, below 25 is weak.",
       akHouse: "House", akSav: "SAV",
       akStrong: hs => hs.length ? `Strong houses (30+ bindus): <b>${hs.join(", ")}</b> — their matters give good results with less effort.` : "",
@@ -48,6 +63,21 @@
       remedy: (m, d) => `Remedy: chant <span class="mantra">${m}</span> 108 times on ${d}.`,
     },
     hi: {
+      yT: "योगिनी दशा", yIntro: "8 योगिनियों की 36 वर्ष की दूसरी दशा पद्धति, जिसका उत्तर भारत में विंशोत्तरी के समय की पुष्टि के लिए व्यापक प्रयोग होता है।",
+      yMD: "योगिनी (ग्रह)", yFrom: "से", yTo: "तक", yrs: " वर्ष", yr1: " वर्ष", yAD: n => `${n} की अंतर्दशाएँ`,
+      yNow: (n, p, e, g) => `आप अभी <b>${n}</b> योगिनी (स्वामी ${p}) में हैं, ${e} तक — ${g ? "यह शुभ समय है जो उन्नति में सहायक है" : "यह कठिन समय है; धैर्य और ग्रह का उपाय सहायक है"}।`,
+      yNote: "मंगला, धान्या, भद्रिका और सिद्धा शुभ योगिनियाँ हैं; पिंगला, भ्रामरी, उल्का और संकटा कठिन मानी जाती हैं।",
+      vT: "वर्षफल (वार्षिक कुंडली)", vIntro: "ताजिक वर्ष कुंडली उस क्षण की बनती है जब सूर्य हर वर्ष अपनी जन्म स्थिति पर लौटता है (वर्ष प्रवेश)। यह जीवन के उस वर्ष के विषय दिखाती है।",
+      vAge: a => `आयु ${a}→${a + 1}`, vEntry: "वर्ष प्रवेश", vLagna: "वर्ष लग्न", vMuntha: "मुंथा", vMlord: "मुंथेश", vHouse: h => `${hiOrd(h)} भाव`,
+      vMres: (h, g) => g ? `मुंथा ${hiOrd(h)} भाव में शुभ है: यह वर्ष ${HTHEME.hi[h]} में प्रगति देता है।` : `मुंथा ${hiOrd(h)} भाव में है: इस वर्ष ${HTHEME.hi[h]} में सावधानी रखें।`,
+      vPl: (p, h, g) => `वर्ष कुंडली के ${hiOrd(h)} भाव में ${p} ${HTHEME.hi[h]} के लिए ${g ? "सहायक है" : "दबाव बनाता है"}।`,
+      vNote: "जन्म स्थान के लिए गणना। वर्षेश और ताजिक योग नहीं दिखाए गए हैं।",
+      rp: { today: "आज", month: "इस महीने", year: "इस वर्ष" }, rRating: k => k === "month" ? "मासिक रेटिंग" : "वार्षिक रेटिंग",
+      rIntro: k => k === "month" ? "इस महीने का ग्रह गोचर, आपकी चंद्र राशि से (फलदीपिका अध्याय 26):" : "आपके वर्ष को दिशा देने वाले धीमे ग्रह, आपकी चंद्र राशि से:",
+      rEvents: k => k === "month" ? "महीने के दौरान बदलाव" : "इस वर्ष की मुख्य गोचर तिथियाँ",
+      ev: (p, s, h, g) => `${p} ${s} में प्रवेश — आपके ${hiOrd(h)} भाव में (${g ? "शुभ" : "सावधानी"})`, evR: p => `${p} वक्री`, evD: p => `${p} मार्गी`,
+      rGood: "शुभ दिन (चंद्रमा आपके लिए अनुकूल)", rSS: "इस राशि पर शनि की साढ़ेसाती चल रही है — लगातार प्रयास, शनिवार का दान और हनुमान चालीसा सहायक हैं।",
+      rDh: "इस राशि पर शनि की ढैय्या चल रही है — शॉर्टकट और बड़े जोखिम से बचें।", rNote: "चंद्र राशि पर आधारित सामान्य फल; व्यक्तिगत फल के लिए अपनी पूरी कुंडली और दशा देखें।",
       akT: "अष्टकवर्ग", akIntro: "हर ग्रह आपके लग्न से हर भाव को कितने बिंदु (शुभ अंक) देता है (BPHS अध्याय 66–72)। अंतिम पंक्ति सर्वाष्टकवर्ग (SAV) है: 28 औसत, 30 या अधिक बलवान, 25 से कम कमज़ोर।",
       akHouse: "भाव", akSav: "SAV",
       akStrong: hs => hs.length ? `बलवान भाव (30+ बिंदु): <b>${hs.join(", ")}</b> — इनके विषय कम प्रयास में अच्छे फल देते हैं।` : "",
@@ -244,16 +274,118 @@
     return h;
   }
 
+  // ------------------------------------------------------------------ 2c. Yogini Dasha (36-year cycle)
+  const YOG = [
+    { en: "Mangala", hi: "मंगला", p: "Moon", y: 1, good: true }, { en: "Pingala", hi: "पिंगला", p: "Sun", y: 2, good: false },
+    { en: "Dhanya", hi: "धान्या", p: "Jupiter", y: 3, good: true }, { en: "Bhramari", hi: "भ्रामरी", p: "Mars", y: 4, good: false },
+    { en: "Bhadrika", hi: "भद्रिका", p: "Mercury", y: 5, good: true }, { en: "Ulka", hi: "उल्का", p: "Saturn", y: 6, good: false },
+    { en: "Siddha", hi: "सिद्धा", p: "Venus", y: 7, good: true }, { en: "Sankata", hi: "संकटा", p: "Rahu", y: 8, good: false },
+  ];
+  const YR = 365.25;
+  function yoginiDasha(k) {
+    const nk = k.planets.Moon.nak, span = 360 / 27, frac = (k.planets.Moon.lon % span) / span;
+    let i = (nk + 1 + 3) % 8; i = i === 0 ? 7 : i - 1;                  // (nakshatra no. + 3) mod 8, 0 → Sankata
+    const out = []; let start = k.jd - frac * YOG[i].y * YR;              // the running yogini began before birth
+    for (let n = 0; n < 12; n++) { const Y = YOG[(i + n) % 8], end = start + Y.y * YR; out.push({ i: (i + n) % 8, start, end }); start = end; }
+    return out;
+  }
+  const yAntar = d => { const res = []; let s = d.start; for (let n = 0; n < 8; n++) { const j = (d.i + n) % 8, len = YOG[d.i].y * YOG[j].y / 36 * YR; res.push({ i: j, start: s, end: s + len }); s += len; } return res; };
+  function yoginiHtml(k) {
+    const x = X(), L = yoginiDasha(k).filter(d => d.end > k.jd).slice(0, 9), now = julianDayNow(), cur = L.find(d => now >= d.start && now < d.end);
+    const nm = j => `${YOG[j][LANG]} <span class="sub">(${pn(YOG[j].p)})</span>`;
+    let h = `<h2>${x.yT}</h2><p class="tag" style="text-align:left;margin:0 0 10px">${x.yIntro}</p>`;
+    if (cur) h += `<p>${x.yNow(YOG[cur.i][LANG], pn(YOG[cur.i].p), fmt(cur.end), YOG[cur.i].good)}</p>`;
+    h += `<div class="two"><div><table><tr><th>${x.yMD}</th><th>${x.yFrom}</th><th>${x.yTo}</th></tr>` + L.map(d => `<tr class="${now >= d.start && now < d.end ? "dasha-now" : ""}"><td>${nm(d.i)} · ${YOG[d.i].y}${YOG[d.i].y === 1 ? x.yr1 : x.yrs}</td><td>${fmt(Math.max(d.start, k.jd))}</td><td>${fmt(d.end)}</td></tr>`).join("") + `</table></div>`;
+    if (cur) h += `<div><table><tr><th>${x.yAD(YOG[cur.i][LANG])}</th><th>${x.yFrom}</th><th>${x.yTo}</th></tr>` + yAntar(cur).map(a => `<tr class="${now >= a.start && now < a.end ? "dasha-now" : ""}"><td>${nm(a.i)}</td><td>${fmt(a.start)}</td><td>${fmt(a.end)}</td></tr>`).join("") + `</table></div>`;
+    return h + `</div><p class="sub">${x.yNote}</p>`;
+  }
+
+  // ------------------------------------------------------------------ 2d. Varshphal (Tajik solar return)
+  let varshOffset = 0;
+  const MUNTHA_GOOD = [1, 2, 3, 5, 9, 10, 11];
+  function solarReturn(k, year) {
+    const natal = k.planets.Sun.lon, [, M, D] = k.inp.dob.split("-").map(Number);
+    let a = julianDay(year, M, D, 0) - 3, b = a + 6; const f = jd => ((positionsAt(jd).Sun - natal + 540) % 360) - 180;
+    for (let i = 0; i < 45; i++) { const m = (a + b) / 2; if (f(a) * f(m) <= 0) b = m; else a = m; }
+    return (a + b) / 2;
+  }
+  function varshHtml(k) {
+    const x = X(), by = +k.inp.dob.slice(0, 4), now = julianDayNow();
+    let year = new Date().getUTCFullYear(); if (solarReturn(k, year) > now) year--; year += varshOffset; if (year <= by) { year = by + 1; varshOffset = year - (new Date().getUTCFullYear()); }
+    const jd = solarReturn(k, year), age = year - by, tz = k.inp.tz ?? 5.5, P = positionsAt(jd);
+    const T_ = (jd + deltaT(jd) / 86400 - 2451545) / 36525, asc = norm(ascendant(jd, k.inp.lat, k.inp.lon) - ayanamsa(T_)), vl = Math.floor(asc / 30);
+    const m = {}; PL.forEach(p => m[p] = Math.floor(P[p] / 30)); m.Lagna = vl;
+    const mun = (k.lagna + age) % 12, mh = ((mun - vl + 12) % 12) + 1, good = MUNTHA_GOOD.includes(mh);
+    const d = new Date((jd - 2440587.5) * 864e5 + tz * 36e5), when = d.toLocaleDateString(LANG === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }) + ", " + timeTxt(jd, tz);
+    const jh = ((m.Jupiter - vl + 12) % 12) + 1, sh = ((m.Saturn - vl + 12) % 12) + 1;
+    let h = `<h2>${x.vT}</h2><p class="tag" style="text-align:left;margin:0 0 10px">${x.vIntro}</p>`;
+    h += `<div class="tabs"><button class="tab" data-vy="-1">◀ ${year - 1}</button><button class="tab on">${year}–${year + 1} · ${x.vAge(age)}</button><button class="tab" data-vy="1">${year + 1} ▶</button></div>`;
+    h += `<div class="two"><div>${northChart(vl, m, null)}</div><div><div class="kv">` +
+      [[x.vEntry, when], [x.vLagna, `${sn(vl)} ${Math.floor(asc % 30)}°`], [x.vMuntha, `${sn(mun)} · ${x.vHouse(mh)}`], [x.vMlord, pn(LORD[mun])]].map(([a, b]) => `<div><small>${a}</small><b>${b}</b></div>`).join("") + `</div>`;
+    h += `<p>${x.vMres(mh, good)}</p><p>${x.vPl(pn("Jupiter"), jh, [1, 2, 4, 5, 7, 9, 10, 11].includes(jh))} ${x.vPl(pn("Saturn"), sh, [3, 6, 11].includes(sh))}</p></div></div>`;
+    return h + `<p class="sub">${x.vNote}</p>`;
+  }
+
+  // ------------------------------------------------------------------ 3b. monthly & yearly rashifal (transits from the Moon sign)
+  let rPeriod = "today";
+  const HTHEME = {
+    en: ["", "health and confidence", "money and family", "courage, siblings and short travel", "home, mother and peace of mind", "children, studies and romance", "rivals, loans and health", "marriage and partnerships", "sudden changes and hidden matters", "luck, elders and spiritual growth", "career and status", "income and friends", "expenses, travel and sleep"],
+    hi: ["", "स्वास्थ्य और आत्मविश्वास", "धन और परिवार", "साहस, भाई-बहन और छोटी यात्राएँ", "घर, माता और मन की शांति", "संतान, पढ़ाई और प्रेम", "विरोधी, कर्ज़ और स्वास्थ्य", "विवाह और साझेदारी", "अचानक बदलाव और छिपे विषय", "भाग्य, बड़े और आध्यात्मिक उन्नति", "करियर और प्रतिष्ठा", "आय और मित्र", "खर्च, यात्रा और नींद"],
+  };
+  const transitLine = (p, h) => { const g = GOCHAR_GOOD[p].includes(h), th = HTHEME[LANG][h];
+    return LANG === "hi" ? `<b>${pn(p)}</b> आपकी राशि से ${hiOrd(h)} भाव में — ${th} के लिए ${g ? "<span class=\"pill g\">शुभ</span>" : "<span class=\"pill b\">सावधानी</span>"}।`
+                         : `<b>${pn(p)}</b> in your ${h}${[, "st", "nd", "rd"][h] || "th"} house from the Moon — ${g ? "<span class=\"pill g\">supports</span>" : "<span class=\"pill b\">needs care in</span>"} ${th}.`; };
+  function periodHtml(r, kind) {
+    const x = X(), tz = 5.5, now = new Date(Date.now() + tz * 36e5), Y = now.getUTCFullYear(), Mo = now.getUTCMonth();
+    const startD = kind === "month" ? new Date(Date.UTC(Y, Mo, 1)) : new Date(Date.UTC(Y, 0, 1)), endD = kind === "month" ? new Date(Date.UTC(Y, Mo + 1, 1)) : new Date(Date.UTC(Y + 1, 0, 1));
+    const jd0 = julianDay(startD.getUTCFullYear(), startD.getUTCMonth() + 1, startD.getUTCDate(), 6.5 - tz), jd1 = julianDay(endD.getUTCFullYear(), endD.getUTCMonth() + 1, endD.getUTCDate(), 6.5 - tz);
+    const hOf = (p, jd) => ((Math.floor(positionsAt(jd)[p] / 30) - r + 12) % 12) + 1, label = kind === "month" ? startD.toLocaleDateString(LANG === "hi" ? "hi-IN" : "en-IN", { month: "long", year: "numeric", timeZone: "UTC" }) : String(Y);
+    const planets = kind === "month" ? ["Sun", "Mars", "Mercury", "Venus", "Jupiter", "Saturn", "Rahu"] : ["Jupiter", "Saturn", "Rahu", "Ketu"];
+    let score = 0, n = 0, lines = [], events = [];
+    for (const p of planets) {
+      const h0 = hOf(p, jd0); lines.push(transitLine(p, h0)); score += GOCHAR_GOOD[p].includes(h0) ? (p === "Jupiter" || p === "Saturn" ? 2 : 1) : 0; n += p === "Jupiter" || p === "Saturn" ? 2 : 1;
+      // sign changes and retrograde stations in the period
+      let prevS = Math.floor(positionsAt(jd0)[p] / 30), prevL = positionsAt(jd0)[p], retro = null;
+      for (let jd = jd0 + 1; jd < jd1; jd += 1) {
+        const L = positionsAt(jd)[p], s = Math.floor(L / 30), mv = ((L - prevL + 540) % 360) - 180;
+        if (s !== prevS) events.push([jd, x.ev(pn(p), sn(s), ((s - r + 12) % 12) + 1, GOCHAR_GOOD[p].includes(((s - r + 12) % 12) + 1))]);
+        if (!["Rahu", "Ketu", "Sun"].includes(p)) { const rt = mv < 0; if (retro !== null && rt !== retro) events.push([jd, rt ? x.evR(pn(p)) : x.evD(pn(p))]); retro = rt; }
+        prevS = s; prevL = L;
+      }
+    }
+    const stars = Math.max(1, Math.min(5, Math.round(score / n * 5 + 0.4)));
+    let h = `<h3><span class="sym">${SIGN_SYM[r]}</span> ${sn(r)} — ${label}</h3><p><span class="stars">${"★".repeat(stars)}${"☆".repeat(5 - stars)}</span> <span class="sub">${x.rRating(kind)}</span></p>`;
+    h += `<p>${x.rIntro(kind)}</p><ul>${lines.map(l => `<li>${l}</li>`).join("")}</ul>`;
+    if (events.length) h += `<h3>${x.rEvents(kind)}</h3><table>${events.sort((a, b) => a[0] - b[0]).map(([jd, t]) => `<tr><td style="white-space:nowrap">${new Date((jd - 2440587.5) * 864e5 + tz * 36e5).toLocaleDateString(LANG === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short", timeZone: "UTC" })}</td><td>${t}</td></tr>`).join("")}</table>`;
+    if (kind === "month") { // good Moon days (Chandrabalam): Moon in 1, 3, 6, 7, 10, 11 from the sign, at sunrise
+      const good = []; for (let jd = jd0; jd < jd1; jd += 1) { const h_ = hOf("Moon", jd); if ([1, 3, 6, 7, 10, 11].includes(h_)) good.push(new Date((jd - 2440587.5) * 864e5 + tz * 36e5).getUTCDate()); }
+      h += `<h3>${x.rGood}</h3><p>${good.join(", ")}</p>`;
+    } else {
+      const sat = (sgn => ((sgn - r + 12) % 12) + 1)(Math.floor(positionsAt(jd0).Saturn / 30));
+      if ([12, 1, 2].includes(sat)) h += `<p class="sub">⚠ ${x.rSS}</p>`; else if ([4, 8].includes(sat)) h += `<p class="sub">⚠ ${x.rDh}</p>`;
+    }
+    return h + `<p class="sub">${x.rNote}</p>`;
+  }
+  function renderPeriodTabs() {
+    const box = document.getElementById("rashifal"); if (!box) return; const x = X();
+    const tabs = `<div class="tabs" id="rpTabs">${["today", "month", "year"].map(t => `<button class="tab ${t === rPeriod ? "on" : ""}" data-rp="${t}">${x.rp[t]}</button>`).join("")}</div>`;
+    if (rPeriod !== "today") box.innerHTML = periodHtml(selRashi ?? 0, rPeriod);
+    box.insertAdjacentHTML("afterbegin", tabs);
+    box.querySelectorAll("[data-rp]").forEach(b => b.onclick = () => { rPeriod = b.dataset.rp; renderRashifal(); });
+  }
+
   function renderMore(k) {
     if (!k) return;
     let a = document.getElementById("moreCharts"), b = document.getElementById("avakahada");
     if (!a) {
       const anchor = document.getElementById("chart").closest("section");
-      anchor.insertAdjacentHTML("afterend", `<section class="card" id="moreCharts"></section><section class="card" id="avakahada"></section><section class="card" id="ashtak"></section>`);
+      anchor.insertAdjacentHTML("afterend", `<section class="card" id="moreCharts"></section><section class="card" id="avakahada"></section><section class="card" id="ashtak"></section><section class="card" id="yogini"></section><section class="card" id="varsh"></section>`);
       a = document.getElementById("moreCharts"); b = document.getElementById("avakahada");
       a.addEventListener("click", e => { const t = e.target.closest("[data-ct]"); if (t) { chartTab = t.dataset.ct; a.innerHTML = moreChartsHtml(K); } });
     }
     a.innerHTML = moreChartsHtml(k); b.innerHTML = avakahadaHtml(k); document.getElementById("ashtak").innerHTML = ashtakavargaHtml(k);
+    document.getElementById("yogini").innerHTML = yoginiHtml(k); document.getElementById("varsh").innerHTML = varshHtml(k);
+    document.getElementById("varsh").onclick = e => { const t = e.target.closest("[data-vy]"); if (t) { varshOffset += +t.dataset.vy; document.getElementById("varsh").innerHTML = varshHtml(K); } };
   }
 
   // ------------------------------------------------------------------ 3. full panchang + muhurat
@@ -342,7 +474,7 @@
   UI.en.navNumero = T.en.navNumero; UI.hi.navNumero = T.hi.navNumero;
   const _render = window.render, _rashi = window.renderRashifal, _show = window.showView, _lang = window.applyLang;
   window.render = function (k) { _render(k); try { renderMore(k); } catch (e) { console.error(e); } };
-  window.renderRashifal = function () { _rashi(); try { renderPanchang(); } catch (e) { console.error(e); } };
+  window.renderRashifal = function () { _rashi(); try { renderPeriodTabs(); renderPanchang(); } catch (e) { console.error(e); } };
   window.showView = function (v, noHash) { _show(v, noHash); if (v === "numero") renderNumerology(); };
   window.applyLang = function () {
     _lang();
@@ -361,5 +493,5 @@
     if (typeof VIEW !== "undefined" && VIEW === "daily") renderPanchang();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
-  window.Vedic = { ashtakavarga, signOfD9, signOfD10, karanaOf, numerologyHtml, panchangHtml };
+  window.Vedic = { yoginiDasha, solarReturn, periodHtml, ashtakavarga, signOfD9, signOfD10, karanaOf, numerologyHtml, panchangHtml };
 })();
