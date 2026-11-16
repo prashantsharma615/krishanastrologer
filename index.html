@@ -60,6 +60,18 @@ th{color:var(--mut);font-weight:500;font-size:12px;text-transform:uppercase;lett
 .qbox{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0;font-size:14px}
 .step{display:flex;gap:10px;align-items:baseline}.step .n{background:var(--gold);color:#1b1230;border-radius:999px;min-width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
 .mantra{color:var(--gold2);font-weight:600}
+.nav{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.nav button{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:500}
+.nav button.on{background:var(--gold);color:#1b1230;border-color:var(--gold)}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;margin-bottom:16px}
+.rbtn{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:13px;font-weight:500}
+.rbtn.on{border-color:var(--gold);background:#3a2c74}
+.sym{font-size:22px;color:var(--gold2)}.you{font-size:10px;color:var(--good)}
+.stars{color:var(--gold);font-size:20px;letter-spacing:2px}
+.score{display:flex;gap:18px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.big{font-family:Cinzel,serif;font-size:48px;color:var(--gold);line-height:1}.big span{font-size:18px;color:var(--mut)}
+.dosh{border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:6px}.dosh:last-child{border:0}
+.banner{background:#3a2c74;border:1px solid var(--gold);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:14px}
 </style>
 </head>
 <body>
@@ -67,10 +79,12 @@ th{color:var(--mut);font-weight:500;font-size:12px;text-transform:uppercase;lett
   <div class="lang"><button data-lang="en">English</button><button data-lang="hi">हिंदी</button></div>
   <div class="logo" data-i="logo"></div>
   <div class="tag" data-i="tagline"></div>
+  <nav class="nav"><button data-view="home" data-i="navHome"></button><button data-view="match" data-i="navMatch"></button><button data-view="daily" data-i="navDaily"></button><button data-view="dosh" data-i="navDosh"></button></nav>
 </header>
 <main>
-
+<div id="view-home" class="view">
 <section class="card" id="formCard">
+  <div class="banner hidden" id="doshNeed" data-i="doshNeed"></div>
   <h2 data-i="enterDetails"></h2>
   <div class="grid">
     <div><label data-i="fullName"></label><input id="name" data-ph="namePh"></div>
@@ -112,6 +126,11 @@ th{color:var(--mut);font-weight:500;font-size:12px;text-transform:uppercase;lett
     </div>
   </section>
 
+  <section class="card" id="doshCard">
+    <h2 data-i="doshTitle"></h2>
+    <div class="reading" id="dosh"></div>
+  </section>
+
   <section class="card">
     <h2 data-i="dashaTitle"></h2>
     <p class="tag" style="text-align:left;margin:0 0 10px" data-i="dashaDesc"></p>
@@ -121,6 +140,34 @@ th{color:var(--mut);font-weight:500;font-size:12px;text-transform:uppercase;lett
   </section>
 
   <div class="row" style="justify-content:center"><button class="ghost" id="again" data-i="newKundli"></button></div>
+</div>
+</div>
+
+<div id="view-match" class="view hidden">
+<section class="card">
+  <h2 data-i="navMatch"></h2>
+  <h3 data-i="boy"></h3>
+  <div class="grid">
+    <div><label data-i="fullName"></label><input id="b_name" data-ph="namePh"></div>
+    <div><label data-i="dob"></label><input id="b_dob" type="date" value="1994-03-10"></div>
+    <div><label data-i="tob"></label><div class="tsel"><select id="b_hh" data-v="8"></select><select id="b_mm" data-v="15"></select><select id="b_ap" data-v="AM"></select></div></div>
+    <div><label data-i="pob"></label><select id="b_city" data-v="0"></select></div>
+  </div>
+  <h3 style="margin-top:18px" data-i="girl"></h3>
+  <div class="grid">
+    <div><label data-i="fullName"></label><input id="g_name" data-ph="namePh"></div>
+    <div><label data-i="dob"></label><input id="g_dob" type="date" value="1996-08-15"></div>
+    <div><label data-i="tob"></label><div class="tsel"><select id="g_hh" data-v="6"></select><select id="g_mm" data-v="45"></select><select id="g_ap" data-v="PM"></select></div></div>
+    <div><label data-i="pob"></label><select id="g_city" data-v="4"></select></div>
+  </div>
+  <div class="row"><button id="matchBtn" data-i="matchBtn"></button></div>
+</section>
+<section class="card hidden" id="matchCard"><h2 data-i="matchTitle"></h2><div class="reading" id="matchOut"></div></section>
+</div>
+
+<div id="view-daily" class="view hidden">
+<section class="card"><h2 data-i="todayTitle"></h2><div class="kv" id="panchang"></div></section>
+<section class="card"><h2 data-i="chooseRashi"></h2><p class="tag" style="text-align:left;margin:0 0 12px" data-i="rashiHint"></p><div class="rgrid" id="rgrid"></div><div class="reading" id="rashifal"></div></section>
 </div>
 
 <p class="note"><span data-i="disclaimer"></span><br><a href="privacy.html" style="color:#a59fc7">Privacy Policy / गोपनीयता नीति</a></p>
@@ -134,11 +181,11 @@ const UI={
  en:{logo:'✦ KRISHAN <span>ASTROLOGER</span> ✦',tagline:"Vedic Kundli · Dasha · Guidance for life's problems",enterDetails:"Enter Birth Details",fullName:"Full name",namePh:"e.g. Rahul Sharma",gender:"Gender",genders:["Male","Female","Other"],dob:"Date of birth",tob:"Time of birth",pob:"Place of birth",otherPlace:"Other place (enter coordinates)",lat:"Latitude (N +)",lon:"Longitude (E +)",tz:"Time zone (hours from UTC)",generate:"Get My Kundli & Solution",exactTime:"Exact time gives an exact Lagna (ascendant).",chartCap:"Lagna chart (North Indian style)",solve:"Your Solution",askPh:"Or type your problem, e.g. 'When will I get a job?' or 'Marriage delay'",getGuidance:"Get Guidance",dashaTitle:"Vimshottari Dasha",dashaDesc:"The planetary periods that shape each phase of life. The highlighted row is running now.",antarTitle:"Current Antardasha (sub-periods)",newKundli:"New Kundli",
   disclaimer:"Planet positions are calculated astronomically (sidereal, Lahiri ayanamsa, whole-sign houses).<br>Readings are traditional Jyotish interpretation offered as guidance, not guaranteed predictions. For medical, legal or financial decisions, please also consult a qualified professional.",
   kundliOf:n=>n?n+"'s Kundli":"Your Kundli",lagna:"Lagna",moonSign:"Moon sign (Rashi)",nakshatra:"Nakshatra",pada:"pada",sunSign:"Sun sign (sidereal)",runningMD:"Running Mahadasha",
-  thPlanet:"Planet",thSign:"Sign",thDeg:"Degree",thNak:"Nakshatra",thHouse:"House",thMD:"Mahadasha",thFrom:"From",thTo:"To",antarOf:p=>p+" – Antardasha",retro:"R",timeHint:"Select hour, minute and AM/PM. 12:00 AM = midnight, 12:00 PM = noon.",probHead:"What is your problem?",chooseProb:"Choose your problem",describe:"Describe it in your own words (optional)",another:"Ask about another problem",born:"Born",am:"AM",pm:"PM",hourL:"Hour",minL:"Min"},
+  thPlanet:"Planet",thSign:"Sign",thDeg:"Degree",thNak:"Nakshatra",thHouse:"House",thMD:"Mahadasha",thFrom:"From",thTo:"To",antarOf:p=>p+" – Antardasha",retro:"R",timeHint:"Select hour, minute and AM/PM. 12:00 AM = midnight, 12:00 PM = noon.",probHead:"What is your problem?",chooseProb:"Choose your problem",describe:"Describe it in your own words (optional)",another:"Ask about another problem",born:"Born",am:"AM",pm:"PM",hourL:"Hour",minL:"Min",navHome:"Kundli & Solution",navMatch:"Kundli Matching",navDaily:"Daily Horoscope",navDosh:"Dosh Check",boy:"Boy's details",girl:"Girl's details",boyS:"Boy",girlS:"Girl",matchBtn:"Match Kundli",matchTitle:"Guna Milan Result",thKoota:"Koota",thGot:"Score",todayTitle:"Today's Panchang",chooseRashi:"Choose your Rashi (Moon sign)",rashiHint:"Don't know your Rashi? Make your kundli in the first tab — it shows your Moon sign.",doshTitle:"Dosh Check",doshNeed:"Enter your birth details and generate your kundli to see Mangal Dosh, Kaal Sarp Dosh and Shani Sade Sati.",dateL:"Date",vaar:"Day",tithiL:"Tithi",pakshaL:"Paksha"},
  hi:{logo:'✦ कृष्ण <span>ज्योतिषी</span> ✦',tagline:"वैदिक कुंडली · दशा · जीवन की समस्याओं का मार्गदर्शन",enterDetails:"जन्म विवरण दर्ज करें",fullName:"पूरा नाम",namePh:"जैसे: राहुल शर्मा",gender:"लिंग",genders:["पुरुष","महिला","अन्य"],dob:"जन्म तिथि",tob:"जन्म समय",pob:"जन्म स्थान",otherPlace:"अन्य स्थान (अक्षांश-देशांतर डालें)",lat:"अक्षांश (उत्तर +)",lon:"देशांतर (पूर्व +)",tz:"समय क्षेत्र (UTC से घंटे)",generate:"कुंडली और समाधान देखें",exactTime:"सही समय से सही लग्न आता है।",chartCap:"लग्न कुंडली (उत्तर भारतीय शैली)",solve:"आपका समाधान",askPh:"या अपनी समस्या लिखें, जैसे 'नौकरी कब लगेगी?' या 'शादी में देरी'",getGuidance:"मार्गदर्शन पाएँ",dashaTitle:"विंशोत्तरी दशा",dashaDesc:"ग्रहों की वे अवधियाँ जो जीवन के हर चरण को प्रभावित करती हैं। हाइलाइट की गई पंक्ति अभी चल रही है।",antarTitle:"वर्तमान अंतर्दशा",newKundli:"नई कुंडली",
   disclaimer:"ग्रहों की स्थिति खगोलीय गणना से निकाली गई है (निरयन, लाहिरी अयनांश, संपूर्ण राशि भाव)।<br>फलादेश पारंपरिक ज्योतिष पर आधारित मार्गदर्शन है, निश्चित भविष्यवाणी नहीं। चिकित्सा, कानूनी या वित्तीय निर्णयों के लिए किसी योग्य विशेषज्ञ से भी सलाह लें।",
   kundliOf:n=>n?n+" की कुंडली":"आपकी कुंडली",lagna:"लग्न",moonSign:"चंद्र राशि",nakshatra:"नक्षत्र",pada:"पद",sunSign:"सूर्य राशि (निरयन)",runningMD:"चल रही महादशा",
-  thPlanet:"ग्रह",thSign:"राशि",thDeg:"अंश",thNak:"नक्षत्र",thHouse:"भाव",thMD:"महादशा",thFrom:"से",thTo:"तक",antarOf:p=>p+" – अंतर्दशा",retro:"व",timeHint:"घंटा, मिनट और AM/PM चुनें। AM = रात 12 से दोपहर 12 तक, PM = दोपहर 12 से रात 12 तक। (12:00 AM = आधी रात, 12:00 PM = दोपहर)",probHead:"आपकी समस्या क्या है?",chooseProb:"अपनी समस्या चुनें",describe:"अपने शब्दों में लिखें (वैकल्पिक)",another:"किसी और समस्या के बारे में पूछें",born:"जन्म",am:"AM",pm:"PM",hourL:"घंटा",minL:"मिनट"}};
+  thPlanet:"ग्रह",thSign:"राशि",thDeg:"अंश",thNak:"नक्षत्र",thHouse:"भाव",thMD:"महादशा",thFrom:"से",thTo:"तक",antarOf:p=>p+" – अंतर्दशा",retro:"व",timeHint:"घंटा, मिनट और AM/PM चुनें। AM = रात 12 से दोपहर 12 तक, PM = दोपहर 12 से रात 12 तक। (12:00 AM = आधी रात, 12:00 PM = दोपहर)",probHead:"आपकी समस्या क्या है?",chooseProb:"अपनी समस्या चुनें",describe:"अपने शब्दों में लिखें (वैकल्पिक)",another:"किसी और समस्या के बारे में पूछें",born:"जन्म",am:"AM",pm:"PM",hourL:"घंटा",minL:"मिनट",navHome:"कुंडली और समाधान",navMatch:"कुंडली मिलान",navDaily:"आज का राशिफल",navDosh:"दोष जाँच",boy:"वर (लड़के) का विवरण",girl:"कन्या (लड़की) का विवरण",boyS:"वर",girlS:"कन्या",matchBtn:"कुंडली मिलाएँ",matchTitle:"गुण मिलान परिणाम",thKoota:"कूट",thGot:"प्राप्त गुण",todayTitle:"आज का पंचांग",chooseRashi:"अपनी राशि (चंद्र राशि) चुनें",rashiHint:"अपनी राशि नहीं पता? पहले टैब में कुंडली बनाएँ — उसमें आपकी चंद्र राशि दिखेगी।",doshTitle:"दोष जाँच",doshNeed:"मांगलिक दोष, काल सर्प दोष और शनि की साढ़ेसाती देखने के लिए अपना जन्म विवरण भरकर कुंडली बनाएँ।",dateL:"तारीख",vaar:"वार",tithiL:"तिथि",pakshaL:"पक्ष"}};
 const L=()=>UI[LANG];
 
 // ================= Data =================
@@ -280,7 +327,7 @@ const TXT={
   none:"The coming dasha periods are not strongly tied to this area, so results will come mainly through steady effort and the practical steps below.",
   mantra:(m,day)=>`Chant <span class="mantra">${m}</span> 108 times, especially on ${day}.`,
   overall:"Outlook",fav:"Favourable",eff:"Needs effort",mix:"Mixed"},
- hi:{house:(h,mean,sign,lord,lh,lmean,dg)=>`<b>भाव ${h} (${mean})</b> में <b>${sign}</b> राशि है, जिसका स्वामी <b>${lord}</b> आपके ${lh}वें भाव (${lmean}) में${dg?` <b>${dg}</b> अवस्था में`:""} स्थित है। `,
+ hi:{house:(h,mean,sign,lord,lh,lmean,dg)=>`<b>भाव ${h} (${mean})</b> में <b>${sign}</b> राशि है, जिसका स्वामी <b>${lord}</b> आपके ${hiOrd(lh)} भाव (${lmean}) में${dg?` <b>${dg}</b> अवस्था में`:""} स्थित है। `,
   strong:"यह एक मज़बूत स्थिति है: यहाँ परिणाम अपेक्षाकृत कम संघर्ष से मिलते हैं। ",weak:"यही स्थिति इस क्षेत्र में देरी या बाधा का मुख्य कारण है; इसके लिए अतिरिक्त प्रयास और धैर्य चाहिए। ",balanced:"यह संतुलित स्थिति है: लगातार प्रयास से लगातार परिणाम मिलते हैं। ",
   here:l=>`यहाँ स्थित ग्रह: ${l}। `,ben:(p,n)=>`${p} ${n} प्रदान करता है। `,mal:(p,n)=>`${p} ${n} का प्रभाव देता है, जिससे दबाव या देरी हो सकती है। `,
   q:"आपका प्रश्न",why:"ऐसा क्यों हो रहा है (आपकी कुंडली)",when:"कब सुधार होगा (दशा का समय)",rem:"उपाय",steps:"व्यावहारिक कदम",
@@ -291,6 +338,7 @@ const TXT={
   mantra:(m,day)=>`विशेष रूप से ${day} को <span class="mantra">${m}</span> मंत्र का 108 बार जाप करें।`,
   overall:"स्थिति",fav:"अनुकूल",eff:"प्रयास आवश्यक",mix:"मिश्रित"}};
 
+const hiOrd=n=>({1:"पहले",2:"दूसरे",3:"तीसरे",4:"चौथे",6:"छठे"}[n]||n+"वें");
 function lordOf(k,h){return LORD[(k.lagna+h-1)%12]}
 function planetsIn(k,h){return Object.keys(k.planets).filter(p=>k.planets[p].house===h)}
 function currentMD(k){const now=julianDayNow();return k.dasha.find(d=>now>=d.start&&now<d.end)||k.dasha[k.dasha.length-1]}
@@ -325,6 +373,193 @@ function reading(k,key,q){
     +H3(1,X.why)+why+H3(2,X.when)+when+H3(3,X.rem)+remHtml+H3(4,X.steps)+stepsHtml;
 }
 
+// ================= Dosh =================
+const MANGAL_H=[1,2,4,7,8,12];
+const KS_NAMES={en:["Anant","Kulik","Vasuki","Shankhpal","Padma","Mahapadma","Takshak","Karkotak","Shankhachud","Ghatak","Vishdhar","Sheshnag"],hi:["अनंत","कुलिक","वासुकि","शंखपाल","पद्म","महापद्म","तक्षक","कर्कोटक","शंखचूड़","घातक","विषधर","शेषनाग"]};
+function mangalInfo(k){const M=k.planets.Mars, hL=M.house, hM=((M.sign-k.planets.Moon.sign+12)%12)+1;
+  const fromL=MANGAL_H.includes(hL), fromM=MANGAL_H.includes(hM), dg=dignityKey("Mars",M.sign);
+  return {hL,hM,fromL,fromM,present:fromL||fromM,strong:fromL,reduced:(dg==="Own"||dg==="Exalted"),dg};}
+function kaalSarp(k){const r=k.planets.Rahu.lon; const ds=["Sun","Moon","Mars","Mercury","Jupiter","Venus","Saturn"].map(p=>norm(k.planets[p].lon-r));
+  const yes=ds.every(d=>d<180)||ds.every(d=>d>180); return {yes,name:KS_NAMES[LANG][k.planets.Rahu.house-1]};}
+function saturnSign(jd){const T=(jd-2451545)/36525;return Math.floor(norm(geoLon("Saturn",T)-ayanamsa(T))/30);}
+function transitPeriods(k,offsets){const ms=k.planets.Moon.sign, now=julianDayNow(), step=4, out=[]; let cur=null;
+  for(let jd=now-9*365.25; jd<now+32*365.25; jd+=step){const rel=((saturnSign(jd)-ms+12)%12); const inS=offsets.includes(rel);
+    if(inS){ if(cur&&jd-cur.end<450) cur.end=jd; else {cur={start:jd,end:jd}; out.push(cur);} } }
+  return out;}
+function sadeSati(k){
+  if(k._ss) return k._ss; const now=julianDayNow();
+  const ss=transitPeriods(k,[11,0,1]), dh=transitPeriods(k,[3,7]);
+  const cur=ss.find(p=>now>=p.start&&now<=p.end), next=ss.find(p=>p.start>now);
+  const rel=((saturnSign(now)-k.planets.Moon.sign+12)%12);
+  const dhCur=dh.find(p=>now>=p.start&&now<=p.end);
+  return k._ss={cur,next,rel,dhCur,satSign:saturnSign(now)};}
+const DT={
+ en:{present:"Present",absent:"Not present",mild:"Mild",running:"Running",
+  mangalT:"Mangal Dosh (Manglik)",ksT:"Kaal Sarp Dosh",ssT:"Shani Sade Sati",
+  mYes:(hL,hM,fromL,fromM)=>`Mars is in house ${hL} from your Lagna${fromM?` and house ${hM} from your Moon`:""}. ${fromL?"<b>You are Manglik (Mangal Dosh present).</b>":"<b>Mild Mangal Dosh</b> — it shows only from the Moon chart, not from the Lagna."}`,
+  mReduced:dg=>` Mars is in its ${dg.toLowerCase()} sign here, which greatly reduces the effect.`,
+  mNo:(hL,hM)=>`Mars is in house ${hL} from Lagna and house ${hM} from the Moon — <b>no Mangal Dosh</b>.`,
+  mRem:"Recite Hanuman Chalisa on Tuesdays; chant <span class='mantra'>ॐ अं अंगारकाय नमः</span> 108 times on Tuesdays; donate red lentils (masoor dal). Traditionally, marrying another Manglik balances this dosh, and its effect is believed to reduce after age 28.",
+  ksYes:n=>`All seven planets lie on one side of the Rahu–Ketu axis, so <b>${n} Kaal Sarp Dosh</b> is present. It can bring delays and ups-and-downs, but many successful people have it — steady effort pays off, often later in life.`,
+  ksNo:"The planets are not all between Rahu and Ketu — <b>no Kaal Sarp Dosh</b>.",
+  ksRem:"Chant <span class='mantra'>ॐ नमः शिवाय</span> 108 times daily; offer water or milk on a Shivling on Mondays; chant the Rahu mantra <span class='mantra'>ॐ रां राहवे नमः</span> on Saturdays.",
+  phase:["first phase (rising)","peak phase","last phase (setting)"],
+  ssYes:(sign,ph,a,b)=>`Saturn is transiting ${sign}. <b>Your Sade Sati is running — ${ph}</b>, from ${a} to ${b}. It is a time of hard work, responsibility and lessons; patience and discipline bring lasting results.`,
+  ssNo:(a,b)=>`<b>No Sade Sati right now.</b>${a?` Your next Sade Sati: <b>${a} to ${b}</b>.`:""}`,
+  dhYes:(t,a,b)=>` <b>${t}</b> is running until ${b}; be careful with health, travel and big decisions.`,
+  dhNames:{3:"Kantak Shani (Dhaiya)",7:"Ashtam Shani (Dhaiya)"},
+  ssRem:"On Saturdays chant <span class='mantra'>ॐ शं शनैश्चराय नमः</span> 108 times, light a mustard-oil lamp under a peepal tree, recite Hanuman Chalisa, and help workers and the elderly.",
+  remedy:"Remedy"},
+ hi:{present:"है",absent:"नहीं है",mild:"आंशिक",running:"चल रही है",
+  mangalT:"मांगलिक दोष (मंगल दोष)",ksT:"काल सर्प दोष",ssT:"शनि की साढ़ेसाती",
+  mYes:(hL,hM,fromL,fromM)=>`मंगल आपके लग्न से ${hiOrd(hL)} भाव में है${fromM?` और चंद्र से ${hiOrd(hM)} भाव में`:""}। ${fromL?"<b>आप मांगलिक हैं (मंगल दोष है)।</b>":"<b>आंशिक मंगल दोष</b> — यह केवल चंद्र कुंडली से बनता है, लग्न से नहीं।"}`,
+  mReduced:dg=>` यहाँ मंगल ${dg} राशि में है, जिससे दोष का प्रभाव बहुत कम हो जाता है।`,
+  mNo:(hL,hM)=>`मंगल लग्न से ${hiOrd(hL)} और चंद्र से ${hiOrd(hM)} भाव में है — <b>मंगल दोष नहीं है</b>।`,
+  mRem:"मंगलवार को हनुमान चालीसा का पाठ करें; मंगलवार को <span class='mantra'>ॐ अं अंगारकाय नमः</span> का 108 बार जाप करें; मसूर की दाल दान करें। परंपरा के अनुसार मांगलिक से विवाह करने पर यह दोष संतुलित होता है, और 28 वर्ष की आयु के बाद इसका प्रभाव कम माना जाता है।",
+  ksYes:n=>`सातों ग्रह राहु-केतु के एक ही ओर हैं, इसलिए <b>${n} काल सर्प दोष</b> है। इससे देरी और उतार-चढ़ाव आ सकते हैं, पर कई सफल लोगों की कुंडली में भी यह होता है — लगातार मेहनत का फल मिलता है, अक्सर जीवन में थोड़ा देर से।`,
+  ksNo:"सभी ग्रह राहु-केतु के बीच नहीं हैं — <b>काल सर्प दोष नहीं है</b>।",
+  ksRem:"रोज़ <span class='mantra'>ॐ नमः शिवाय</span> का 108 बार जाप करें; सोमवार को शिवलिंग पर जल या दूध चढ़ाएँ; शनिवार को राहु मंत्र <span class='mantra'>ॐ रां राहवे नमः</span> का जाप करें।",
+  phase:["पहला चरण (उदय)","दूसरा चरण (शिखर)","तीसरा चरण (अस्त)"],
+  ssYes:(sign,ph,a,b)=>`शनि अभी ${sign} राशि में गोचर कर रहे हैं। <b>आपकी साढ़ेसाती चल रही है — ${ph}</b>, ${a} से ${b} तक। यह मेहनत, ज़िम्मेदारी और सीख का समय है; धैर्य और अनुशासन से स्थायी फल मिलता है।`,
+  ssNo:(a,b)=>`<b>अभी साढ़ेसाती नहीं है।</b>${a?` आपकी अगली साढ़ेसाती: <b>${a} से ${b} तक</b>।`:""}`,
+  dhYes:(t,a,b)=>` <b>${t}</b> ${b} तक चल रही है; स्वास्थ्य, यात्रा और बड़े निर्णयों में सावधानी रखें।`,
+  dhNames:{3:"कंटक शनि (ढैय्या)",7:"अष्टम शनि (ढैय्या)"},
+  ssRem:"शनिवार को <span class='mantra'>ॐ शं शनैश्चराय नमः</span> का 108 बार जाप करें, पीपल के नीचे सरसों के तेल का दीपक जलाएँ, हनुमान चालीसा पढ़ें और मज़दूरों व बुज़ुर्गों की मदद करें।",
+  remedy:"उपाय"}};
+function doshBlock(title,state,cls,body,rem){const X=DT[LANG];return `<div class="dosh"><h3>${title} <span class="pill ${cls}">${state}</span></h3><p>${body}</p>${rem?`<p class="sub"><b>${X.remedy}:</b> ${rem}</p>`:""}</div>`;}
+function doshHtml(k){
+  const X=DT[LANG], m=mangalInfo(k), ks=kaalSarp(k), ss=sadeSati(k);
+  let h="";
+  if(m.present){let b=X.mYes(m.hL,m.hM,m.fromL,m.fromM); if(m.reduced) b+=X.mReduced(DIGN[LANG][m.dg]);
+    h+=doshBlock(X.mangalT,m.strong&&!m.reduced?X.present:X.mild,m.strong&&!m.reduced?"b":"",b,X.mRem);}
+  else h+=doshBlock(X.mangalT,X.absent,"g",X.mNo(m.hL,m.hM));
+  h+= ks.yes?doshBlock(X.ksT,X.present,"b",X.ksYes(ks.name),X.ksRem):doshBlock(X.ksT,X.absent,"g",X.ksNo);
+  let sb, st, sc;
+  if(ss.cur){const ph=ss.rel===11?0:ss.rel===0?1:2; sb=X.ssYes(sn(ss.satSign),X.phase[ph],fmt(ss.cur.start),fmt(ss.cur.end)); st=X.running; sc="b";}
+  else {sb=X.ssNo(ss.next?fmt(ss.next.start):"",ss.next?fmt(ss.next.end):""); st=X.absent; sc="g";}
+  if(ss.dhCur&&!ss.cur){sb+=X.dhYes(X.dhNames[ss.rel]||X.dhNames[3],fmt(ss.dhCur.start),fmt(ss.dhCur.end)); st=X.running; sc="";}
+  h+=doshBlock(X.ssT,st,sc,sb,(ss.cur||ss.dhCur)?X.ssRem:"");
+  return h;
+}
+
+// ================= Kundli Milan (Ashtakoot) =================
+const VARNA=[3,2,1,4,3,2,1,4,3,2,1,4];
+const VARNA_N={en:["","Shudra","Vaishya","Kshatriya","Brahmin"],hi:["","शूद्र","वैश्य","क्षत्रिय","ब्राह्मण"]};
+const VASHYA_N={en:["Chatushpad","Manav","Jalchar","Vanchar","Keet"],hi:["चतुष्पद","मानव","जलचर","वनचर","कीट"]};
+const VASHYA_T=[[2,1,1,0.5,1],[1,2,0.5,0,1],[1,0.5,2,1,1],[0.5,0,1,2,0],[1,1,1,0,2]];
+function vashyaOf(P){const s=P.sign,d=P.deg; if(s===0||s===1) return 0; if(s===8) return d<15?1:0; if(s===9) return d<15?0:2; if(s===3||s===11) return 2; if(s===4) return 3; if(s===7) return 4; return 1;}
+const YONI_N={en:["Horse","Elephant","Sheep","Serpent","Dog","Cat","Rat","Cow","Buffalo","Tiger","Deer","Monkey","Mongoose","Lion"],hi:["अश्व","गज","मेष","सर्प","श्वान","मार्जार","मूषक","गौ","महिष","व्याघ्र","मृग","वानर","नकुल","सिंह"]};
+const YONI_OF=[0,1,2,3,3,4,5,2,5,6,6,7,8,9,8,9,10,10,4,11,12,11,13,0,13,7,1];
+const YONI_ENEMY=[[0,8],[1,13],[2,11],[3,12],[4,10],[5,6],[7,9]];
+const FRIENDS={Sun:{F:["Moon","Mars","Jupiter"],E:["Venus","Saturn"]},Moon:{F:["Sun","Mercury"],E:[]},Mars:{F:["Sun","Moon","Jupiter"],E:["Mercury"]},Mercury:{F:["Sun","Venus"],E:["Moon"]},Jupiter:{F:["Sun","Moon","Mars"],E:["Mercury","Venus"]},Venus:{F:["Mercury","Saturn"],E:["Sun","Moon"]},Saturn:{F:["Mercury","Venus"],E:["Sun","Moon","Mars"]}};
+const rel=(a,b)=>FRIENDS[a].F.includes(b)?"F":FRIENDS[a].E.includes(b)?"E":"N";
+const GANA_N={en:["Deva","Manushya","Rakshasa"],hi:["देव","मनुष्य","राक्षस"]};
+const GANA_OF=[0,1,2,1,0,1,0,0,2,2,1,1,0,2,0,2,0,2,2,1,1,0,2,2,1,1,0];
+const GANA_T=[[6,6,0],[5,6,0],[1,0,6]];
+const NADI_N={en:["Aadi","Madhya","Antya"],hi:["आदि","मध्य","अंत्य"]};
+const nadiOf=n=>[0,1,2,2,1,0][n%6];
+const KOOTA={en:[["Varna","Work & ego"],["Vashya","Mutual attraction"],["Tara","Health & destiny"],["Yoni","Physical compatibility"],["Graha Maitri","Mental match & friendship"],["Gana","Temperament"],["Bhakoot","Family welfare & finances"],["Nadi","Health & children"]],
+ hi:[["वर्ण","कार्य और अहं"],["वश्य","आपसी आकर्षण"],["तारा","स्वास्थ्य और भाग्य"],["योनि","शारीरिक अनुकूलता"],["ग्रह मैत्री","मानसिक मेल और मित्रता"],["गण","स्वभाव"],["भकूट","परिवार का सुख और धन"],["नाड़ी","स्वास्थ्य और संतान"]]};
+function gunaMilan(B,G){
+  const b=B.planets.Moon,g=G.planets.Moon, out=[];
+  out.push({max:1,got:VARNA[b.sign]>=VARNA[g.sign]?1:0,bv:VARNA_N[LANG][VARNA[b.sign]],gv:VARNA_N[LANG][VARNA[g.sign]]});
+  const vb=vashyaOf(b),vg=vashyaOf(g); out.push({max:2,got:VASHYA_T[vb][vg],bv:VASHYA_N[LANG][vb],gv:VASHYA_N[LANG][vg]});
+  const tg=c=>![3,5,7].includes(c%9); const c1=((b.nak-g.nak+27)%27)+1, c2=((g.nak-b.nak+27)%27)+1;
+  out.push({max:3,got:(tg(c1)?1.5:0)+(tg(c2)?1.5:0),bv:NAK[LANG][b.nak],gv:NAK[LANG][g.nak]});
+  const yb=YONI_OF[b.nak],yg=YONI_OF[g.nak], enemy=YONI_ENEMY.some(([x,y])=>(x===yb&&y===yg)||(x===yg&&y===yb));
+  out.push({max:4,got:yb===yg?4:enemy?0:2,bv:YONI_N[LANG][yb],gv:YONI_N[LANG][yg]});
+  const lb=LORD[b.sign],lg=LORD[g.sign]; let gm; if(lb===lg) gm=5; else {const k=[rel(lb,lg),rel(lg,lb)].sort().join(""); gm={FF:5,FN:4,NN:3,EF:1,EN:0.5,EE:0}[k];}
+  out.push({max:5,got:gm,bv:pn(lb),gv:pn(lg)});
+  const gb=GANA_OF[b.nak],gg=GANA_OF[g.nak]; out.push({max:6,got:GANA_T[gb][gg],bv:GANA_N[LANG][gb],gv:GANA_N[LANG][gg]});
+  const bc=((b.sign-g.sign+12)%12)+1; out.push({max:7,got:[2,12,5,9,6,8].includes(bc)?0:7,bv:sn(b.sign),gv:sn(g.sign)});
+  const nb=nadiOf(b.nak),ng=nadiOf(g.nak); out.push({max:8,got:nb===ng?0:8,bv:NADI_N[LANG][nb],gv:NADI_N[LANG][ng]});
+  return out;
+}
+const MT={
+ en:{total:"Total Gunas",verdict:t=>t<18?["b","Weak match — not recommended traditionally (below 18)"]:t<25?["","Average match — acceptable (18–24)"]:t<33?["g","Good match (25–32)"]:["g","Excellent match (33–36)"],
+  manglik:"Manglik status",yes:"Manglik",mild:"Mild Manglik",no:"Not Manglik",
+  mBoth:"Both are Manglik (or both are not) — <b>Manglik match is fine</b>.",mOne:"Only one partner is Manglik — <b>Manglik mismatch</b>. Traditionally, remedies like Kumbh Vivah or Mangal shanti puja are suggested; consult an astrologer.",
+  nadi:"<b>Nadi Dosh</b> is present (both have the same Nadi). Traditional remedy: Mahamrityunjaya jaap and daan. Some traditions cancel it if the Rashi or Nakshatra charan differ — consult an astrologer.",
+  bhakoot:"<b>Bhakoot Dosh</b> is present. It is often considered cancelled when both Rashi lords are the same or friends.",
+  doshTitle:"Doshas in matching",noDosh:"No Nadi or Bhakoot Dosh.",
+  note:"Guna Milan is one traditional factor. A happy marriage also depends on understanding, values, family and communication."},
+ hi:{total:"कुल गुण",verdict:t=>t<18?["b","कमज़ोर मिलान — परंपरा के अनुसार विवाह की सलाह नहीं (18 से कम)"]:t<25?["","सामान्य मिलान — स्वीकार्य (18–24)"]:t<33?["g","अच्छा मिलान (25–32)"]:["g","उत्तम मिलान (33–36)"],
+  manglik:"मांगलिक स्थिति",yes:"मांगलिक",mild:"आंशिक मांगलिक",no:"मांगलिक नहीं",
+  mBoth:"दोनों मांगलिक हैं (या दोनों नहीं हैं) — <b>मांगलिक मिलान ठीक है</b>।",mOne:"केवल एक व्यक्ति मांगलिक है — <b>मांगलिक मेल नहीं है</b>। परंपरा में कुंभ विवाह या मंगल शांति पूजा जैसे उपाय बताए जाते हैं; किसी ज्योतिषी से सलाह लें।",
+  nadi:"<b>नाड़ी दोष</b> है (दोनों की नाड़ी एक है)। पारंपरिक उपाय: महामृत्युंजय जाप और दान। कुछ परंपराओं में राशि या नक्षत्र चरण अलग होने पर यह दोष रद्द माना जाता है — ज्योतिषी से सलाह लें।",
+  bhakoot:"<b>भकूट दोष</b> है। दोनों राशियों के स्वामी एक ही हों या मित्र हों, तो यह दोष प्रायः रद्द माना जाता है।",
+  doshTitle:"मिलान में दोष",noDosh:"नाड़ी या भकूट दोष नहीं है।",
+  note:"गुण मिलान एक पारंपरिक आधार है। सुखी विवाह के लिए आपसी समझ, मूल्य, परिवार और बातचीत भी उतने ही ज़रूरी हैं।"}};
+let lastMatch=null;
+function readPerson(pre){const c=CITIES[+document.getElementById(pre+"city").value];
+  const H=+document.getElementById(pre+"hh").value, Mi=+document.getElementById(pre+"mm").value, AP=document.getElementById(pre+"ap").value;
+  const dob=document.getElementById(pre+"dob").value; if(!dob) return null;
+  return {name:document.getElementById(pre+"name").value.trim(),dob,tob:((H%12)+(AP==="PM"?12:0))+":"+Mi,timeLabel:`${H}:${String(Mi).padStart(2,"0")} ${AP}`,lat:c[2],lon:c[3],tz:5.5};}
+function renderMatch(){
+  if(!lastMatch) return; const [B,G]=lastMatch, U=L(), X=MT[LANG], rows=gunaMilan(B,G);
+  const total=rows.reduce((a,r)=>a+r.got,0), v=X.verdict(total);
+  const bn=B.inp.name||U.boyS, gn=G.inp.name||U.girlS;
+  let h=`<div class="score"><div class="big">${total}<span>/36</span></div><div><div class="sub">${X.total}</div><span class="pill ${v[0]}" style="font-size:14px">${v[1]}</span></div></div>`;
+  h+=`<table><tr><th>${U.thKoota}</th><th>${bn}</th><th>${gn}</th><th>${U.thGot}</th></tr>`+rows.map((r,i)=>`<tr><td><b>${KOOTA[LANG][i][0]}</b><br><span class="sub">${KOOTA[LANG][i][1]}</span></td><td>${r.bv}</td><td>${r.gv}</td><td><b>${r.got}</b> / ${r.max}</td></tr>`).join("")+`</table>`;
+  const mb=mangalInfo(B), mg=mangalInfo(G), lab=m=>m.strong&&!m.reduced?X.yes:m.present?X.mild:X.no;
+  const bm=mb.strong&&!mb.reduced, gm=mg.strong&&!mg.reduced;
+  h+=`<h3>${X.manglik}</h3><p>${bn}: <b>${lab(mb)}</b> · ${gn}: <b>${lab(mg)}</b><br>${bm===gm?X.mBoth:X.mOne}</p>`;
+  const d=[]; if(rows[7].got===0) d.push(X.nadi); if(rows[6].got===0) d.push(X.bhakoot);
+  h+=`<h3>${X.doshTitle}</h3>`+(d.length?d.map(x=>`<p>${x}</p>`).join(""):`<p>${X.noDosh}</p>`);
+  h+=`<p class="sub">${X.note}</p>`;
+  document.getElementById("matchOut").innerHTML=h; document.getElementById("matchCard").classList.remove("hidden");
+}
+
+// ================= Daily Horoscope & Panchang =================
+const DAYS={en:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],hi:["रविवार","सोमवार","मंगलवार","बुधवार","गुरुवार","शुक्रवार","शनिवार"]};
+const DAY_LORD=["Sun","Moon","Mars","Mercury","Jupiter","Venus","Saturn"];
+const COLORS={en:["Orange","White","Red","Green","Yellow","Pink","Blue"],hi:["नारंगी","सफ़ेद","लाल","हरा","पीला","गुलाबी","नीला"]};
+const LUCKY_NUM={Sun:1,Moon:2,Jupiter:3,Rahu:4,Mercury:5,Venus:6,Ketu:7,Saturn:8,Mars:9};
+const TITHI={en:["Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi","Saptami","Ashtami","Navami","Dashami","Ekadashi","Dwadashi","Trayodashi","Chaturdashi","Purnima","Amavasya"],hi:["प्रतिपदा","द्वितीया","तृतीया","चतुर्थी","पंचमी","षष्ठी","सप्तमी","अष्टमी","नवमी","दशमी","एकादशी","द्वादशी","त्रयोदशी","चतुर्दशी","पूर्णिमा","अमावस्या"]};
+const PAKSHA={en:["Shukla Paksha","Krishna Paksha"],hi:["शुक्ल पक्ष","कृष्ण पक्ष"]};
+const SIGN_SYM=["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒","♓"];
+const GOOD_MOON=[1,3,6,7,10,11];
+const RF={en:{1:"The Moon is in your own sign today, so your mind feels fresh and confident. A good day for personal work, meeting people and starting something small. Don't get over-emotional.",2:"Watch your words and your wallet today. Family matters may need attention and expenses can rise. Speak softly and avoid lending money.",3:"Your courage and energy are high. Efforts bring success, especially in communication, short trips and dealings with siblings. A good day to take initiative.",4:"You may feel restless or worried about home matters. Avoid arguments in the family, spend time with your mother and get proper rest.",5:"Your mind may be indecisive today. Avoid risky investments and speculation. Children or studies may need attention — think before you decide.",6:"A day of victory. Pending work gets done, competitors stay quiet and health improves. Good for clearing debts and settling disputes.",7:"A good day for partnership, your spouse and meetings. Business talks and travel can be fruitful, and relationships feel warm.",8:"Be careful today: sudden obstacles or delays are possible. Drive carefully, look after your health and postpone big decisions.",9:"Luck is a little mixed and some work may get delayed. Prayer, spiritual activity and respect for elders bring peace.",10:"A strong day for career. Your work gets noticed and seniors are supportive. Good time to present ideas or ask for something at work.",11:"A day of gains. Wishes can be fulfilled, friends help and money can come in. Good for networking and social plans.",12:"Expenses and tiredness are possible. Rest, avoid lending money and don't over-commit. A good day for meditation and planning."},
+ hi:{1:"आज चंद्रमा आपकी ही राशि में है, इसलिए मन ताज़ा और आत्मविश्वास से भरा रहेगा। निजी काम, लोगों से मिलने और कोई छोटा काम शुरू करने के लिए अच्छा दिन है। ज़्यादा भावुक होने से बचें।",2:"आज अपनी वाणी और खर्च पर ध्यान दें। परिवार के मामलों पर ध्यान देना पड़ सकता है और खर्च बढ़ सकते हैं। नरमी से बोलें और किसी को उधार न दें।",3:"आपका साहस और ऊर्जा ऊँचे रहेंगे। मेहनत से सफलता मिलेगी, खासकर बातचीत, छोटी यात्राओं और भाई-बहनों से जुड़े कामों में। पहल करने के लिए अच्छा दिन है।",4:"घर के मामलों को लेकर बेचैनी या चिंता हो सकती है। परिवार में बहस से बचें, माता के साथ समय बिताएँ और पूरा आराम करें।",5:"आज मन निर्णय लेने में उलझ सकता है। जोखिम वाले निवेश और सट्टे से बचें। संतान या पढ़ाई पर ध्यान देना पड़ सकता है — सोच-समझकर निर्णय लें।",6:"विजय का दिन है। रुके हुए काम पूरे होंगे, विरोधी शांत रहेंगे और स्वास्थ्य सुधरेगा। कर्ज़ चुकाने और विवाद सुलझाने के लिए अच्छा समय है।",7:"साझेदारी, जीवनसाथी और मुलाकातों के लिए अच्छा दिन है। व्यापार की बातचीत और यात्रा फलदायी हो सकती है, रिश्तों में मधुरता रहेगी।",8:"आज सावधान रहें: अचानक बाधा या देरी हो सकती है। वाहन ध्यान से चलाएँ, स्वास्थ्य का ध्यान रखें और बड़े निर्णय टाल दें।",9:"भाग्य थोड़ा मिला-जुला रहेगा और कुछ काम में देरी हो सकती है। पूजा-पाठ, आध्यात्मिक कार्य और बड़ों का सम्मान शांति देगा।",10:"करियर के लिए मज़बूत दिन है। आपके काम की सराहना होगी और वरिष्ठ साथ देंगे। काम पर अपने विचार रखने या कुछ माँगने का अच्छा समय है।",11:"लाभ का दिन है। इच्छाएँ पूरी हो सकती हैं, मित्र मदद करेंगे और धन आ सकता है। मेल-जोल और सामाजिक योजनाओं के लिए अच्छा समय है।",12:"खर्च और थकान हो सकती है। आराम करें, उधार देने से बचें और ज़्यादा ज़िम्मेदारियाँ न लें। ध्यान और योजना बनाने के लिए अच्छा दिन है।"}};
+const RT={en:{moonIn:"Moon today",luckyColor:"Lucky colour",luckyNum:"Lucky number",upay:"Today's remedy",rating:"Today's rating",ss:"Shani's Sade Sati is running for this Rashi — stay patient and avoid shortcuts.",dh:"Shani's Dhaiya is running for this Rashi — be careful with health and big decisions.",yours:"Your Rashi",chant:(m,p)=>`Chant <span class="mantra">${m}</span> 108 times today (${p}'s day).`},
+ hi:{moonIn:"आज चंद्रमा",luckyColor:"शुभ रंग",luckyNum:"शुभ अंक",upay:"आज का उपाय",rating:"आज का दिन",ss:"इस राशि पर शनि की साढ़ेसाती चल रही है — धैर्य रखें और शॉर्टकट से बचें।",dh:"इस राशि पर शनि की ढैय्या चल रही है — स्वास्थ्य और बड़े निर्णयों में सावधानी रखें।",yours:"आपकी राशि",chant:(m,p)=>`आज ${p} का दिन है — <span class="mantra">${m}</span> का 108 बार जाप करें।`}};
+let selRashi=null;
+try{const r=localStorage.getItem("krishan_rashi"); if(r!==null) selRashi=+r;}catch(e){}
+function todayData(){const jd=julianDayNow(), P=positionsAt(jd), d=new Date();
+  const diff=norm(P.Moon-P.Sun), t=Math.floor(diff/12), paksha=t<15?0:1, ti=t===14?14:t===29?15:t%15;
+  return {P,dow:d.getDay(),moonSign:Math.floor(P.Moon/30),moonNak:Math.floor(P.Moon/(360/27)),tithi:ti,paksha,jup:Math.floor(P.Jupiter/30),sat:Math.floor(P.Saturn/30)};}
+function renderRashifal(){
+  const U=L(), X=RT[LANG], T=todayData();
+  const dateStr=new Date().toLocaleDateString(LANG==="hi"?"hi-IN":"en-IN",{day:"numeric",month:"long",year:"numeric"});
+  document.getElementById("panchang").innerHTML=[[U.dateL,dateStr],[U.vaar,DAYS[LANG][T.dow]],[U.tithiL,`${TITHI[LANG][T.tithi]}`],[U.pakshaL,PAKSHA[LANG][T.paksha]],[X.moonIn,`${sn(T.moonSign)} · ${NAK[LANG][T.moonNak]}`]].map(([a,b])=>`<div><small>${a}</small><b>${b}</b></div>`).join("");
+  if(selRashi===null&&K) selRashi=K.planets.Moon.sign;
+  if(selRashi===null) selRashi=0;
+  const my=K?K.planets.Moon.sign:null;
+  document.getElementById("rgrid").innerHTML=SIGNS.en.map((_,i)=>`<button class="rbtn ${i===selRashi?"on":""}" data-r="${i}"><span class="sym">${SIGN_SYM[i]}</span>${sn(i)}${i===my?`<span class="you">${X.yours}</span>`:""}</button>`).join("");
+  document.querySelectorAll(".rbtn").forEach(b=>b.onclick=()=>{selRashi=+b.dataset.r;try{localStorage.setItem("krishan_rashi",selRashi)}catch(e){}renderRashifal();});
+  const r=selRashi, house=((T.moonSign-r+12)%12)+1, good=GOOD_MOON.includes(house);
+  const jh=((T.jup-r+12)%12)+1, sh=((T.sat-r+12)%12)+1;
+  let stars=good?4:2; if([2,5,7,9,11].includes(jh)) stars++; stars=Math.max(1,Math.min(5,stars));
+  const dl=DAY_LORD[T.dow];
+  let h=`<h3><span class="sym">${SIGN_SYM[r]}</span> ${sn(r)} — ${dateStr}</h3><p><span class="stars">${"★".repeat(stars)}${"☆".repeat(5-stars)}</span> <span class="sub">${X.rating}</span></p><p>${RF[LANG][house]}</p>`;
+  if([12,1,2].includes(sh)) h+=`<p class="sub">⚠ ${X.ss}</p>`; else if([4,8].includes(sh)) h+=`<p class="sub">⚠ ${X.dh}</p>`;
+  h+=`<div class="kv" style="margin-top:12px"><div><small>${X.luckyColor}</small><b>${COLORS[LANG][T.dow]}</b></div><div><small>${X.luckyNum}</small><b>${LUCKY_NUM[LORD[r]]}</b></div></div>`;
+  h+=`<h3>${X.upay}</h3><p>${X.chant(MANTRA[dl][0],pn(dl))} ${REMEDY[LANG][dl]}</p>`;
+  document.getElementById("rashifal").innerHTML=h;
+}
+
+// ================= Views =================
+let VIEW="home";
+function showView(v,noHash){VIEW=v;
+  document.querySelectorAll(".view").forEach(el=>el.classList.toggle("hidden",el.id!=="view-"+(v==="dosh"?"home":v)));
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("on",b.dataset.view===v));
+  if(!noHash){try{history.replaceState(null,"","#"+v)}catch(e){location.hash=v}}
+  if(v==="daily") renderRashifal();
+  if(v==="dosh"){ if(K){document.getElementById("doshCard").scrollIntoView({behavior:"smooth"});} else {document.getElementById("doshNeed").classList.remove("hidden"); document.getElementById("formCard").scrollIntoView({behavior:"smooth"});} }
+  else document.getElementById("doshNeed").classList.add("hidden");
+  if(v!=="dosh") window.scrollTo(0,0);
+}
+
 // ================= Render =================
 function drawChart(k){
   const pos={1:[200,100],2:[100,45],3:[45,100],4:[100,200],5:[45,300],6:[100,355],7:[200,300],8:[300,355],9:[355,300],10:[300,200],11:[355,100],12:[300,45]};
@@ -349,6 +584,7 @@ function render(k){
     Object.keys(P).map(p=>{const x=P[p],dg=dignityKey(p,x.sign);return `<tr><td>${pn(p)}${LANG==="en"?` <span class="sub">${HINDI_ROMAN[p]}</span>`:""}${x.retro&&p!=="Rahu"&&p!=="Ketu"?` <span class='pill'>${U.retro}</span>`:""}</td><td>${sn(x.sign)}${dg?` <span class="pill ${dg==="Debilitated"?"b":"g"}">${DIGN[LANG][dg]}</span>`:""}</td><td>${dms(x.deg)}</td><td>${NAK[LANG][x.nak]} ${x.pada}</td><td>${x.house}</td></tr>`}).join("");
   document.getElementById("dtable").innerHTML=`<tr><th>${U.thMD}</th><th>${U.thFrom}</th><th>${U.thTo}</th></tr>`+k.dasha.map(d=>`<tr class="${now>=d.start&&now<d.end?"dasha-now":""}"><td>${pn(d.lord)}</td><td>${fmt(Math.max(d.start,k.jd))}</td><td>${fmt(d.end)}</td></tr>`).join("");
   document.getElementById("atable").innerHTML=`<tr><th>${U.antarOf(pn(md.lord))}</th><th>${U.thFrom}</th><th>${U.thTo}</th></tr>`+antardashas(md).map(a=>`<tr class="${now>=a.start&&now<a.end?"dasha-now":""}"><td>${pn(md.lord)} / ${pn(a.lord)}</td><td>${fmt(a.start)}</td><td>${fmt(a.end)}</td></tr>`).join("");
+  document.getElementById("dosh").innerHTML=doshHtml(k);
   const tabs=document.getElementById("tabs"); tabs.innerHTML=Object.entries(AREAS).map(([key,a])=>`<button class="tab" data-k="${key}">${a.t[LANG]}</button>`).join("");
   tabs.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showArea(b.dataset.k,""));
   showArea(currentArea);
@@ -377,7 +613,17 @@ function applyLang(){
   ap.innerHTML=`<option value="AM">${U.am}</option><option value="PM">${U.pm}</option>`;
   hh.value=hv;mm.value=mv;ap.value=av;
   ps.innerHTML=Object.entries(AREAS).map(([key,a])=>`<option value="${key}">${a.p[LANG]}</option>`).join("");ps.value=pv;
+  ["b_","g_"].forEach(pre=>{
+    const c=document.getElementById(pre+"city"),h=document.getElementById(pre+"hh"),m=document.getElementById(pre+"mm"),a=document.getElementById(pre+"ap");
+    const cv=c.value||c.dataset.v,hv=h.value||h.dataset.v,mv=m.value||m.dataset.v,av=a.value||a.dataset.v;
+    c.innerHTML=CITIES.map((x,i)=>`<option value="${i}">${LANG==="hi"?x[1]:x[0]}</option>`).join("");
+    h.innerHTML=Array.from({length:12},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join("");
+    m.innerHTML=Array.from({length:60},(_,i)=>`<option value="${i}">${String(i).padStart(2,"0")}</option>`).join("");
+    a.innerHTML=`<option value="AM">${U.am}</option><option value="PM">${U.pm}</option>`;
+    c.value=cv;h.value=hv;m.value=mv;a.value=av;});
   if(K) render(K);
+  if(lastMatch) renderMatch();
+  if(VIEW==="daily") renderRashifal();
 }
 document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{LANG=b.dataset.lang;try{localStorage.setItem("krishan_lang",LANG)}catch(e){}applyLang();});
 sel.onchange=()=>document.getElementById("customBox").classList.toggle("hidden",sel.value!=="custom");
@@ -392,11 +638,17 @@ document.getElementById("go").onclick=()=>{
   currentArea=matchArea(qt,document.getElementById("probSel").value); currentQ=qt;
   K=buildKundli(inp); render(K);
   document.getElementById("formCard").classList.add("hidden"); document.getElementById("result").classList.remove("hidden"); window.scrollTo(0,0);
+  document.getElementById("doshNeed").classList.add("hidden");
+  if(VIEW==="dosh") setTimeout(()=>document.getElementById("doshCard").scrollIntoView({behavior:"smooth"}),60);
 };
 document.getElementById("again").onclick=()=>{document.getElementById("result").classList.add("hidden");document.getElementById("formCard").classList.remove("hidden")};
 document.getElementById("askBtn").onclick=()=>{const raw=document.getElementById("ask").value.trim(); if(!raw) return; showArea(matchArea(raw,currentArea),raw); document.getElementById("result").scrollIntoView({behavior:"smooth"});};
 document.getElementById("ask").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("askBtn").click();});
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>showView(b.dataset.view));
+document.getElementById("matchBtn").onclick=()=>{const b=readPerson("b_"),g=readPerson("g_"); if(!b||!g) return;
+  lastMatch=[buildKundli(b),buildKundli(g)]; renderMatch(); document.getElementById("matchCard").scrollIntoView({behavior:"smooth"});};
 applyLang();
+{const h=location.hash.slice(1); if(["home","match","daily","dosh"].includes(h)) showView(h,true); else showView("home",true);}
 if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}
 </script>
 </body>
