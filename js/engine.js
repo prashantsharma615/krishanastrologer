@@ -220,7 +220,11 @@ window.Engine = (function () {
     const prim = used.filter(u => u.e._book === "bphs");
     const chs = KB.chapters(prim.map(u => u.e));
     const trad = used.some(u => /tradition/i.test(u.e.source));
-    html += `<div class="src">📖 ${X.source}: ${X.srcBook}, Ch. ${chs}${trad ? ` <span class="sub">(${X.srcTrad})</span>` : ""}</div>`;
+    // other books (e.g. Phaladeepika) that teach the same rules
+    const alsoBooks = {};
+    used.forEach(u => KB.findAll(u.e.topic, u.e.match).filter(o => o._book !== "bphs").forEach(o => (alsoBooks[o._book] = alsoBooks[o._book] || []).push(o)));
+    const alsoTxt = Object.keys(alsoBooks).map(id => `${KB.book(id)[LANG === "hi" ? "name_hi" : "name_en"]}, Ch. ${KB.chapters(alsoBooks[id])}`).join(" · ");
+    html += `<div class="src">📖 ${X.source}: ${X.srcBook}, Ch. ${chs}${alsoTxt ? ` · ${alsoTxt}` : ""}${trad ? ` <span class="sub">(${X.srcTrad})</span>` : ""}</div>`;
     const seen = new Set();
     html += `<details class="why"><summary>${X.why}</summary><ol>` + used.filter(u => !seen.has(u.e.id) && seen.add(u.e.id)).map(u => {
       const others = KB.findAll(u.e.topic, u.e.match).filter(o => o._book !== u.e._book);

@@ -1,6 +1,6 @@
 # Krishan Astrologer – कृष्ण ज्योतिषी
 
-Vedic astrology web app (installable PWA) in **Hindi and English**, with **Brihat Parashara Hora Shastra (BPHS)** as the classical source behind every answer.
+Vedic astrology web app (installable PWA) in **Hindi and English**, with **Brihat Parashara Hora Shastra (BPHS)** as the classical source behind every answer, and **Phaladeepika** (Mantreswara) as a second source shown alongside it.
 
 Live: https://krishanastrologer.netlify.app/
 
@@ -19,6 +19,7 @@ js/engine.js          answer engine: maps question → houses/karakas, reads the
 js/install.js         "Install App" button (Android prompt / iPhone steps)
 data/books.json       list of classical books to load
 data/bphs.json        BPHS knowledge base (generated)
+data/phaladeepika.json Phaladeepika knowledge base (generated) — edit tools/build_phaladeepika.py, then run it
 tools/build_bphs.py   source of the BPHS knowledge base — edit here, then run: python3 tools/build_bphs.py
 sw.js                 offline cache
 ```
@@ -29,9 +30,10 @@ Topics: `house`, `graha`, `planet_house`, `planet_sign`, `principle`, `yoga`, `d
 `confidence`: `chapter` (taught in the cited chapter) · `derived` (applied from BPHS principles) · `tradition` (later tradition, labelled as such).
 Chapter numbers follow the R. Santhanam English edition (1984, 97 chapters). All rule text is original paraphrase.
 
-## Adding another book (e.g. Phaladeepika, Brihat Jataka)
-1. Create `data/phaladeepika.json` with `{"book": {...}, "entries": [...]}` using the same `topic` + `match` keys.
-2. Add `{"id": "phaladeepika", "file": "data/phaladeepika.json"}` to `data/books.json`.
+## Adding another book (e.g. Brihat Jataka, Saravali)
+Phaladeepika is already added this way (155 rules: houses, planets, planet-in-house from Ch. 8, yogas, dashas).
+1. Create `data/<book>.json` with `{"book": {...}, "entries": [...]}` using the same `topic` + `match` keys.
+2. Add `{"id": "<book>", "file": "data/<book>.json"}` to `data/books.json`.
 3. Add the file to `FILES` in `sw.js`. Its rules appear automatically under "Why?" next to the BPHS rule for the same topic.
 
 Astrological guidance is for spiritual and informational purposes only and is not a substitute for medical, legal, or financial advice.

@@ -1,6 +1,14 @@
 {
  "_readme": "List of classical books the answer engine loads. To add a book, create data/<id>.json in the same format as bphs.json and add it here. 'primary' is the main source shown under answers.",
  "books": [
-  {"id": "bphs", "file": "data/bphs.json", "primary": true}
+  {
+   "id": "bphs",
+   "file": "data/bphs.json",
+   "primary": true
+  },
+  {
+   "id": "phaladeepika",
+   "file": "data/phaladeepika.json"
+  }
  ]
 }
