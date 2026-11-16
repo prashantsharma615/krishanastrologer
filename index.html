@@ -100,6 +100,8 @@ details.why ol{margin:8px 0 0 18px;font-size:13px;line-height:1.55;color:#cfc9ea
 .im-plat{display:inline-block;background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;color:var(--mut)}
 .owner{display:flex;align-items:center;gap:16px;max-width:980px;margin:16px auto 0}
 .owner img{width:96px;height:96px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0}
+.owner-top{width:fit-content;max-width:calc(100% - 24px);margin:14px auto 4px;padding:12px 22px 12px 12px;text-align:left}
+.owner-top img{width:72px;height:72px}
 .owner .sub{text-transform:uppercase;letter-spacing:.6px;font-size:11px}.oname{font-family:Cinzel,"Noto Sans Devanagari",serif;font-size:22px;color:var(--gold2)}
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
 .fcard{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px}
@@ -133,6 +135,10 @@ details.why ol{margin:8px 0 0 18px;font-size:13px;line-height:1.55;color:#cfc9ea
   <div class="printonly">Krishan Astrologer · krishanastrologer.netlify.app</div>
   <div class="logo" data-i="logo"></div>
   <div class="tag" data-i="tagline"></div>
+  <section class="card owner owner-top">
+  <img src="icons/owner.jpg?v=2" alt="Pallavi Gupta" width="96" height="96">
+  <div><div class="sub" data-i="ownerTitle"></div><div class="oname" data-i="ownerName"></div><div class="tag" style="margin:2px 0 0" data-i="ownerRole"></div></div>
+</section>
   <nav class="nav"><button data-view="home" data-i="navHome"></button><button data-view="ask" data-i="navAsk"></button><button data-view="future" data-i="navFuture"></button><button data-view="match" data-i="navMatch"></button><button data-view="daily" data-i="navDaily"></button><button data-view="dosh" data-i="navDosh"></button></nav>
 </header>
 <main>
@@ -239,10 +245,7 @@ details.why ol{margin:8px 0 0 18px;font-size:13px;line-height:1.55;color:#cfc9ea
 <section class="card"><h2 data-i="chooseRashi"></h2><p class="tag" style="text-align:left;margin:0 0 12px" data-i="rashiHint"></p><div class="rgrid" id="rgrid"></div><div class="reading" id="rashifal"></div></section>
 </div>
 
-<section class="card owner">
-  <img src="icons/owner.jpg" alt="Pallavi Gupta" width="96" height="96">
-  <div><div class="sub" data-i="ownerTitle"></div><div class="oname" data-i="ownerName"></div><div class="tag" style="margin:2px 0 0" data-i="ownerRole"></div></div>
-</section>
+
 <div class="modal hidden" id="installModal"><div class="im-body"></div></div>
 <p class="note"><span data-i="disclaimer"></span><br><a href="privacy.html" style="color:#a59fc7">Privacy Policy / गोपनीयता नीति</a> · <a href="terms.html" style="color:#a59fc7">Terms / नियम व शर्तें</a></p>
 </main>
