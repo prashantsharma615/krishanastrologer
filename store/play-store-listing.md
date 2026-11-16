@@ -43,6 +43,18 @@ Today's tithi, paksha, nakshatra and horoscope for all 12 rashis, with lucky col
 ★ DOSH CHECK
 Mangal (Manglik) dosha, Kaal Sarp dosha and Shani Sade Sati / Dhaiya with dates and remedies.
 
+★ MORE CHARTS & STRENGTH
+Navamsa (D9), Dashamsa (D10), Chandra and Gochar charts, Avakahada chakra, Ashtakavarga, Shadbala, Yogini dasha and Varshphal (yearly chart).
+
+★ SHUBH MUHURAT, PANCHANG & FESTIVALS
+• Muhurat finder for marriage, griha pravesh, vehicle, business, travel, naamkaran and property
+• Full panchang: tithi, nakshatra, yoga, karana, Rahu Kaal, Abhijit, Brahma Muhurta, Choghadiya and Hora
+• 12-month festival and vrat calendar with every Ekadashi, Purnima, Amavasya, Pradosh, Sankranti and Panchak
+• Monthly and yearly rashifal, plus "Your Day Today" with Tara bala and Chandra bala
+
+★ NUMEROLOGY, GEMS & RUDRAKSHA
+Mulank, Bhagyank and name number; gemstone and rudraksha suggestions with safe, low-cost remedies first.
+
 ★ MORE
 • Save kundlis of your whole family
 • Share your kundli on WhatsApp, save as PDF
@@ -82,6 +94,18 @@ Astrological guidance is for spiritual and informational purposes only and is no
 
 ★ दोष जाँच
 मांगलिक दोष, काल सर्प दोष और शनि की साढ़ेसाती / ढैय्या — तारीखों और उपायों के साथ।
+
+★ अन्य कुंडलियाँ और ग्रह बल
+नवांश (D9), दशमांश (D10), चंद्र और गोचर कुंडली, अवकहड़ा चक्र, अष्टकवर्ग, षड्बल, योगिनी दशा और वर्षफल।
+
+★ शुभ मुहूर्त, पंचांग और त्योहार
+• विवाह, गृह प्रवेश, वाहन, व्यापार, यात्रा, नामकरण और संपत्ति के लिए मुहूर्त खोज
+• पूरा पंचांग: तिथि, नक्षत्र, योग, करण, राहु काल, अभिजित, ब्रह्म मुहूर्त, चौघड़िया और होरा
+• 12 महीनों का त्योहार और व्रत कैलेंडर — हर एकादशी, पूर्णिमा, अमावस्या, प्रदोष, संक्रांति और पंचक
+• मासिक और वार्षिक राशिफल, साथ में तारा बल और चंद्र बल से "आपका आज का दिन"
+
+★ अंक ज्योतिष, रत्न और रुद्राक्ष
+मूलांक, भाग्यांक और नामांक; रत्न और रुद्राक्ष सुझाव — पहले सुरक्षित और सस्ते उपाय।
 
 ★ और भी
 • पूरे परिवार की कुंडलियाँ सहेजें
