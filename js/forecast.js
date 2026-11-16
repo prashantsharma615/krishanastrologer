@@ -1,112 +1,133 @@
-/* Krishan Astrologer — Future forecast (भविष्यफल).
- * 1) Next 12 months: monthly rating from transits of Sun, Mars, Jupiter, Saturn counted from the natal Moon + running antardasha.
- * 2) Next 5 years: Jupiter and Saturn transits from the natal Moon (incl. Sade Sati / Dhaiya).
- * 3) Dasha timeline (5 years): every antardasha with dates, activated life areas and quality (BPHS Ch. 24, 47–48, 52–60).
- * Uses globals from index.html: K, LANG, positionsAt, julianDayNow, jdToDate, currentMD, antardashas, strength, LORD,
- * HOUSE_MEAN, pn, sn, fmt, hiOrd, esc, MANTRA. Uses KB (js/kb.js) when loaded.
+/* Krishan Astrologer — Future forecast (भविष्यफल), built entirely on the BPHS knowledge base.
+ * 1) Mahadasha overview — KB dasha rule + houses the dasha lord owns/occupies (BPHS Ch. 46–48)
+ * 2) Next 12 months — pratyantar dashas inside the running antardasha(s) (BPHS Ch. 61)
+ * 3) 5-year antardasha timeline — KB antardasha rule, position from the Mahadasha lord, themes, remedy (BPHS Ch. 24, 52–60, 84)
+ * Every section ends with a Source line and an expandable "Why?" list of the KB rules used.
+ * Uses globals from index.html: K, LANG, julianDayNow, currentMD, antardashas, strength, LORD, DYEARS, DLORDS,
+ * pn, sn, fmt, hiOrd, esc, dignityKey, MANTRA; and KB from js/kb.js.
  */
 (function () {
-  const GOOD = { Sun: [3, 6, 10, 11], Mars: [3, 6, 11], Jupiter: [2, 5, 7, 9, 11], Saturn: [3, 6, 11] };
-  const SUN_FOCUS = {
-    en: { 1: "self-care and health — keep a steady routine", 2: "family and money — watch spending", 3: "courage, effort and short trips — good results", 4: "home matters — make time to rest", 5: "studies and children — avoid risky bets", 6: "work progress and victory over rivals", 7: "partnerships and travel — be patient with others", 8: "go slow — care for health and avoid hasty decisions", 9: "dharma and elders — some delays possible", 10: "career recognition — a strong month for work", 11: "gains and fulfilled wishes", 12: "expenses and rest — plan your budget" },
-    hi: { 1: "स्वयं और स्वास्थ्य का ध्यान — दिनचर्या नियमित रखें", 2: "परिवार और धन — खर्च पर नज़र रखें", 3: "साहस, प्रयास और छोटी यात्राएँ — अच्छे परिणाम", 4: "घर के मामले — आराम के लिए समय निकालें", 5: "पढ़ाई और संतान — जोखिम वाले दाँव से बचें", 6: "काम में प्रगति और विरोधियों पर विजय", 7: "साझेदारी और यात्रा — दूसरों के साथ धैर्य रखें", 8: "धीरे चलें — स्वास्थ्य का ध्यान और जल्दबाज़ी से बचें", 9: "धर्म और बड़ों का साथ — कुछ देरी संभव", 10: "करियर में पहचान — काम के लिए मज़बूत महीना", 11: "लाभ और इच्छाओं की पूर्ति", 12: "खर्च और विश्राम — बजट बनाकर चलें" },
-  };
   const TX = {
     en: {
       title: n => `${n ? esc(n) + "'s " : "Your "}Future Forecast`,
-      intro: "Based on your Vimshottari dasha (Brihat Parashara Hora Shastra) and the transits of the slow planets from your Moon sign. Astrology shows tendencies and favourable times — it is guidance, not a guaranteed prediction.",
-      need: "Enter your birth details to see your personal forecast for the next 12 months and 5 years.", btn: "Enter birth details",
-      m12: "Next 12 months", y5: "Year by year (next 5 years)", dt: "Dasha timeline (next 5 years)",
-      now: "Now",
-      q: { good: "Favourable", mixed: "Mixed", care: "Needs care" },
-      dGood: t => `A favourable period — progress is likely in ${t}.`,
-      dMixed: t => `A mixed period — ${t} come into focus; steady effort brings results.`,
-      dCare: (t, p) => `A period that needs care — be patient in matters of ${t}. Remedies of ${p} help.`,
-      jup: (h, t, g) => g ? `Jupiter moves through your ${ord(h)} house from the Moon — it blesses matters of ${t}.` : `Jupiter is in your ${ord(h)} house from the Moon — be patient in matters of ${t}.`,
-      sat: (h, t) => [3, 6, 11].includes(h) ? `Saturn in the ${ord(h)} rewards hard work — steady progress in matters of ${t}.` : [12, 1, 2].includes(h) ? `Shani's Sade Sati phase — responsibility and patience; avoid shortcuts.` : [4, 8].includes(h) ? `Shani's Dhaiya — go slow with health, travel and big decisions.` : `Saturn in the ${ord(h)} asks for discipline in ${t}.`,
-      remedy: p => `Remedy: chant <span class="mantra">${MANTRA[p][0]}</span> 108 times on ${MANTRA[p][1]}s.`,
-      src: "Source: Brihat Parashara Hora Shastra, Ch. 24, 47, 48, 52–60 (dashas). Transit (gochar) ratings follow later classical tradition.",
+      intro: "Calculated from your Vimshottari dasha using the rules of Brihat Parashara Hora Shastra. Astrology shows tendencies and favourable times — it is guidance, not a guaranteed prediction.",
+      need: "Enter your birth details to see your personal forecast.", btn: "Enter birth details", wait: "Loading the BPHS knowledge base…",
+      mdT: "Mahadasha overview", pdT: "Next 12 months (pratyantar dasha)", adT: "Antardasha timeline (next 5 years)",
+      now: "Now", next: "Next", q: { good: "Favourable", mixed: "Mixed", care: "Needs care" },
+      mdLine: (p, a, b, hs, occ, dg, disp) => `<b>${pn(p)} Mahadasha</b> (${a} – ${b}). In your chart ${pn(p)} ${hs ? `rules ${hs} and ` : ""}sits in the ${occ}${dg ? `, ${dg}` : ""}${disp ? `; as a shadow planet it acts like its sign lord <b>${pn(disp)}</b>` : ""}.`,
+      mdFocus: t => `Main areas activated: <b>${t}</b>.`,
+      good: t => `A favourable period — progress is likely in ${t}.`,
+      mixed: t => `A mixed period — ${t} come into focus; steady effort brings results.`,
+      care: (t, p) => `A period that needs care — be patient in matters of ${t}. Remedies of ${p} help.`,
+      pos: (n, above) => `${ord(n)} from the ${above} lord`,
+      remedy: p => `Remedy: chant <span class="mantra">${MANTRA[p][0]}</span> 108 times, especially on ${MANTRA[p][1]}.`,
+      house: h => `${ord(h)} house`, and: " and ", mdW: "Mahadasha", adW: "antardasha",
+      src: "Source", book: "Brihat Parashara Hora Shastra", why: "Why? — the BPHS rules used", inChart: "In your chart",
+      dign: { Exalted: "exalted", Debilitated: "debilitated", Own: "in its own sign" },
     },
     hi: {
       title: n => `${n ? esc(n) + " का" : "आपका"} भविष्यफल`,
-      intro: "यह आपकी विंशोत्तरी दशा (बृहत् पाराशर होरा शास्त्र) और आपकी चंद्र राशि से धीमे ग्रहों के गोचर पर आधारित है। ज्योतिष प्रवृत्तियाँ और शुभ समय बताता है — यह मार्गदर्शन है, निश्चित भविष्यवाणी नहीं।",
-      need: "अगले 12 महीनों और 5 वर्षों का अपना भविष्यफल देखने के लिए जन्म विवरण भरें।", btn: "जन्म विवरण भरें",
-      m12: "अगले 12 महीने", y5: "वर्षवार (अगले 5 वर्ष)", dt: "दशा समय-रेखा (अगले 5 वर्ष)",
-      now: "अभी",
-      q: { good: "शुभ", mixed: "मिश्रित", care: "सावधानी" },
-      dGood: t => `शुभ समय — ${t} में प्रगति की संभावना है।`,
-      dMixed: t => `मिश्रित समय — ${t} पर ध्यान रहेगा; लगातार प्रयास से परिणाम मिलेंगे।`,
-      dCare: (t, p) => `सावधानी का समय — ${t} के मामलों में धैर्य रखें। ${p} के उपाय सहायक हैं।`,
-      jup: (h, t, g) => g ? `गुरु चंद्र से ${hiOrd(h)} भाव में गोचर करेंगे — ${t} से जुड़े मामलों में आशीर्वाद।` : `गुरु चंद्र से ${hiOrd(h)} भाव में हैं — ${t} से जुड़े मामलों में धैर्य रखें।`,
-      sat: (h, t) => [3, 6, 11].includes(h) ? `शनि ${hiOrd(h)} भाव में मेहनत का फल देंगे — ${t} से जुड़े मामलों में स्थिर प्रगति।` : [12, 1, 2].includes(h) ? `शनि की साढ़ेसाती का चरण — ज़िम्मेदारी और धैर्य; शॉर्टकट से बचें।` : [4, 8].includes(h) ? `शनि की ढैय्या — स्वास्थ्य, यात्रा और बड़े निर्णयों में धीरे चलें।` : `शनि ${hiOrd(h)} भाव में ${t} से जुड़े मामलों में अनुशासन माँगते हैं।`,
-      remedy: p => `उपाय: ${MANTRA[p][2]} को <span class="mantra">${MANTRA[p][0]}</span> का 108 बार जाप करें।`,
-      src: "स्रोत: बृहत् पाराशर होरा शास्त्र, Ch. 24, 47, 48, 52–60 (दशा)। गोचर की रेटिंग बाद की शास्त्रीय परंपरा पर आधारित है।",
+      intro: "यह आपकी विंशोत्तरी दशा से बृहत् पाराशर होरा शास्त्र के नियमों द्वारा निकाला गया है। ज्योतिष प्रवृत्तियाँ और शुभ समय बताता है — यह मार्गदर्शन है, निश्चित भविष्यवाणी नहीं।",
+      need: "अपना भविष्यफल देखने के लिए जन्म विवरण भरें।", btn: "जन्म विवरण भरें", wait: "BPHS ज्ञानकोश लोड हो रहा है…",
+      mdT: "महादशा का सार", pdT: "अगले 12 महीने (प्रत्यंतर दशा)", adT: "अंतर्दशा समय-रेखा (अगले 5 वर्ष)",
+      now: "अभी", next: "अगली", q: { good: "शुभ", mixed: "मिश्रित", care: "सावधानी" },
+      mdLine: (p, a, b, hs, occ, dg, disp) => `<b>${pn(p)} महादशा</b> (${a} – ${b})। आपकी कुंडली में ${pn(p)} ${hs ? hs + " का स्वामी है और " : ""}${occ} में${dg ? ` ${dg}` : ""} बैठा है${disp ? `; छाया ग्रह होने से यह अपनी राशि के स्वामी <b>${pn(disp)}</b> जैसा फल देता है` : ""}।`,
+      mdFocus: t => `मुख्य रूप से सक्रिय क्षेत्र: <b>${t}</b>।`,
+      good: t => `शुभ समय — ${t} में प्रगति की संभावना है।`,
+      mixed: t => `मिश्रित समय — ${t} पर ध्यान रहेगा; लगातार प्रयास से परिणाम मिलेंगे।`,
+      care: (t, p) => `सावधानी का समय — ${t} के मामलों में धैर्य रखें। ${p} के उपाय सहायक हैं।`,
+      pos: (n, above) => `${above} स्वामी से ${hiOrd(n)} स्थान`,
+      remedy: p => `उपाय: विशेषकर ${MANTRA[p][2]} को <span class="mantra">${MANTRA[p][0]}</span> का 108 बार जाप करें।`,
+      house: h => `${hiOrd(h)} भाव`, and: " और ", mdW: "महादशा", adW: "अंतर्दशा",
+      src: "स्रोत", book: "बृहत् पाराशर होरा शास्त्र", why: "क्यों? — उपयोग किए गए BPHS नियम", inChart: "आपकी कुंडली में",
+      dign: { Exalted: "उच्च का होकर", Debilitated: "नीच का होकर", Own: "स्वराशि में" },
     },
   };
   const ord = h => `${h}${h === 1 ? "st" : h === 2 ? "nd" : h === 3 ? "rd" : "th"}`;
-  const short = h => HOUSE_MEAN[LANG][h].split(/,| और | and /)[0].trim();
-  const fromMoon = (k, sign) => ((sign - k.planets.Moon.sign + 12) % 12) + 1;
-  const sgn = (lon) => Math.floor(lon / 30);
-  const stars = n => `<span class="stars">${"★".repeat(n)}${"☆".repeat(5 - n)}</span>`;
-  const monthName = jd => jdToDate(jd).toLocaleDateString(LANG === "hi" ? "hi-IN" : "en-IN", { month: "long", year: "numeric" });
+  const strip = s => s.replace(/<[^>]+>/g, "");
 
-  function adQuality(k, md, ad) {
-    const P = k.planets;
-    const e = window.KB && KB.ready ? KB.find("antardasha", { md, ad }) : null;
-    const rel = e ? e.relation : "neutral";
-    const pos = ((P[ad].sign - P[md].sign + 12) % 12) + 1;
-    let s = { same: 1, friend: 1, neutral: 0, enemy: -1 }[rel];
-    s += [1, 4, 5, 7, 9, 10, 11].includes(pos) ? 1 : [6, 8, 12].includes(pos) ? -1 : 0;
-    const st = strength(ad, k).s; s += st >= 1 ? 1 : st <= -1 ? -1 : 0;
-    return s >= 2 ? "good" : s <= -1 ? "care" : "mixed";
-  }
+  const housesOf = (k, p) => { const hs = []; for (let h = 1; h <= 12; h++) if (LORD[(k.lagna + h - 1) % 12] === p) hs.push(h); return hs; };
+  const isNode = p => p === "Rahu" || p === "Ketu";
   function themes(k, p) {
-    const hs = [];
-    for (let h = 1; h <= 12; h++) if (LORD[(k.lagna + h - 1) % 12] === p) hs.push(h);
-    const occ = k.planets[p].house; if (!hs.includes(occ)) hs.push(occ);
-    return [...new Set(hs.map(short))].slice(0, 3).join(", ");
+    const hs = housesOf(k, p), occ = k.planets[p].house; if (!hs.includes(occ)) hs.unshift(occ);
+    if (isNode(p)) housesOf(k, LORD[k.planets[p].sign]).forEach(h => { if (!hs.includes(h)) hs.push(h); });
+    const t = [];
+    for (const h of hs) { const e = KB.find("house", { house: h }); if (e) { const w = (LANG === "hi" ? e.signif_hi : e.signif_en).split(/,| और | and /)[0].trim(); if (!t.includes(w)) t.push(w); } }
+    return t.slice(0, 3).join(", ");
   }
+  function relation(a, b) { // attitude of a towards b, from the KB graha entries (BPHS Ch. 3)
+    if (a === b) return "same";
+    const g = KB.find("graha", { planet: a });
+    return g.friends.includes(b) ? "friend" : g.enemies.includes(b) ? "enemy" : "neutral";
+  }
+  function quality(k, lordAbove, lord) {
+    const P = k.planets, pos = ((P[lord].sign - P[lordAbove].sign + 12) % 12) + 1;
+    let s = { same: 1, friend: 1, neutral: 0, enemy: -1 }[relation(lord, lordAbove)];
+    s += [1, 4, 5, 7, 9, 10, 11].includes(pos) ? 1 : [6, 8, 12].includes(pos) ? -1 : 0;
+    const st = strength(lord, k).s; s += st >= 1 ? 1 : st <= -1 ? -1 : 0;
+    return { q: s >= 2 ? "good" : s <= -1 ? "care" : "mixed", pos };
+  }
+  function subPeriods(parent, lordAbove) { // Vimshottari subdivision (BPHS Ch. 46)
+    const i = DLORDS.indexOf(lordAbove), len = parent.end - parent.start, out = []; let s = parent.start;
+    for (let j = 0; j < 9; j++) { const l = DLORDS[(i + j) % 9], d = len * DYEARS[l] / 120; out.push({ lord: l, start: s, end: s + d }); s += d; }
+    return out;
+  }
+  function sourceBlock(X, used) {
+    used = used.filter(u => u.e);
+    const seen = new Set();
+    return `<div class="src">📖 ${X.src}: ${X.book}, Ch. ${KB.chapters(used.map(u => u.e))}</div><details class="why"><summary>${X.why}</summary><ol>` +
+      used.filter(u => { const key = u.e.id + "|" + u.fact; if (seen.has(key)) return false; seen.add(key); return true; })
+        .map(u => `<li>${u.fact ? `<b>${esc(u.fact)}</b><br>` : ""}${LANG === "hi" ? u.e.rule_hi : u.e.rule_en}<br><span class="sub">— ${u.e.source}</span></li>`).join("") + `</ol></details>`;
+  }
+  const qCls = { good: "g", mixed: "", care: "b" };
+  const qText = (X, q, t, p) => q === "good" ? X.good(t) : q === "care" ? X.care(t, pn(p)) : X.mixed(t);
 
   window.renderFuture = function () {
     const out = document.getElementById("futureOut"); if (!out) return;
     const X = TX[LANG];
     if (!K) { out.innerHTML = `<div class="banner">${X.need}</div><button class="chip futBirth">${X.btn}</button>`; return; }
-    const now = julianDayNow(), k = K;
-    // dasha sequence: current + next mahadasha
-    const md = currentMD(k), mi = k.dasha.indexOf(md);
-    const seq = antardashas(md).map(a => ({ md: md.lord, ...a })).concat(mi + 1 < k.dasha.length ? antardashas(k.dasha[mi + 1]).map(a => ({ md: k.dasha[mi + 1].lord, ...a })) : []);
-    const adAt = jd => seq.find(a => jd >= a.start && jd < a.end);
-    // 12 months
+    if (!window.KB || !KB.ready) { out.innerHTML = `<p class="sub">${X.wait}</p>`; return; }
+    const k = K, now = julianDayNow(), md = currentMD(k), mi = k.dasha.indexOf(md), horizon = now + 5 * 365.25;
     let h = `<h2>${X.title(k.inp.name)}</h2><p class="tag" style="text-align:left;margin:0 0 6px">${X.intro}</p>`;
-    h += `<h3>📅 ${X.m12}</h3><div class="fgrid">`;
-    const d0 = new Date();
-    for (let i = 0; i < 12; i++) {
-      const dt = new Date(d0.getFullYear(), d0.getMonth() + i, 15, 12);
-      const jd = julianDay(dt.getFullYear(), dt.getMonth() + 1, 15, 6.5);
-      const P = positionsAt(jd), hs = fromMoon(k, sgn(P.Sun)), hm = fromMoon(k, sgn(P.Mars)), hj = fromMoon(k, sgn(P.Jupiter)), hsa = fromMoon(k, sgn(P.Saturn));
-      let sc = (GOOD.Sun.includes(hs) ? 1 : -0.5) + (GOOD.Mars.includes(hm) ? 0.5 : -0.25) + (GOOD.Jupiter.includes(hj) ? 1 : 0) + (GOOD.Saturn.includes(hsa) ? 1 : [12, 1, 2, 4, 8].includes(hsa) ? -0.5 : 0);
-      const a = adAt(jd); if (a) { const q = adQuality(k, a.md, a.lord); sc += q === "good" ? 1 : q === "care" ? -0.5 : 0; }
-      const n = Math.max(1, Math.min(5, Math.round(2.5 + sc)));
-      h += `<div class="fcard"><div class="fm">${monthName(jd)}${i === 0 ? ` <span class="pill">${X.now}</span>` : ""}</div>${stars(n)}<div class="sub" style="margin-top:4px">${SUN_FOCUS[LANG][hs]}</div></div>`;
+
+    // 1) Mahadasha overview
+    let used = [{ e: KB.find("principle", { principle: "dasha_houses" }), fact: "" }];
+    h += `<h3>🕉️ ${X.mdT}</h3><div class="flist">`;
+    for (const d of k.dasha.slice(mi, mi + 2).filter(d => d.start < horizon)) {
+      const p = d.lord, hs = housesOf(k, p).map(X.house).join(X.and), occ = X.house(k.planets[p].house), dg = X.dign[dignityKey(p, k.planets[p].sign)] || "";
+      const de = KB.find("dasha", { md: p }), cur = d === md;
+      const line = X.mdLine(p, fmt(Math.max(d.start, k.jd)), fmt(d.end), hs, occ, dg, isNode(p) ? LORD[k.planets[p].sign] : null);
+      used.push({ e: de, fact: strip(line) });
+      used.push({ e: KB.find("planet_sign", { planet: p, sign: k.planets[p].sign }), fact: `${X.inChart}: ${pn(p)} — ${sn(k.planets[p].sign)}` });
+      used.push({ e: KB.find("planet_house", { planet: p, house: k.planets[p].house }), fact: `${X.inChart}: ${pn(p)} — ${X.house(k.planets[p].house)}` });
+      h += `<div class="fyear${cur ? " dasha-now" : ""}"><span class="pill">${cur ? X.now : X.next}</span> ${line}<div>${X.mdFocus(themes(k, p))}</div><div class="sub" style="margin-top:4px">${LANG === "hi" ? de.rule_hi : de.rule_en}</div></div>`;
     }
-    h += `</div>`;
-    // 5 years
-    h += `<h3>🪐 ${X.y5}</h3><div class="flist">`;
-    for (let y = 0; y < 5; y++) {
-      const yr = d0.getFullYear() + y, jd = julianDay(yr, 7, 1, 6.5), P = positionsAt(jd);
-      const hj = fromMoon(k, sgn(P.Jupiter)), hsa = fromMoon(k, sgn(P.Saturn));
-      h += `<div class="fyear"><b>${yr}</b><div>${X.jup(hj, short(hj), GOOD.Jupiter.includes(hj))}</div><div>${X.sat(hsa, short(hsa))}</div></div>`;
+    h += `</div>` + sourceBlock(X, used);
+
+    // 2) Next 12 months — pratyantar dashas
+    used = [{ e: KB.find("principle", { principle: "pratyantar" }), fact: "" }];
+    const adSeq = antardashas(md).map(a => ({ md: md.lord, ...a })).concat(mi + 1 < k.dasha.length ? antardashas(k.dasha[mi + 1]).map(a => ({ md: k.dasha[mi + 1].lord, ...a })) : []);
+    const year = now + 365.25;
+    h += `<h3>📅 ${X.pdT}</h3><div class="flist">`;
+    for (const ad of adSeq.filter(a => a.end > now && a.start < year)) {
+      for (const pd of subPeriods(ad, ad.lord).filter(p => p.end > now && p.start < year)) {
+        const { q, pos } = quality(k, ad.lord, pd.lord), cur = now >= pd.start && now < pd.end;
+        used.push({ e: KB.find("graha", { planet: pd.lord }), fact: `${pn(ad.lord)} / ${pn(pd.lord)}: ${X.pos(pos, X.adW)}` });
+        h += `<div class="fyear${cur ? " dasha-now" : ""}"><b>${fmt(Math.max(pd.start, now))} – ${fmt(pd.end)}</b> ${cur ? `<span class="pill">${X.now}</span>` : ""}<div>${pn(ad.md)} / ${pn(ad.lord)} / ${pn(pd.lord)} <span class="pill ${qCls[q]}">${X.q[q]}</span></div><div>${qText(X, q, themes(k, pd.lord), pd.lord)}</div>${q === "care" ? `<div class="sub">${X.remedy(pd.lord)}</div>` : ""}</div>`;
+      }
     }
-    h += `</div>`;
-    // dasha timeline
-    h += `<h3>⏳ ${X.dt}</h3><div class="flist">`;
-    for (const a of seq.filter(a => a.end > now && a.start < now + 5 * 365.25)) {
-      const q = adQuality(k, a.md, a.lord), t = themes(k, a.lord), cur = now >= a.start && now < a.end;
-      const cls = { good: "g", mixed: "", care: "b" }[q];
-      const txt = q === "good" ? X.dGood(t) : q === "care" ? X.dCare(t, pn(a.lord)) : X.dMixed(t);
-      h += `<div class="fyear${cur ? " dasha-now" : ""}"><b>${fmt(Math.max(a.start, now))} – ${fmt(a.end)}</b> ${cur ? `<span class="pill">${X.now}</span>` : ""}<div>${pn(a.md)} / ${pn(a.lord)} <span class="pill ${cls}">${X.q[q]}</span></div><div>${txt}</div>${q === "care" ? `<div class="sub">${X.remedy(a.lord)}</div>` : ""}</div>`;
+    h += `</div>` + sourceBlock(X, used);
+
+    // 3) Antardasha timeline — 5 years
+    used = [{ e: KB.find("principle", { principle: "ad_position" }), fact: "" }, { e: KB.find("principle", { principle: "activation" }), fact: "" }];
+    h += `<h3>⏳ ${X.adT}</h3><div class="flist">`;
+    for (const a of adSeq.filter(a => a.end > now && a.start < horizon)) {
+      const { q, pos } = quality(k, a.md, a.lord), cur = now >= a.start && now < a.end, ae = KB.find("antardasha", { md: a.md, ad: a.lord });
+      used.push({ e: ae, fact: `${pn(a.md)} / ${pn(a.lord)}: ${X.pos(pos, X.mdW)}` });
+      if (q === "care") used.push({ e: KB.find("remedy", { planet: a.lord }), fact: "" });
+      h += `<div class="fyear${cur ? " dasha-now" : ""}"><b>${fmt(Math.max(a.start, now))} – ${fmt(a.end)}</b> ${cur ? `<span class="pill">${X.now}</span>` : ""}<div>${pn(a.md)} / ${pn(a.lord)} <span class="pill ${qCls[q]}">${X.q[q]}</span></div><div>${qText(X, q, themes(k, a.lord), a.lord)}</div><div class="sub">${LANG === "hi" ? ae.rule_hi : ae.rule_en}</div>${q === "care" ? `<div class="sub">${X.remedy(a.lord)}</div>` : ""}</div>`;
     }
-    h += `</div><div class="src">📖 ${X.src}</div>`;
+    h += `</div>` + sourceBlock(X, used);
     out.innerHTML = h;
   };
 })();

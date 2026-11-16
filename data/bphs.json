@@ -3430,6 +3430,28 @@
    }
   },
   {
+   "id": "bphs.principle.pratyantar",
+   "topic": "principle",
+   "rule_en": "A pratyantar dasha (sub-sub-period) refines the antardasha for a few weeks or months: when its lord is friendly to the antardasha lord and well placed from it, that short span gives good results; when hostile or placed 6th, 8th or 12th from it, the span needs care.",
+   "rule_hi": "प्रत्यंतर दशा (उप-उप-काल) कुछ सप्ताह या महीनों के लिए अंतर्दशा के फल को सूक्ष्म करती है: जब इसका स्वामी अंतर्दशा स्वामी का मित्र हो और उससे शुभ स्थान में हो, तो वह छोटा समय अच्छा फल देता है; शत्रु हो या उससे छठे, आठवें या बारहवें हो, तो सावधानी चाहिए।",
+   "source": "BPHS, Ch. 61 (Pratyantar dasas)",
+   "confidence": "chapter",
+   "match": {
+    "principle": "pratyantar"
+   }
+  },
+  {
+   "id": "bphs.principle.dasha_houses",
+   "topic": "principle",
+   "rule_en": "A Mahadasha mainly gives the results of the houses its lord owns and the house it occupies, made stronger or weaker by the lord's dignity and placement.",
+   "rule_hi": "महादशा मुख्य रूप से उन भावों का फल देती है जिनका स्वामी दशानाथ है और जिस भाव में वह बैठा है; दशानाथ की राशि-स्थिति और भाव-स्थिति से ये फल बढ़ते या घटते हैं।",
+   "source": "BPHS, Ch. 47–48 (Effects of Dasas; dasas of house lords)",
+   "confidence": "chapter",
+   "match": {
+    "principle": "dasha_houses"
+   }
+  },
+  {
    "id": "bphs.principle.benefic_malefic",
    "topic": "principle",
    "rule_en": "Jupiter, Venus, well-placed Mercury and the waxing Moon are natural benefics; the Sun, Mars, Saturn, Rahu and Ketu are natural malefics.",

@@ -39,6 +39,17 @@ window.KB = (function () {
     get: id => state.byId[id],
     /** all entries for a topic + match, primary book first */
     findAll: (topic, match) => state.byKey[keyOf(topic, match)] || [],
+    /** "3, 4, 13, 46–48" from a list of entries' source strings (ranges expanded, merged, compressed) */
+    chapters: entries => {
+      const n = new Set();
+      entries.forEach(e => (e.source.match(/Ch\. ?\d+(?:\s*[–-]\s*\d+)?/g) || []).forEach(m => {
+        const [a, b] = m.replace(/Ch\. ?/, "").split(/\s*[–-]\s*/).map(Number);
+        for (let i = a; i <= (b || a); i++) n.add(i);
+      }));
+      const xs = [...n].sort((a, b) => a - b), out = [];
+      for (let i = 0; i < xs.length; i++) { let j = i; while (j + 1 < xs.length && xs[j + 1] === xs[j] + 1) j++; out.push(j - i >= 2 ? `${xs[i]}–${xs[j]}` : j > i ? `${xs[i]}, ${xs[j]}` : `${xs[i]}`); i = j; }
+      return out.join(", ");
+    },
     /** the primary rule for a topic + match */
     find: (topic, match) => (state.byKey[keyOf(topic, match)] || [])[0],
   };

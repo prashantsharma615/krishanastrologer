@@ -218,9 +218,9 @@ window.Engine = (function () {
     html += `<h4 class="ah">④ ${X.h4}</h4>${rem}`;
     // source + why
     const prim = used.filter(u => u.e._book === "bphs");
-    const chs = [...new Set(prim.flatMap(u => (u.e.source.match(/Ch\. ?(\d+)(?:[–-](\d+))?/g) || []).map(s => s.replace(/Ch\. ?/, ""))))].sort((a, b) => parseInt(a) - parseInt(b));
+    const chs = KB.chapters(prim.map(u => u.e));
     const trad = used.some(u => /tradition/i.test(u.e.source));
-    html += `<div class="src">📖 ${X.source}: ${X.srcBook}, Ch. ${chs.join(", ")}${trad ? ` <span class="sub">(${X.srcTrad})</span>` : ""}</div>`;
+    html += `<div class="src">📖 ${X.source}: ${X.srcBook}, Ch. ${chs}${trad ? ` <span class="sub">(${X.srcTrad})</span>` : ""}</div>`;
     const seen = new Set();
     html += `<details class="why"><summary>${X.why}</summary><ol>` + used.filter(u => !seen.has(u.e.id) && seen.add(u.e.id)).map(u => {
       const others = KB.findAll(u.e.topic, u.e.match).filter(o => o._book !== u.e._book);
