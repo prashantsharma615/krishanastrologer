@@ -98,7 +98,7 @@ Astrological guidance is for spiritual and informational purposes only and is no
 ## Graphics (in this folder)
 | Play Console field | File |
 |---|---|
-| App icon (512×512) | `../icons/icon-512.png` |
+| App icon (512×512) | `app-icon-512.png` (in the kit; `icons/icon-512.png` in the repo) |
 | Feature graphic (1024×500) | `feature-graphic-1024x500.png` |
 | Phone screenshots (1080×1920, upload 2–8) | `screenshots/01…08` |
 
